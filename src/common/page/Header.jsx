@@ -1,6 +1,6 @@
 import { CiLogin, CiLogout, CiSearch } from 'react-icons/ci';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
 
 import logo from '../resource/img/logo.png';
 import profile from '../resource/img/profile.png';
