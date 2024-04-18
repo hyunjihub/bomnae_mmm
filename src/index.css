@@ -78,3 +78,11 @@ http://scripts.sil.org/OFL
   src: local('Pretendard Thin'), url(../src/common/resource/font/Pretendard-Thin.woff2) format('woff2'),
     url(../src/common/resource/font/Pretendard-Thin.woff) format('woff');
 }
+
+@font-face {
+  font-family: 'insungit';
+  font-weight: 400;
+  src: local('Pretendard Thin'),
+    url(../src/common/resource/font/insungit\ Cutelively\ jisu\ Regular.woff2) format('woff2'),
+    url(../src/common/resource/font/insungit\ Cutelively\ jisu\ Regular.woff) format('woff');
+}

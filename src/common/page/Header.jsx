@@ -24,7 +24,7 @@ const LogoBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px 60px;
-  margin-right: 200px;
+  margin-right: 10%;
 `;
 
 const Logo = styled.img`
@@ -57,13 +57,15 @@ const Search = styled.input`
   }
 `;
 
-const LoginBox = styled.div`
+const LoginBox = styled(Link)`
   width: 90px;
   color: #84828a;
   font-size: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
 `;
 
 const Profile = styled.div`
@@ -76,6 +78,7 @@ const Profile = styled.div`
   background-position: center;
   margin-right: 60px;
   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
+  cursor: pointer;
 `;
 
 function Header(props) {
@@ -99,9 +102,9 @@ function Header(props) {
           <CiSearch size="20" color="#a49f9f" />
           <Search type="text" placeholder="검색"></Search>
         </SearchBox>
-        <LoginBox onClick={hanldeLogin}>
+        <LoginBox to="/login">
           {isLogin ? <CiLogin size="23" color="#84828a" /> : <CiLogout size="23" color="#84828a" />}
-          {isLogin ? '로그인' : '로그아웃'}
+          {isLogin ? '로그아웃' : '로그인'}
         </LoginBox>
         <Profile></Profile>
       </Wrapper>
