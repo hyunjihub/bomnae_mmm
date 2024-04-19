@@ -12,42 +12,86 @@ const Wrapper = styled.div`
   background-color: #fff;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.2rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    gap: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    height: 9vh;
+    gap: 1rem;
+  }
 `;
 
 const LogoBox = styled.div`
-  width: 110px;
-  height: 54px;
+  width: 6rem;
+  min-width: calc(4rem + 85px);
+  height: 3rem;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px 60px;
-  margin-right: 10%;
+  padding-right: 8vw;
+  padding-left: 1rem;
+  margin-right: 1vw;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    padding-right: 6vw;
+    min-width: calc(4rem + 65px);
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding-right: 5vw;
+    min-width: calc(4rem + 65px);
+    padding-left: 0;
+  }
 `;
 
 const Logo = styled.img`
-  width: 100px;
+  width: 6rem;
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 5rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 5rem;
+  }
 `;
 
 const SearchBox = styled.div`
-  width: 480px;
-  height: 40px;
+  height: 2.5rem;
   background-color: #f7f6f9;
   border-radius: 8px;
-  padding: 0px 16px;
+  padding: 0rem 1rem;
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-grow: 2;
-  margin-right: 200px;
+  gap: 1rem;
+  flex-grow: 1;
+  margin-right: 10rem;
   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    margin-right: 7rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Search = styled.input`
   color: #a49f9f;
-  font-size: 14px;
+  font-size: 0.9rem;
   outline: none;
   border: none;
   background-color: transparent;
@@ -55,30 +99,68 @@ const Search = styled.input`
   &::placeholder {
     color: #a49f9f;
   }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const LoginBox = styled(Link)`
-  width: 90px;
+  width: 6rem;
   color: #84828a;
-  font-size: 16px;
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.8rem;
   cursor: pointer;
   text-decoration: none;
+  box-sizing: border-box;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 5rem;
+    margin-left: 16vw;
+  }
+`;
+
+const Logout = styled(CiLogout)`
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    opacity: 0;
+  }
+`;
+
+const Login = styled(CiLogin)`
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    opacity: 0;
+  }
 `;
 
 const Profile = styled.div`
-  width: 65px;
-  height: 65px;
+  width: 4.3rem;
+  height: 4.3rem;
   border-radius: 50%;
   background-image: url(${profile});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  margin-right: 60px;
+  margin-right: 4vw;
   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
   cursor: pointer;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
 `;
 
 function Header(props) {
@@ -95,7 +177,7 @@ function Header(props) {
   return (
     <>
       <Wrapper>
-        <LogoBox as={Link} to="/main">
+        <LogoBox as={Link} to="/">
           <Logo src={logo} alt="logo" />
         </LogoBox>
         <SearchBox>
@@ -103,7 +185,7 @@ function Header(props) {
           <Search type="text" placeholder="검색"></Search>
         </SearchBox>
         <LoginBox to="/login">
-          {isLogin ? <CiLogin size="23" color="#84828a" /> : <CiLogout size="23" color="#84828a" />}
+          {isLogin ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
           {isLogin ? '로그아웃' : '로그인'}
         </LoginBox>
         <Profile></Profile>

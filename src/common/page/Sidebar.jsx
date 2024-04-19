@@ -5,34 +5,43 @@ import SidebarItem from '../component/SideItem';
 import styled from 'styled-components';
 
 const Side = styled.div`
-  width: 18vw;
+  width: 20rem;
   background-color: #fff;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 17rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 15rem;
+  }
 `;
 
 const Menu = styled.div`
   color: #84828a;
-  font-size: 16px;
 `;
 
 const MenuBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 2rem;
 `;
 
 const SMenu = styled.div`
   color: #84828a;
-  font-size: 14px;
-  margin-top: 10px;
-  margin-left: 20%;
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+  margin-left: 4vh;
   cursor: pointer;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #84828a;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
 
   &:hover {

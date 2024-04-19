@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styled from 'styled-components';
 
-function MyPage(props) {
-  return <div>마이페이지</div>;
+function Request(props) {
+  return <div>추가 요청</div>;
 }
-export default MyPage;
+export default Request;

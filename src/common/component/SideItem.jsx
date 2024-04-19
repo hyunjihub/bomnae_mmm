@@ -5,20 +5,33 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Menu = styled.p`
-  width: 210px;
-  height: 55px;
+  width: 14rem;
+  height: 3rem;
   border-radius: 8px;
-  margin-bottom: 24px;
-  padding: 20px;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
   box-sizing: border-box;
   &:hover {
     background-color: #dff5ff;
   }
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 1.2rem;
   cursor: pointer;
   font-family: insungit;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 11rem;
+    height: 2.8rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 9rem;
+    height: 2.6rem;
+    font-size: 1rem;
+  }
 `;
 
 const food_icon = styled(MdOutlineRestaurant)`
