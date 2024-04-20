@@ -13,6 +13,9 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -138,7 +141,7 @@ const Login = styled(CiLogin)`
   }
 `;
 
-const Profile = styled.div`
+const Profile = styled(Link)`
   width: 4.3rem;
   height: 4.3rem;
   border-radius: 50%;
@@ -188,7 +191,7 @@ function Header(props) {
           {isLogin ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
           {isLogin ? '로그아웃' : '로그인'}
         </LoginBox>
-        <Profile></Profile>
+        <Profile to="/mypage/1"></Profile>
       </Wrapper>
     </>
   );

@@ -86,3 +86,7 @@ http://scripts.sil.org/OFL
     url(../src/common/resource/font/insungit\ Cutelively\ jisu\ Regular.woff2) format('woff2'),
     url(../src/common/resource/font/insungit\ Cutelively\ jisu\ Regular.woff) format('woff');
 }
+
+body {
+  overflow-x: hidden;
+}

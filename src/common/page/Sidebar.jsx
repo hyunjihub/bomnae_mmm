@@ -5,18 +5,23 @@ import SidebarItem from '../component/SideItem';
 import styled from 'styled-components';
 
 const Side = styled.div`
-  width: 20rem;
+  width: 18rem;
   background-color: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 17rem;
+    width: 13rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 15rem;
+    display: none;
   }
+  padding-top: 6rem;
+  box-sizing: border-box;
 `;
 
 const Menu = styled.div`
@@ -30,12 +35,13 @@ const MenuBox = styled.div`
   margin-top: 2rem;
 `;
 
-const SMenu = styled.div`
+const SMenu = styled(Link)`
   color: #84828a;
   font-size: 0.8rem;
   margin-top: 0.8rem;
   margin-left: 4vh;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const StyledLink = styled(Link)`
@@ -74,7 +80,11 @@ function Sidebar(props) {
           })}
         </Menu>
       </MenuBox>
-      <SMenu>{isAdmin ? '정보 등록 요청 확인' : '정보 추가 요청'}</SMenu>
+      {isAdmin ? (
+        <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
+      ) : (
+        <SMenu to="/request/common">정보 추가 요청</SMenu>
+      )}
     </Side>
   );
 }

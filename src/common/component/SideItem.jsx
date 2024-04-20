@@ -9,7 +9,7 @@ const Menu = styled.p`
   height: 3rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
-  padding: 1.5rem;
+  padding: 1.8rem 1.5rem 1.5rem;
   box-sizing: border-box;
   &:hover {
     background-color: #dff5ff;
