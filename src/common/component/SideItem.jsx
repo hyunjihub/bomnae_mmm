@@ -1,10 +1,11 @@
 import { FaCoffee } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { LuPopcorn } from 'react-icons/lu';
 import { MdOutlineRestaurant } from 'react-icons/md';
 import React from 'react';
 import styled from 'styled-components';
 
-const Menu = styled.p`
+const Menu = styled(Link)`
   width: 14rem;
   height: 3rem;
   border-radius: 8px;
@@ -13,12 +14,15 @@ const Menu = styled.p`
   box-sizing: border-box;
   &:hover {
     background-color: #dff5ff;
+    color: #00a3e0;
   }
   display: flex;
   align-items: center;
   font-size: 1.2rem;
   cursor: pointer;
   font-family: insungit;
+  text-decoration: none;
+  color: #84828a;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -68,7 +72,7 @@ function SidebarItem({ menu }) {
 
   return (
     <>
-      <Menu>
+      <Menu to={menu.path}>
         {icon && <span style={{ marginRight: '10px' }}>{icon}</span>}
         {menu.name}
       </Menu>

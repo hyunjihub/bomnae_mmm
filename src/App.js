@@ -3,6 +3,7 @@ import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Authentication from './member/page/Authentication';
+import Detail from './list/page/Detail';
 import Error from './common/page/Error';
 import Find from './member/page/Find';
 import Header from './common/page/Header';
@@ -43,7 +44,7 @@ export default function App(props) {
           <Route path="/mypage/:memberid/like" element={<Like />} />
           <Route path="/list/:type" element={<List />} />
           <Route path="/request/:isadmin" element={<Request />} />
-          <Route path="/detail/:listid" element={<List />} />
+          <Route path="/place/:placeid" element={<Detail />} />
         </Routes>
       </Center>
     </BrowserRouter>

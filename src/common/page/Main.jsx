@@ -88,7 +88,7 @@ function Main(props) {
         <MenuBox>
           <TitleBox>
             <Title>최근 추가된 맛집</Title>
-            <More>더보기</More>
+            <More to="/list/restaurant">더보기</More>
           </TitleBox>
           <Box>
             {restaurants.map((restaurant) => {
@@ -99,7 +99,7 @@ function Main(props) {
         <MenuBox>
           <TitleBox>
             <Title>최근 추가된 카페</Title>
-            <More>더보기</More>
+            <More to="/list/cafe">더보기</More>
           </TitleBox>
           <Box>
             {restaurants.map((restaurant) => {

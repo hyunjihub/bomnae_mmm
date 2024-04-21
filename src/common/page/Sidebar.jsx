@@ -62,9 +62,9 @@ function Sidebar(props) {
     return null;
   }
   const menus = [
-    { name: '음식점', path: '/' },
-    { name: '카페', path: '/' },
-    { name: '놀거리', path: '/' },
+    { name: '음식점', path: '/list/restaurant' },
+    { name: '카페', path: '/list/cafe' },
+    { name: '놀거리', path: '/list/entertainment' },
   ];
 
   return (

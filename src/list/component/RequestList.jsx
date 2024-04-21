@@ -4,30 +4,38 @@ import styled from 'styled-components';
 const List = styled.div`
   background-color: #fff;
   width: 16rem;
-  height: 16rem;
+  height: 10rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-  cursor: pointer;
-`;
-
-const Image = styled.div`
-  width: 16rem;
-  height: 11rem;
-  background-position: center;
-  background-size: cover;
-  background-image: url(${(props) => props.backgroundImg});
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 `;
 
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   width: 15rem;
   height: 4rem;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 2rem 1.5rem;
+  position: relative;
+`;
+
+const Cancel = styled.button`
+  border: none;
+  background-color: #00a3e0;
+  color: #fff;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0.8rem;
+  right: 0;
+  padding-top: 0.1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4cb9e7;
+  }
 `;
 
 const Name = styled.h1`
@@ -37,15 +45,20 @@ const Name = styled.h1`
 
 const Location = styled.h3`
   font-size: 1rem;
+
+  &.category {
+    color: #838383;
+  }
 `;
 
-function UpdatedList({ list }) {
+function RequestList({ list }) {
   return (
     <>
       <List>
-        <Image backgroundImg={list.img}></Image>
         <InfoBox>
+          <Cancel>X</Cancel>
           <Name>{list.place_name}</Name>
+          <Location className="category">{list.category !== null ? list.category : '카테고리 미기재'}</Location>
           <Location>{list.location}</Location>
         </InfoBox>
       </List>
@@ -53,4 +66,4 @@ function UpdatedList({ list }) {
   );
 }
 
-export default UpdatedList;
+export default RequestList;

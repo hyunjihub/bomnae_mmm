@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import RequestList from '../component/RequestList';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -7,9 +8,19 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 90vh;
   background-color: #f7f6f9;
-  padding: 6vh 5vw;
+  padding: 5vh 5vw;
   box-sizing: border-box;
-  margin-left: 20rem;
+  margin-left: 18rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    margin-left: 13rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    margin-left: 0;
+  }
 `;
 
 const Title = styled.h1`
@@ -92,8 +103,27 @@ const Button = styled.button`
   }
 `;
 
+const RequestContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 70rem;
+  background-color: transparent;
+  gap: 2rem;
+`;
+
 function Request(props) {
   const { isadmin } = useParams();
+
+  const requestLists = [
+    { place_name: '오야', location: '교동 149-12', category: '일식' },
+    { place_name: '교동부대찌개', location: '교동 156-27', category: '한식' },
+    { place_name: '레이아웃', location: '소양로4가 115-7', category: '양식' },
+    { place_name: '사이라', location: '퇴계동 396-22', category: null },
+    { place_name: '오야', location: '교동 149-12', category: '일식' },
+    { place_name: '교동부대찌개', location: '교동 156-27', category: '한식' },
+    { place_name: '레이아웃', location: '소양로4가 115-7', category: '양식' },
+    { place_name: '사이라', location: '퇴계동 396-22', category: null },
+  ];
 
   return (
     <>
@@ -126,7 +156,20 @@ function Request(props) {
           </Detail>
         </Wrapper>
       ) : (
-        <Wrapper>추가 요청</Wrapper>
+        <Wrapper>
+          <Title>맛집 등록 요청</Title>
+          <Detail>
+            사용자의 등록 요청입니다. 업로드된 요청은 X 버튼을 눌러 제거해주세요.
+            <br />
+            목적에 맞지 않거나 등록 요청을 진행하지 않을 시에도 X 버튼을 눌러주세요. 모든 요청은 요청된 순으로
+            제공됩니다.
+          </Detail>
+          <RequestContainer>
+            {requestLists.map((requestList) => {
+              return <RequestList list={requestList} />;
+            })}
+          </RequestContainer>
+        </Wrapper>
       )}
     </>
   );

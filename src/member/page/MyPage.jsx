@@ -15,13 +15,23 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 125vh;
   background-color: #f7f6f9;
-  padding: 6vh 5vw;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
-  margin-left: 20rem;
+  padding: 5vh 5vw;
+  margin-left: 18rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    margin-left: 13rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    margin-left: 0;
+  }
 `;
 
 const PorfileBox = styled.div`
@@ -61,6 +71,7 @@ const Upload = styled.button`
   position: absolute;
   bottom: 2.5rem;
   right: 0.5rem;
+  cursor: pointer;
 `;
 
 const InfoBox = styled.div`
@@ -103,6 +114,7 @@ const Button = styled.button`
   border: none;
   font-size: 1.2rem;
   font-family: pretendard;
+  cursor: pointer;
 
   &:hover {
     background-color: #4cb9e7;
@@ -124,6 +136,7 @@ const Withdraw = styled.button`
   color: #838383;
   font-size: 0.85rem;
   font-family: pretendard;
+  cursor: pointer;
 `;
 
 const EditInput = styled.input`
@@ -146,6 +159,10 @@ const Title = styled.h1`
 const Detail = styled.h3`
   font-size: 1.1rem;
   color: #838383;
+
+  &.button {
+    cursor: pointer;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -179,10 +196,10 @@ function MyPage(props) {
   };
 
   const likeLists = [
-    { img: sample, place_name: '오야', location: '교동 149-12' },
-    { img: sample2, place_name: '교동부대찌개', location: '교동 156-27' },
-    { img: sample3, place_name: '레이아웃', location: '소양로4가 115-7' },
-    { img: sample4, place_name: '사이라', location: '퇴계동 396-22' },
+    { placeId: 1, img: sample, place_name: '오야', location: '교동 149-12' },
+    { placeId: 1, img: sample2, place_name: '교동부대찌개', location: '교동 156-27' },
+    { placeId: 1, img: sample3, place_name: '레이아웃', location: '소양로4가 115-7' },
+    { placeId: 1, img: sample4, place_name: '사이라', location: '퇴계동 396-22' },
   ];
 
   const reviewLists = [
@@ -234,7 +251,9 @@ function MyPage(props) {
       <Container>
         <TitleBox>
           <Title>좋아요 목록</Title>
-          <Detail onClick={() => navigate('like')}>더보기</Detail>
+          <Detail className="button" onClick={() => navigate('like')}>
+            더보기
+          </Detail>
         </TitleBox>
         <Box>
           {likeLists.map((likeList) => {
