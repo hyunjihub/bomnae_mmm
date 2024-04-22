@@ -17,6 +17,9 @@ const Wrapper = styled.div`
   padding: 5vh 5vw;
   box-sizing: border-box;
   margin-left: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -30,11 +33,24 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
+  width: 75rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 3rem 7rem;
+  flex-wrap: wrap;
+  padding: 3rem 2rem;
   box-sizing: border-box;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 50rem;
+    padding: 2rem 4rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding: 2rem 4rem;
+  }
 `;
 
 const MenuBox = styled.div`

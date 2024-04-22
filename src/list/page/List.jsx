@@ -20,23 +20,26 @@ import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 90vh;
+  height: 600px;
   background-color: #f7f6f9;
   padding: 5vh 5vw;
   box-sizing: border-box;
-  margin-left: 18rem;
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-left: 13rem;
+    padding: 3vh 2vw;
+    margin-left: 170px;
+    height: 650px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
+    padding: 2vh 0;
   }
 `;
 
@@ -45,6 +48,16 @@ const Filter = styled.div`
   align-items: center;
   gap: 0.8rem;
   padding-left: 3rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    padding-left: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding-left: 1rem;
+  }
 `;
 
 const LocationBox = styled.div`
@@ -52,14 +65,40 @@ const LocationBox = styled.div`
   width: 38rem;
   height: 2rem;
   box-sizing: border-box;
-  padding: 0.5rem 1.5rem;
-  display: flex;
+  padding: 0.2rem 1.5rem;
   justify-content: space-between;
   border-radius: 16px;
   margin-left: 3rem;
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  flex-wrap: wrap;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    gap: 0.1rem;
+    margin-left: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    margin-left: 1rem;
+    width: 24rem;
+    gap: 0.3rem 2rem;
+    height: 3rem;
+  }
+`;
+
+const Icon = styled(MdLocationOn)`
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    display: none;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const ListContainer = styled.div`
@@ -75,6 +114,17 @@ const ListContainer = styled.div`
 
   &.cafe {
     height: 80vh;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    padding-left: 1rem;
+    gap: 0.8rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding-left: 1rem;
   }
 `;
 
@@ -107,11 +157,11 @@ function List(props) {
     '후평동',
     '효자동 ',
     '강남동',
-    '약사명동',
     '동내면',
     '조운동',
     '소양동',
     '근화동',
+    '약사명동',
   ];
 
   const restaurantLists = [
@@ -132,7 +182,7 @@ function List(props) {
       {type === 'restaurant' ? (
         <Wrapper>
           <LocationBox>
-            <MdLocationOn size="25" color="#00a8dd" />
+            <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
               return <Location filter={filter} />;
             })}
@@ -151,7 +201,7 @@ function List(props) {
       ) : type === 'cafe' ? (
         <Wrapper>
           <LocationBox>
-            <MdLocationOn size="25" color="#00a8dd" />
+            <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
               return <Location filter={filter} />;
             })}

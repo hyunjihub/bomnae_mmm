@@ -138,10 +138,10 @@ function Request(props) {
             <Label>위치 (필수)</Label>
             <Input
               type="text"
-              placeholder="위치를 입력해주세요. (중복된 상호가 있을 수 있으므로 정확한 입력을 부탁드립니다.)"
+              placeholder="위치를 입력해주세요. (동명의 상호가 있을 수 있으므로 정확한 입력을 부탁드립니다.)"
             />
             <Label>카테고리 (선택)</Label>
-            <Input type="text" placeholder="한식/중식/일식/카페 등 자유롭게 작성해주세요." />
+            <Input type="text" placeholder="한식, 중식, 일식, 카페 등 자유롭게 작성해주세요." />
             <Button>맛집 등록 요청</Button>
           </RequstBox>
           <Detail>

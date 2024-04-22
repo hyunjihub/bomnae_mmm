@@ -2,14 +2,13 @@
   position: relative;
   background-color: #f7f7f7;
   padding: 20px;
-  max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
 }
 
 .embla__viewport {
   overflow: hidden;
-  width: 100%;
+  width: 70vw;
 }
 
 .embla__viewport.is-draggable {

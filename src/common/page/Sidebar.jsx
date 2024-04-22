@@ -1,11 +1,11 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import SidebarItem from '../component/SideItem';
 import styled from 'styled-components';
 
 const Side = styled.div`
-  width: 18rem;
+  width: 230px;
   background-color: #fff;
   position: fixed;
   left: 0;
@@ -13,7 +13,7 @@ const Side = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 13rem;
+    width: 170px;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -44,17 +44,6 @@ const SMenu = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #84828a;
-  font-size: 1rem;
-  font-weight: 500;
-
-  &:hover {
-    color: #00a3e0;
-  }
-`;
-
 function Sidebar(props) {
   const locationNow = useLocation();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -72,11 +61,7 @@ function Sidebar(props) {
       <MenuBox>
         <Menu>
           {menus.map((menu, index) => {
-            return (
-              <StyledLink to={menu.path} key={index}>
-                <SidebarItem menu={menu} />
-              </StyledLink>
-            );
+            return <SidebarItem menu={menu} />;
           })}
         </Menu>
       </MenuBox>

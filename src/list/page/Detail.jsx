@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
+import Info from '../component/Info';
 import { IoHeart } from 'react-icons/io5';
+import Menu from '../component/Menu';
+import Review from '../component/Review';
 import sample from '../../common/resource/img/sample.jpg';
 import sample2 from '../../common/resource/img/sample12.jpg';
 import styled from 'styled-components';
@@ -32,7 +35,7 @@ const Container = styled.div`
   display: grid;
   gap: 2rem;
   grid-template-columns: 1.8fr 1fr;
-  grid-template-rows: 1.5fr 2fr 0.5fr;
+  grid-template-rows: 2fr 2fr 0.5fr;
   grid-template-areas:
     'd l'
     'd r'
@@ -55,7 +58,7 @@ const DetailBox = styled.div`
 const LocationBox = styled.div`
   background-color: #fff;
   border-radius: 16px;
-  padding: 1rem;
+  padding: 1.5rem;
   box-sizing: border-box;
   grid-area: l;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -64,7 +67,7 @@ const LocationBox = styled.div`
 const ReviewBox = styled.div`
   background-color: #fff;
   border-radius: 16px;
-  padding: 1rem;
+  padding: 1.5rem;
   box-sizing: border-box;
   grid-area: r;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -143,6 +146,11 @@ const Intro = styled.h2`
   color: #9a95a3;
   font-size: 1rem;
   line-height: 1.3;
+
+  &.location {
+    width: 18rem;
+    color: #222831;
+  }
 `;
 
 const Divider = styled.hr`
@@ -150,20 +158,17 @@ const Divider = styled.hr`
   border: none;
   height: 1px;
   background-color: #ccc;
+
+  &.review {
+    width: 28rem;
+    margin-bottom: 0.8rem;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 2rem;
   font-weight: 800;
   margin-bottom: 1rem;
-`;
-
-const Content = styled.h3`
-  font-size: 1rem;
-`;
-
-const Bold = styled.strong`
-  font-weight: 700;
 `;
 
 const InfoBox = styled.div`
@@ -174,17 +179,96 @@ const InfoBox = styled.div`
   gap: 0.6rem;
 `;
 
-const Price = styled.h3`
-  color: #9a95a3;
-  font-size: 0.9rem;
+const ReviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 28rem;
+  height: 19rem;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const MenuBox = styled.div`
+const WriteContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
+`;
+
+const Write = styled.textarea`
+  width: 24rem;
+  height: 6.5rem;
+  border: none;
+  resize: none;
+  outline: none;
+  background-color: #f7f6f9;
+  border-radius: 8px;
+  padding: 0.6rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-family: pretendard;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::placeholder {
+    font-size: 0.9rem;
+    color: #9a95a3;
+  }
+`;
+
+const Button = styled.button`
+  width: 3rem;
+  height: 6.5rem;
+  background-color: #00a8dd;
+  font-family: pretendard;
+  border: none;
+  font-size: 1rem;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
 `;
 
 function Detail(props) {
+  const information = {
+    time: '11:30 ~ 22:00 (일요일 휴무)',
+    breaktime: '15:00 ~ 17:00',
+    number: '0507-1434-5877',
+    service: '포장, 단체 이용 가능, 예약',
+    parking: '주차 가능 (무료)',
+  };
+
+  const menus = [
+    { menu: '오야 초밥(10pcs)', price: '13,000원' },
+    { menu: '오야동', price: '14,000원' },
+    { menu: '오야 특초밥(12pcs)', price: '16,000원' },
+    { menu: '카이센동', price: '15,000원' },
+    { menu: '연어덮밥', price: '13,000원' },
+    { menu: '가라아게동', price: '10,000원' },
+  ];
+
+  const reviews = [
+    {
+      nickname: '닉네임',
+      time: '2024-04-22',
+      review:
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+    },
+    {
+      nickname: '닉네임',
+      time: '2024-04-22',
+      review:
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+    },
+    {
+      nickname: '닉네임',
+      time: '2024-04-22',
+      review:
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+    },
+  ];
+
   return (
     <Wrapper>
       <Container>
@@ -205,59 +289,42 @@ function Detail(props) {
             <Box>
               <Box className="info">
                 <Title>정보</Title>
-                <Content>
-                  <Bold>영업시간 : </Bold>11:30 ~ 22:00 (일요일 휴무){' '}
-                </Content>
-                <Content>
-                  <Bold>브레이크 타임 : </Bold>15:00 ~ 17:00{' '}
-                </Content>
-                <Content>
-                  <Bold>전화번호 : </Bold>0507-1434-5877
-                </Content>
-                <Content>
-                  <Bold>편의시설 및 서비스 : </Bold>포장, 단체 이용 가능, 예약, 무선 인터넷
-                </Content>
-                <Content>
-                  <Bold>주차 : </Bold>주차 가능 (무료)
-                </Content>
+                <Info info={information} />
               </Box>
               <Box className="menu">
                 <TitleBox className="menu">
                   <Title>메뉴</Title>
                   <TitleDetail>기재된 가격은 매장과 상이할 수 있습니다.</TitleDetail>
                 </TitleBox>
-                <MenuBox>
-                  <Content>오야 초밥(10pcs)</Content>
-                  <Price>13,000원</Price>
-                </MenuBox>
-                <MenuBox>
-                  <Content>오야동</Content>
-                  <Price>14,000원</Price>
-                </MenuBox>
-                <MenuBox>
-                  <Content>오야 특초밥 (12pcs)</Content>
-                  <Price>16,000원</Price>
-                </MenuBox>
-                <MenuBox>
-                  <Content>카이센동</Content>
-                  <Price>15,000원</Price>
-                </MenuBox>
-                <MenuBox>
-                  <Content>연어덮밥</Content>
-                  <Price>13,000원</Price>
-                </MenuBox>
-                <MenuBox>
-                  <Content>가라아게동</Content>
-                  <Price>10,000원</Price>
-                </MenuBox>
+                {menus.map((menu) => {
+                  return <Menu menu={menu} />;
+                })}
               </Box>
             </Box>
           </InfoBox>
           <Divider />
-          <Title>블로그 리뷰</Title>
+          <InfoBox>
+            <Title>블로그 리뷰</Title>
+          </InfoBox>
         </DetailBox>
-        <LocationBox></LocationBox>
-        <ReviewBox></ReviewBox>
+        <LocationBox>
+          <Title>위치</Title>
+          <Intro className="location">교동 149-12</Intro>
+          <TitleDetail>한림대학교 정문에서 향교 방면으로 도보 200M 내려오시면 좌측에 있습니다.</TitleDetail>
+        </LocationBox>
+        <ReviewBox>
+          <Title>후기</Title>
+          <ReviewContainer>
+            {reviews.map((review) => {
+              return <Review review={review} />;
+            })}
+          </ReviewContainer>
+          <Divider className="review" />
+          <WriteContainer>
+            <Write placeholder="후기를 입력해주세요. 후기는 최대 170자까지 작성 가능합니다."></Write>
+            <Button>후기등록</Button>
+          </WriteContainer>
+        </ReviewBox>
       </Container>
     </Wrapper>
   );

@@ -9,6 +9,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   width: 100vw;
   height: 10vh;
+  min-height: 70px;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -122,8 +123,8 @@ const LoginBox = styled(Link)`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 5rem;
     margin-left: 16vw;
+    font-size: 0.9rem;
   }
 `;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const List = styled.div`
   background-color: #fff;
@@ -40,9 +41,10 @@ const Location = styled.h3`
 `;
 
 function UpdatedList({ list }) {
+  const navigate = useNavigate();
   return (
     <>
-      <List>
+      <List onClick={() => navigate(`/place/${list.placeId}`)}>
         <Image backgroundImg={list.img}></Image>
         <InfoBox>
           <Name>{list.place_name}</Name>

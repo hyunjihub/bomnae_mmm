@@ -1,16 +1,17 @@
+import { Link, NavLink } from 'react-router-dom';
+
 import { FaCoffee } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { LuPopcorn } from 'react-icons/lu';
 import { MdOutlineRestaurant } from 'react-icons/md';
 import React from 'react';
 import styled from 'styled-components';
 
-const Menu = styled(Link)`
-  width: 14rem;
+const Menu = styled(NavLink)`
+  width: 11rem;
   height: 3rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
-  padding: 1.8rem 1.5rem 1.5rem;
+  padding: 1rem 2rem;
   box-sizing: border-box;
   &:hover {
     background-color: #dff5ff;
@@ -22,12 +23,13 @@ const Menu = styled(Link)`
   cursor: pointer;
   font-family: insungit;
   text-decoration: none;
-  color: #84828a;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     width: 11rem;
     height: 2.8rem;
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -36,21 +38,6 @@ const Menu = styled(Link)`
     height: 2.6rem;
     font-size: 1rem;
   }
-`;
-
-const food_icon = styled(MdOutlineRestaurant)`
-  color: #84828a;
-  :hover {
-    color: #00a3e0;
-  }
-`;
-
-const coffee_icon = styled(FaCoffee)`
-  ${food_icon};
-`;
-
-const popcorn_icon = styled(LuPopcorn)`
-  ${food_icon};
 `;
 
 function SidebarItem({ menu }) {
@@ -70,9 +57,21 @@ function SidebarItem({ menu }) {
       break;
   }
 
+  const activeStyle = {
+    color: '#00a3e0',
+  };
+  const deactiveStyle = {
+    color: '#84828a',
+  };
+
   return (
     <>
-      <Menu to={menu.path}>
+      <Menu
+        to={menu.path}
+        style={({ isActive }) => {
+          return isActive ? activeStyle : deactiveStyle;
+        }}
+      >
         {icon && <span style={{ marginRight: '10px' }}>{icon}</span>}
         {menu.name}
       </Menu>
