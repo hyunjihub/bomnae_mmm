@@ -6,15 +6,15 @@ import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
   background-color: #f7f6f9;
   padding: 5vh 5vw;
   box-sizing: border-box;
-  margin-left: 18rem;
+  margin-left: 230px;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-left: 13rem;
+    margin-left: 170px;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -33,6 +33,16 @@ const Title = styled.h1`
     font-size: 1.7rem;
     margin-bottom: 2rem;
   }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 2.2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 2rem;
+  }
 `;
 
 const Detail = styled.h3`
@@ -40,6 +50,16 @@ const Detail = styled.h3`
   margin-bottom: 1.5rem;
   color: #607274;
   line-height: 1.5;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 0.9rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Strong = styled.strong`
@@ -51,25 +71,46 @@ const Strong = styled.strong`
 `;
 
 const RequstBox = styled.div`
-  width: 47vw;
-  height: 50vh;
+  width: 50rem;
   background-color: #fff;
   border-radius: 16px;
   box-sizing: border-box;
   padding: 2.5rem 3rem;
   margin-bottom: 5vh;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 32rem;
+    padding: 2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 23.5rem;
+    padding: 2rem;
+  }
 `;
 
 const Label = styled.label`
   font-size: 1rem;
   display: block;
   margin-bottom: 0.5rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    margin-bottom: 0.2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    margin-bottom: 0.2rem;
+  }
 `;
 
 const Input = styled.input`
   background-color: transparent;
   padding: 0.5rem 0;
-  width: 40vw;
+  width: 44rem;
   border: none;
   border-bottom: 1px solid #d9d9d9;
   font-family: pretendard;
@@ -82,6 +123,22 @@ const Input = styled.input`
     color: #a49f9f;
     font-size: 0.9rem;
   }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 20rem;
+    &::placeholder {
+      font-size: 0.8rem;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 20rem;
+    &::placeholder {
+      font-size: 0.7rem;
+    }
+  }
 `;
 
 const Button = styled.button`
@@ -90,7 +147,7 @@ const Button = styled.button`
   background-color: #00a8dd;
   color: #fff;
   font-weight: 600;
-  width: 50rem;
+  width: 44rem;
   box-sizing: border-box;
   padding: 0.8rem 2rem;
   font-size: 1.1rem;
@@ -100,6 +157,18 @@ const Button = styled.button`
 
   &:hover {
     background-color: #4cb9e7;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 28rem;
+    margin-top: 0;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 20rem;
+    margin-top: 0;
   }
 `;
 

@@ -12,16 +12,16 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 110vh;
   background-color: #f7f6f9;
-  padding: 5vh 5vw;
+  padding: 5vh 1vw;
   box-sizing: border-box;
-  margin-left: 18rem;
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-left: 13rem;
+    margin-left: 170px;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -33,6 +33,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   height: 100vh;
   display: grid;
+  padding: 1vh 10vw;
   gap: 2rem;
   grid-template-columns: 1.8fr 1fr;
   grid-template-rows: 2fr 2fr 0.5fr;
@@ -40,19 +41,20 @@ const Container = styled.div`
     'd l'
     'd r'
     'd r';
+  box-sizing: border-box;
 `;
 
 const DetailBox = styled.div`
+  box-sizing: border-box;
   background-color: #fff;
   border-radius: 16px;
-  padding: 2rem 1rem;
-  box-sizing: border-box;
+  padding: 2rem 1.5rem;
   grid-area: d;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
 `;
 
 const LocationBox = styled.div`
@@ -74,47 +76,49 @@ const ReviewBox = styled.div`
 `;
 
 const Box = styled.div`
-  width: 50rem;
-  height: 15rem;
+  width: 90%;
+  height: 12rem;
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
+  padding: 0 0.5rem;
 
   &.info {
-    width: 27rem;
+    width: 80%;
     height: 13rem;
     flex-direction: column;
   }
 
   &.menu {
-    width: 20rem;
+    width: 80%;
     height: 13rem;
     flex-direction: column;
   }
 `;
 
 const Image = styled.div`
-  width: 30rem;
-  height: 15rem;
+  width: 65%;
+  height: 12rem;
   border-radius: 16px;
   background-position: center;
   background-size: cover;
   background-image: url(${(props) => props.backgroundImg});
 
   &.second {
-    width: 20rem;
+    width: 30%;
   }
 `;
 
 const TitleBox = styled.div`
-  width: 50rem;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   padding: 0rem 1rem;
+  margin-top: 0.5rem;
 
   &.menu {
-    width: 20rem;
+    width: 90%;
     padding: 0rem;
   }
 `;
@@ -125,7 +129,7 @@ const TitleDetail = styled.h3`
 `;
 
 const Name = styled.div`
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 800;
 `;
 
@@ -142,37 +146,37 @@ const Like = styled.div`
 `;
 
 const Intro = styled.h2`
-  width: 48rem;
+  width: 86%;
   color: #9a95a3;
   font-size: 1rem;
   line-height: 1.3;
 
   &.location {
-    width: 18rem;
+    width: 15rem;
     color: #222831;
   }
 `;
 
 const Divider = styled.hr`
-  width: 50rem;
+  width: 90%;
   border: none;
   height: 1px;
   background-color: #ccc;
 
   &.review {
-    width: 28rem;
+    width: 10rem;
     margin-bottom: 0.8rem;
   }
 `;
 
 const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 1rem;
 `;
 
 const InfoBox = styled.div`
-  width: 48rem;
+  width: 86%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -182,7 +186,6 @@ const InfoBox = styled.div`
 const ReviewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 28rem;
   height: 19rem;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -196,7 +199,7 @@ const WriteContainer = styled.div`
 `;
 
 const Write = styled.textarea`
-  width: 24rem;
+  width: 10rem;
   height: 6.5rem;
   border: none;
   resize: none;
@@ -253,19 +256,19 @@ function Detail(props) {
       nickname: '닉네임',
       time: '2024-04-22',
       review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
     },
     {
       nickname: '닉네임',
       time: '2024-04-22',
       review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
     },
     {
       nickname: '닉네임',
       time: '2024-04-22',
       review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리',
+        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
     },
   ];
 
@@ -294,7 +297,6 @@ function Detail(props) {
               <Box className="menu">
                 <TitleBox className="menu">
                   <Title>메뉴</Title>
-                  <TitleDetail>기재된 가격은 매장과 상이할 수 있습니다.</TitleDetail>
                 </TitleBox>
                 {menus.map((menu) => {
                   return <Menu menu={menu} />;
@@ -321,7 +323,7 @@ function Detail(props) {
           </ReviewContainer>
           <Divider className="review" />
           <WriteContainer>
-            <Write placeholder="후기를 입력해주세요. 후기는 최대 170자까지 작성 가능합니다."></Write>
+            <Write placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."></Write>
             <Button>후기등록</Button>
           </WriteContainer>
         </ReviewBox>

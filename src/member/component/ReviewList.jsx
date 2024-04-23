@@ -20,7 +20,9 @@ const List = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 10rem;
+    width: 22.8rem;
+    height: 9rem;
+    padding: 1rem;
   }
 `;
 

@@ -31,38 +31,72 @@ const Wrapper = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     margin-left: 13rem;
+    padding: 4vh 1vw;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
+    padding: 3vh 1vw;
   }
 `;
 
 const Title = styled.h1`
   color: #000000;
-  font-size: 2.6rem;
+  font-size: 2.3rem;
   font-weight: 800;
   display: flex;
   align-items: center;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Filter = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding-left: 3rem;
+  padding: 0 3rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    padding: 0 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding: 0 1rem;
+  }
 `;
 
 const ListContainer = styled.div`
   height: 60vh;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem 1rem;
-  padding-left: 3rem;
+  gap: 1.5rem 1rem;
+  padding: 0 1rem;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    padding: 0 0.5rem;
+    gap: 1rem 0.5rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding: 0 0.8rem;
+    gap: 1rem 0.8rem;
   }
 `;
 

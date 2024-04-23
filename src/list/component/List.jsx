@@ -6,8 +6,8 @@ import styled from 'styled-components';
 
 const ListBox = styled.div`
   background-color: #fff;
-  width: 16rem;
-  height: 16rem;
+  width: 14.4rem;
+  height: 14rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   cursor: pointer;
@@ -15,20 +15,20 @@ const ListBox = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 12rem;
+    width: 10.6rem;
     height: 12rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 10rem;
+    width: 11.7rem;
     height: 10rem;
   }
 `;
 
 const Image = styled.div`
-  width: 16rem;
-  height: 11rem;
+  width: 100%;
+  height: 9rem;
   background-position: center;
   background-size: cover;
   background-image: url(${(props) => props.backgroundImg});
@@ -37,13 +37,11 @@ const Image = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 12rem;
     height: 8rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 10rem;
     height: 6.5rem;
   }
 `;
@@ -66,14 +64,14 @@ const Like = styled.div`
   @media all and (min-width: 768px) and (max-width: 1023px) {
     width: 2rem;
     height: 2rem;
-    padding: 0.3rem 0.25rem;
+    padding: 0.3rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     width: 1.5rem;
     height: 1.5rem;
-    padding: 0.1rem;
+    padding: 0.2rem 0.15rem;
   }
 `;
 
@@ -81,38 +79,38 @@ const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 15rem;
+  width: 14rem;
   height: 4rem;
   box-sizing: border-box;
   padding: 1rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 12rem;
+    width: 10.5rem;
     height: 3rem;
     padding: 0.7rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 9rem;
+    width: 11rem;
     height: 2rem;
-    padding: 0.5rem;
+    padding: 0.6rem;
   }
 `;
 
 const Name = styled.h1`
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   color: #000;
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `;
 
@@ -131,12 +129,26 @@ const Location = styled.h3`
   }
 `;
 
+const Heart = styled(IoHeart)`
+  font-size: 1.5rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 1.4rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.1rem;
+  }
+`;
+
 function List({ list }) {
   const navigate = useNavigate();
   return (
     <>
       <ListBox onClick={() => navigate(`/place/${list.placeId}`)}>
-        <Like>{list.liked ? <IoHeart size="24" color="d80032" /> : <IoHeart size="24" color="ccc" />}</Like>
+        <Like>{list.liked ? <Heart color="d80032" /> : <Heart color="ccc" />}</Like>
         <Image backgroundImg={list.img}></Image>
         <InfoBox>
           <Name>{list.place_name}</Name>

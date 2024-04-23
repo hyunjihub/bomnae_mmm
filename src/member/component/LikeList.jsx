@@ -18,13 +18,13 @@ const List = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 15rem;
-    height: 12rem;
+    width: 11rem;
+    height: 10rem;
   }
 `;
 
 const Image = styled.div`
-  width: 11rem;
+  width: 100%;
   height: 8rem;
   background-position: center;
   background-size: cover;
@@ -34,14 +34,12 @@ const Image = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 8rem;
     height: 7rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 15rem;
-    height: 8rem;
+    height: 6.5rem;
   }
 `;
 
@@ -62,7 +60,8 @@ const InfoBox = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    padding: 0.8rem;
+    width: 11rem;
+    padding: 0.5rem 0.7rem;
   }
 `;
 

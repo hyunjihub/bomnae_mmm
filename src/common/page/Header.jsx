@@ -17,6 +17,10 @@ const Wrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 999;
+  padding: 0 4vw;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -40,13 +44,14 @@ const LogoBox = styled.div`
   justify-content: center;
   align-items: center;
   padding-right: 8vw;
-  padding-left: 1rem;
   margin-right: 1vw;
+  box-sizing: border-box;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     padding-right: 6vw;
     min-width: calc(4rem + 65px);
+    width: 4rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -84,7 +89,7 @@ const SearchBox = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-right: 7rem;
+    margin-right: 0;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -99,6 +104,7 @@ const Search = styled.input`
   outline: none;
   border: none;
   background-color: transparent;
+  width: 80%;
 
   &::placeholder {
     color: #a49f9f;
@@ -121,9 +127,13 @@ const LoginBox = styled(Link)`
   text-decoration: none;
   box-sizing: border-box;
 
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 5rem;
+  }
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    margin-left: 16vw;
+    width: 5rem;
     font-size: 0.9rem;
   }
 `;
@@ -150,7 +160,6 @@ const Profile = styled(Link)`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  margin-right: 4vw;
   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
   cursor: pointer;
 

@@ -20,9 +20,9 @@ import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 600px;
+  height: 100vh;
   background-color: #f7f6f9;
-  padding: 5vh 5vw;
+  padding: 3vh 1vw;
   box-sizing: border-box;
   margin-left: 230px;
   display: flex;
@@ -33,11 +33,11 @@ const Wrapper = styled.div`
   @media all and (min-width: 768px) and (max-width: 1023px) {
     padding: 3vh 2vw;
     margin-left: 170px;
-    height: 650px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
+    width: 100vw;
     margin-left: 0;
     padding: 2vh 0;
   }
@@ -76,6 +76,7 @@ const LocationBox = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 30rem;
     gap: 0.1rem;
     margin-left: 1rem;
   }
@@ -102,29 +103,31 @@ const Icon = styled(MdLocationOn)`
 `;
 
 const ListContainer = styled.div`
-  height: 70vh;
+  max-height: 70vh;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem 1rem;
-  padding-left: 3rem;
+  gap: 1rem 1rem;
+  padding: 0 3rem;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
 
   &.cafe {
-    height: 80vh;
+    max-height: 80vh;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    padding-left: 1rem;
+    padding: 0 1rem;
     gap: 0.8rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    padding-left: 1rem;
+    width: 24.5rem;
+    gap: 1rem;
+    padding: 0 1rem;
   }
 `;
 

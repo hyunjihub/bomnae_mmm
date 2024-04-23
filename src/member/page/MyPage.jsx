@@ -32,7 +32,8 @@ const Wrapper = styled.div`
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
-    height: 1200px;
+    height: 1250px;
+    padding: 3vh 2vw;
   }
 `;
 
@@ -50,7 +51,7 @@ const PageContainer = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 28rem;
+    width: 23rem;
   }
 `;
 
@@ -58,7 +59,7 @@ const PorfileBox = styled.div`
   box-sizing: border-box;
   width: 45rem;
   border-radius: 16px;
-  padding: 5vh 7vw;
+  padding: 4vh 4vw;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 
@@ -69,7 +70,8 @@ const PorfileBox = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 25rem;
+    width: 23rem;
+    padding: 3vh 3vw;
   }
 `;
 
@@ -90,6 +92,7 @@ const ProfileContainer = styled.div`
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
+    gap: 1rem;
   }
 `;
 
@@ -110,8 +113,8 @@ const ProfileImg = styled.img`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 11rem;
-    height: 11rem;
+    width: 9rem;
+    height: 9rem;
   }
 `;
 
@@ -133,8 +136,8 @@ const Upload = styled.button`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     bottom: 1.2rem;
   }
 `;
@@ -157,7 +160,8 @@ const InfoBox = styled.div`
   }
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 13rem;
+    width: 9rem;
+    gap: 0.3rem;
   }
 `;
 
@@ -175,7 +179,7 @@ const Nickname = styled.h1`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 2rem;
+    font-size: 1.8rem;
     height: 2rem;
   }
 `;
@@ -191,12 +195,16 @@ const Text = styled.p`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+
+    &.intro {
+      margin-bottom: 0.5rem;
+    }
   }
 `;
 
 const Button = styled.button`
-  width: 18rem;
+  width: 15rem;
   background-color: #00a3e0;
   border-radius: 16px;
   padding: 0.9rem;
@@ -229,9 +237,9 @@ const Button = styled.button`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 13rem;
-    font-size: 1rem;
-    padding: 0.7rem;
+    width: 9rem;
+    font-size: 0.9rem;
+    padding: 0.6rem;
   }
 `;
 
@@ -242,6 +250,11 @@ const Withdraw = styled.button`
   font-size: 0.85rem;
   font-family: pretendard;
   cursor: pointer;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const EditInput = styled.input`
@@ -257,9 +270,9 @@ const EditInput = styled.input`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 2rem;
+    font-size: 1.8rem;
     height: 2rem;
-    width: 9rem;
+    width: 8rem;
   }
 `;
 
@@ -274,7 +287,7 @@ const Title = styled.h1`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 `;
 
@@ -288,7 +301,7 @@ const Detail = styled.h3`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -297,6 +310,11 @@ const TitleBox = styled.div`
   align-items: baseline;
   gap: 1rem;
   margin-bottom: 1rem;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    gap: 0.5rem;
+  }
 `;
 
 const Box = styled.div`
@@ -310,6 +328,7 @@ const Box = styled.div`
 
     &.review {
       gap: 0.5rem;
+      flex-direction: column;
     }
   }
 `;
@@ -326,7 +345,7 @@ const Container = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 33rem;
+    width: 23rem;
   }
 `;
 

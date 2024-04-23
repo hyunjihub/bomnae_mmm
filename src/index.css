@@ -89,4 +89,5 @@ http://scripts.sil.org/OFL
 
 body {
   overflow-x: hidden;
+  min-height: 100vh;
 }

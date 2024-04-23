@@ -8,7 +8,12 @@
 
 .embla__viewport {
   overflow: hidden;
-  width: 70vw;
+  width: 68vw;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 80vw;
+  }
 }
 
 .embla__viewport.is-draggable {
@@ -38,7 +43,17 @@
 .embla__slide__inner {
   position: relative;
   overflow: hidden;
-  height: 20rem;
+  height: 15rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    height: 13rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    height: 10rem;
+  }
 }
 
 .embla__slide__img {

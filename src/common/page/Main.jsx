@@ -13,55 +13,69 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   background-color: #f7f6f9;
   width: 100vw;
-  height: 120vh;
-  padding: 5vh 5vw;
+  height: 100vh;
+  padding: 4vh 3vw;
   box-sizing: border-box;
-  margin-left: 18rem;
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-left: 13rem;
+    padding: 2vh 1vw;
+    margin-left: 170px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
+    padding: 2vh 2vw;
   }
 `;
 
 const Container = styled.div`
-  width: 75rem;
+  width: 65vw;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 3rem 2rem;
   box-sizing: border-box;
+  gap: 2rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 50rem;
-    padding: 2rem 4rem;
+    width: 65vw;
+    flex-wrap: nowrap;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    padding: 2rem 4rem;
+    width: 80vw;
+    flex-wrap: nowrap;
   }
 `;
 
 const MenuBox = styled.div`
-  width: 34rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const Title = styled.h1`
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 1.8rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const More = styled(Link)`
@@ -79,9 +93,30 @@ const TitleBox = styled.div`
 
 const Box = styled.div`
   display: flex;
+  height: 12rem;
   gap: 1rem;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  margin-bottom: 1rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    height: 9rem;
+    gap: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    gap: 1rem;
+    margin-bottom: 0;
+    height: 9rem;
+  }
 `;
 
 function Main(props) {
