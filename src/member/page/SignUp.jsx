@@ -1,5 +1,9 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+
+import { appFireStore } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
 
@@ -111,7 +115,7 @@ const SButton = styled(Link)`
   font-family: pretendard;
   cursor: pointer;
   font-weight: 500;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
@@ -120,17 +124,65 @@ const SButton = styled(Link)`
 `;
 
 function SignUp(props) {
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [checkPW, setcheckPW] = useState('');
+
+  const register = async () => {
+    try {
+      const auth = getAuth();
+      const credential = await createUserWithEmailAndPassword(auth, userEmail, password);
+      const user = credential.user;
+      const userDoc = doc(collection(appFireStore, 'users'));
+      await setDoc(userDoc, {
+        uid: user.uid,
+        email: userEmail,
+        nickname: nickname,
+        profile_image: '',
+        is_admin: false,
+        created_at: new Date().toISOString(),
+      });
+      navigate('/');
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const validation = () => {
+    if (userEmail.trim() !== '' && password.trim() !== '' && checkPW.trim() !== '' && nickname.trim() !== '') {
+      if (password === checkPW) {
+        let idCheck = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i; //이메일 형식 테스트
+        if (idCheck.test(userEmail)) {
+          let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
+          if (pwCheck.test(password)) {
+            register();
+          } else {
+            alert(`영문, 숫자, 특수기호 조합으로 8-20자리 이상 입력해주세요. ${password}`);
+          }
+        } else {
+          alert('이메일 형식이 아닙니다.');
+        }
+      } else {
+        alert('비밀번호와 비밀번호 확인 불일치');
+      }
+    } else {
+      alert('모든 항목이 입력되지 않음');
+    }
+  };
+
   return (
     <Wrapper>
       <LogoBox to="/">
         <Logo src={logo} alt="logo" />
       </LogoBox>
       <Title>회원 가입</Title>
-      <Input type="text" placeholder="아이디" />
-      <Input type="password" placeholder="비밀번호" />
-      <Input type="password" placeholder="비밀번호 확인" />
-      <Input type="text" placeholder="이메일 주소 (bomnae@naver.com)" />
-      <Button>회원 가입</Button>
+      <Input type="text" placeholder="아이디(이메일)" onChange={(e) => setUserEmail(e.target.value)} />
+      <Input type="password" placeholder="비밀번호" onChange={(e) => setPassword(e.target.value)} />
+      <Input type="password" placeholder="비밀번호 확인" onChange={(e) => setcheckPW(e.target.value)} />
+      <Input type="text" placeholder="닉네임" onChange={(e) => setNickname(e.target.value)} />
+      <Button onClick={validation}>회원 가입</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
     </Wrapper>
   );

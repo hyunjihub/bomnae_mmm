@@ -3,6 +3,16 @@ import styled from 'styled-components';
 
 const Content = styled.h3`
   font-size: 1rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 0.9rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Bold = styled.strong`

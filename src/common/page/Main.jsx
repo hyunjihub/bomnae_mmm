@@ -13,7 +13,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   background-color: #f7f6f9;
   width: 100vw;
-  height: 100vh;
+  height: 1000px;
   padding: 4vh 3vw;
   box-sizing: border-box;
   margin-left: 230px;

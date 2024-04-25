@@ -10,41 +10,70 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 110vh;
+  height: 1000px;
   background-color: #f7f6f9;
-  padding: 5vh 1vw;
   box-sizing: border-box;
   margin-left: 230px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 5vh 3vw;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 1024px) and (max-width: 1380px) {
+    margin-left: 230px;
+    height: 1400px;
+  }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     margin-left: 170px;
+    height: 1400px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
     margin-left: 0;
+    padding: 3vh 1vw;
+    height: 1900px;
   }
 `;
 
 const Container = styled.div`
-  height: 100vh;
   display: grid;
-  padding: 1vh 10vw;
+  padding: 0.5vh 8vw;
   gap: 2rem;
   grid-template-columns: 1.8fr 1fr;
-  grid-template-rows: 2fr 2fr 0.5fr;
+  grid-template-rows: 0.8fr 1.5fr;
   grid-template-areas:
     'd l'
-    'd r'
     'd r';
   box-sizing: border-box;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-template-areas:
+      'd d'
+      'l r';
+    padding: 0 6vw;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.5fr 0.8fr;
+    grid-template-areas:
+      'd'
+      'l'
+      'r';
+    padding: 0 6vw;
+  }
 `;
 
 const DetailBox = styled.div`
+  overflow-x: auto;
   box-sizing: border-box;
   background-color: #fff;
   border-radius: 16px;
@@ -55,6 +84,16 @@ const DetailBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    padding: 2rem 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const LocationBox = styled.div`
@@ -77,34 +116,43 @@ const ReviewBox = styled.div`
 
 const Box = styled.div`
   width: 90%;
-  height: 12rem;
   display: flex;
   justify-content: space-between;
-  padding: 0 0.5rem;
+
+  &.detail {
+    width: 100%;
+  }
 
   &.info {
-    width: 80%;
-    height: 13rem;
+    width: 49%;
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   &.menu {
-    width: 80%;
-    height: 13rem;
+    width: 48%;
     flex-direction: column;
   }
 `;
 
 const Image = styled.div`
-  width: 65%;
-  height: 12rem;
+  width: 60%;
+  height: 10rem;
   border-radius: 16px;
   background-position: center;
   background-size: cover;
   background-image: url(${(props) => props.backgroundImg});
 
   &.second {
-    width: 30%;
+    width: 39%;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    width: 100%;
+    &.second {
+      display: none;
+    }
   }
 `;
 
@@ -114,12 +162,9 @@ const TitleBox = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 0rem 1rem;
-  margin-top: 0.5rem;
 
   &.menu {
     width: 90%;
-    padding: 0rem;
   }
 `;
 
@@ -129,8 +174,18 @@ const TitleDetail = styled.h3`
 `;
 
 const Name = styled.div`
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 800;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    font-size: 2.2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 2rem;
+  }
 `;
 
 const Like = styled.div`
@@ -146,14 +201,27 @@ const Like = styled.div`
 `;
 
 const Intro = styled.h2`
-  width: 86%;
+  width: 90%;
   color: #9a95a3;
   font-size: 1rem;
   line-height: 1.3;
 
   &.location {
-    width: 15rem;
     color: #222831;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    font-size: 0.9rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 0.85rem;
+
+    &.location {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -164,8 +232,8 @@ const Divider = styled.hr`
   background-color: #ccc;
 
   &.review {
-    width: 10rem;
-    margin-bottom: 0.8rem;
+    width: 95%;
+    margin: 1rem 0;
   }
 `;
 
@@ -173,23 +241,41 @@ const Title = styled.h1`
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 1rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    font-size: 1.5rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const InfoBox = styled.div`
-  width: 86%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  width: 90%;
   gap: 0.6rem;
 `;
 
 const ReviewContainer = styled.div`
   display: flex;
+  height: 35vh;
   flex-direction: column;
-  height: 19rem;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+  gap: 1rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    height: 12rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    height: 20rem;
   }
 `;
 
@@ -199,8 +285,8 @@ const WriteContainer = styled.div`
 `;
 
 const Write = styled.textarea`
-  width: 10rem;
-  height: 6.5rem;
+  width: 80%;
+  height: 6rem;
   border: none;
   resize: none;
   outline: none;
@@ -208,7 +294,7 @@ const Write = styled.textarea`
   border-radius: 8px;
   padding: 0.6rem;
   box-sizing: border-box;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-family: pretendard;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -217,13 +303,23 @@ const Write = styled.textarea`
 
   &::placeholder {
     font-size: 0.9rem;
-    color: #9a95a3;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    &::placeholder {
+      font-size: 0.8rem;
+      color: #9a95a3;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
   }
 `;
 
 const Button = styled.button`
-  width: 3rem;
-  height: 6.5rem;
+  width: 15%;
   background-color: #00a8dd;
   font-family: pretendard;
   border: none;
@@ -231,6 +327,21 @@ const Button = styled.button`
   color: #fff;
   border-radius: 8px;
   cursor: pointer;
+`;
+
+const BlogBox = styled.div`
+  width: 100%;
+  height: 12rem;
+  background-color: #000;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    height: 10rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+  }
 `;
 
 function Detail(props) {
@@ -289,7 +400,7 @@ function Detail(props) {
           <Intro>특색 있는 공간 그리고 음악과 함께 따뜻한 식전 계란찜과 맛있는 초밥과 사시미를 제공합니다.</Intro>
           <Divider />
           <InfoBox>
-            <Box>
+            <Box className="detail">
               <Box className="info">
                 <Title>정보</Title>
                 <Info info={information} />
@@ -307,6 +418,7 @@ function Detail(props) {
           <Divider />
           <InfoBox>
             <Title>블로그 리뷰</Title>
+            <BlogBox></BlogBox>
           </InfoBox>
         </DetailBox>
         <LocationBox>
@@ -324,7 +436,11 @@ function Detail(props) {
           <Divider className="review" />
           <WriteContainer>
             <Write placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."></Write>
-            <Button>후기등록</Button>
+            <Button>
+              후기
+              <br />
+              등록
+            </Button>
           </WriteContainer>
         </ReviewBox>
       </Container>

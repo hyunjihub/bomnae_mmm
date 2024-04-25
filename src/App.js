@@ -18,10 +18,10 @@ import Request from './list/page/Request';
 import Reset from './member/page/Reset';
 import Sidebar from './common/page/Sidebar';
 import SignUp from './member/page/SignUp';
+import app from './firebase/config';
 import styled from 'styled-components';
 
 const Center = styled.div`
-  height: 90vh;
   display: flex;
   flex-direction: row;
 `;

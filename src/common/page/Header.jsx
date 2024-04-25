@@ -2,7 +2,9 @@ import { CiLogin, CiLogout, CiSearch } from 'react-icons/ci';
 import { Link, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 
+import SidebarItem from '../component/SideItem';
 import logo from '../resource/img/logo.png';
+import menu from '../resource/img/menu.png';
 import profile from '../resource/img/profile.png';
 import styled from 'styled-components';
 
@@ -19,7 +21,6 @@ const Wrapper = styled.div`
   z-index: 999;
   padding: 0 4vw;
   box-sizing: border-box;
-  display: flex;
   justify-content: space-between;
 
   /* 테블릿 가로, 테블릿 세로*/
@@ -176,12 +177,69 @@ const Profile = styled(Link)`
   }
 `;
 
+const Menu = styled.div`
+  width: 3rem;
+  height: 3rem;
+  background-image: url(${menu});
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  display: none;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    display: inline;
+  }
+`;
+
+const Box = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+`;
+
+const SideMenu = styled.div`
+  position: absolute;
+  width: 10rem;
+  height: 15rem;
+  background-color: #fff;
+  top: 3.5rem;
+  right: 0rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  padding: 1.5vh 2vw;
+  box-sizing: border-box;
+`;
+
+const SMenu = styled(Link)`
+  color: #84828a;
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+  margin-left: 4vh;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
 function Header(props) {
+  const menus = [
+    { name: '음식점', path: '/list/restaurant' },
+    { name: '카페', path: '/list/cafe' },
+    { name: '놀거리', path: '/list/entertainment' },
+  ];
+
   const [isLogin, setIsLogin] = useState(false);
   const hanldeLogin = () => {
     if (isLogin) setIsLogin(false);
     else setIsLogin(true);
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    if (isOpen) setIsOpen(false);
+    else setIsOpen(true);
+  };
+  const [isAdmin, setIsAdmin] = useState(false);
   const locationNow = useLocation();
 
   if (locationNow.pathname.match(/\/(login|reset|find|auth|signup)/)) {
@@ -197,11 +255,29 @@ function Header(props) {
           <CiSearch size="20" color="#a49f9f" />
           <Search type="text" placeholder="검색"></Search>
         </SearchBox>
-        <LoginBox to="/login">
-          {isLogin ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
-          {isLogin ? '로그아웃' : '로그인'}
-        </LoginBox>
-        <Profile to="/mypage/1"></Profile>
+        <Box>
+          <LoginBox to="/login">
+            {isLogin ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
+            {isLogin ? '로그아웃' : '로그인'}
+          </LoginBox>
+          <Profile to="/mypage/1"></Profile>
+          <Menu onClick={handleOpen}>
+            {isOpen ? (
+              <SideMenu>
+                {menus.map((menu) => {
+                  return <SidebarItem menu={menu} />;
+                })}
+                {isAdmin ? (
+                  <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
+                ) : (
+                  <SMenu to="/request/common">정보 추가 요청</SMenu>
+                )}
+              </SideMenu>
+            ) : (
+              <></>
+            )}
+          </Menu>
+        </Box>
       </Wrapper>
     </>
   );

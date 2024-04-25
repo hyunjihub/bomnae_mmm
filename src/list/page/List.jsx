@@ -139,6 +139,26 @@ const NotAvailable = styled.h1`
     font-weight: 500;
     font-size: 1.2rem;
   }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 2rem;
+
+    &.detail {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.5rem;
+
+    &.detail {
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+  }
 `;
 
 const Container = styled.div`

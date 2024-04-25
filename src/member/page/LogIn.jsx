@@ -119,7 +119,7 @@ function LogIn(props) {
       <LogoBox to="/">
         <Logo src={logo} alt="logo" />
       </LogoBox>
-      <Input type="text" placeholder="아이디" />
+      <Input type="text" placeholder="아이디(이메일)" />
       <Input type="password" placeholder="비밀번호" />
       <Button>로그인</Button>
       <ButtonBox>
