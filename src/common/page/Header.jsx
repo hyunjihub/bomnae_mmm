@@ -1,11 +1,15 @@
 import { CiLogin, CiLogout, CiSearch } from 'react-icons/ci';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import SidebarItem from '../component/SideItem';
+import { appAuth } from '../../firebase/config';
 import logo from '../resource/img/logo.png';
 import menu from '../resource/img/menu.png';
 import profile from '../resource/img/profile.png';
+import { signOut } from 'firebase/auth';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -118,9 +122,7 @@ const Search = styled.input`
 `;
 
 const LoginBox = styled(Link)`
-  width: 6rem;
-  color: #84828a;
-  font-size: 1rem;
+  width: 7rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -221,18 +223,43 @@ const SMenu = styled(Link)`
   text-decoration: none;
 `;
 
+const LogInButton = styled(Link)`
+  font-family: pretendard;
+  border: none;
+  background-color: transparent;
+  color: #84828a;
+  font-size: 1rem;
+  text-decoration: none;
+`;
+
+const LogOutButton = styled.button`
+  font-family: pretendard;
+  border: none;
+  background-color: transparent;
+  color: #84828a;
+  font-size: 1rem;
+`;
+
 function Header(props) {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
+  const setMemberId = (id) => dispatch(setMemberid(id));
+  const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+
+  const { isLog, id } = useSelector(
+    (state) => ({
+      isLog: state.login.isLogIn,
+      id: state.login.memberId,
+    }),
+    shallowEqual
+  );
   const menus = [
     { name: '음식점', path: '/list/restaurant' },
     { name: '카페', path: '/list/cafe' },
     { name: '놀거리', path: '/list/entertainment' },
   ];
-
-  const [isLogin, setIsLogin] = useState(false);
-  const hanldeLogin = () => {
-    if (isLogin) setIsLogin(false);
-    else setIsLogin(true);
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -245,6 +272,17 @@ function Header(props) {
   if (locationNow.pathname.match(/\/(login|reset|find|auth|signup)/)) {
     return null;
   }
+
+  const handleLogOut = async () => {
+    try {
+      await signOut(appAuth);
+      alert('로그아웃됨');
+      setLogIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -256,9 +294,13 @@ function Header(props) {
           <Search type="text" placeholder="검색"></Search>
         </SearchBox>
         <Box>
-          <LoginBox to="/login">
-            {isLogin ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
-            {isLogin ? '로그아웃' : '로그인'}
+          <LoginBox>
+            {isLog ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
+            {isLog ? (
+              <LogOutButton onClick={handleLogOut}>로그아웃</LogOutButton>
+            ) : (
+              <LogInButton to="/login">로그인</LogInButton>
+            )}
           </LoginBox>
           <Profile to="/mypage/1"></Profile>
           <Menu onClick={handleOpen}>

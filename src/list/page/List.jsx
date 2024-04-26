@@ -238,7 +238,7 @@ function List(props) {
       ) : (
         <Wrapper>
           <Container>
-            <NotAvailable>놀거리는 현재 데이터 수집 중입니다!</NotAvailable>
+            <NotAvailable>현재 데이터 수집 중입니다!</NotAvailable>
             <NotAvailable className="detail">다양한 정보를 수집할 때까지 조금만 기다려주세요 ㅠㅠ</NotAvailable>
           </Container>
         </Wrapper>

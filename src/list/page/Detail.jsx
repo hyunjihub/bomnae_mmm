@@ -132,6 +132,7 @@ const Box = styled.div`
   &.menu {
     width: 48%;
     flex-direction: column;
+    gap: 0.5rem;
   }
 `;
 
