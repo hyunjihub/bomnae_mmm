@@ -5,6 +5,8 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
+import Loading from '../../common/component/Loading';
+import Swal from 'sweetalert2';
 import logo from '../../common/resource/img/logo.png';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styled from 'styled-components';
@@ -136,6 +138,8 @@ function LogIn(props) {
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
 
+  const [loading, setLoading] = useState(false);
+
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(appAuth, userEmail, password);
@@ -147,19 +151,38 @@ function LogIn(props) {
       navigate('/');
     } catch (error) {
       setLogInFail(true);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const validation = () => {
+    setLoading(true);
     if (userEmail.trim() !== '' && password.trim() != '') {
       let idCheck = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i; //이메일 형식 테스트
       if (idCheck.test(userEmail)) {
         login();
       } else {
-        alert('아이디는 이메일 형식으로 작성해주세요.');
+        setLoading(false);
+        Toast.fire({
+          icon: 'error',
+          html: '이메일 주소로 입력해주세요.',
+        });
       }
     } else {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      setLoading(false);
+      Toast.fire({
+        icon: 'error',
+        html: '아이디와 비밀번호를 모두<br> 입력해주세요.',
+      });
     }
   };
 
@@ -188,6 +211,7 @@ function LogIn(props) {
         <SButton to="/signup">회원가입</SButton>
         <SButton to="/find">아이디/비밀번호 찾기</SButton>
       </ButtonBox>
+      {loading ? <Loading /> : <></>}
     </Wrapper>
   );
 }

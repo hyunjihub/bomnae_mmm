@@ -276,7 +276,6 @@ function Header(props) {
   const handleLogOut = async () => {
     try {
       await signOut(appAuth);
-      alert('로그아웃됨');
       setLogIn(false);
     } catch (error) {
       console.log(error);

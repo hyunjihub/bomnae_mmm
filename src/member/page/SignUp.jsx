@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
+import Loading from '../../common/component/Loading';
+import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
@@ -130,8 +132,19 @@ function SignUp(props) {
   const [nickname, setNickname] = useState('');
   const [checkPW, setcheckPW] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const register = async () => {
     try {
+      setLoading(true);
       const auth = getAuth();
       const credential = await createUserWithEmailAndPassword(auth, userEmail, password);
       const user = credential.user;
@@ -147,6 +160,8 @@ function SignUp(props) {
       navigate('/');
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -159,16 +174,28 @@ function SignUp(props) {
           if (pwCheck.test(password)) {
             register();
           } else {
-            alert(`영문, 숫자, 특수기호 조합으로 8-20자리 이상 입력해주세요. ${password}`);
+            Toast.fire({
+              icon: 'error',
+              html: '영문, 숫자, 특수기호 조합으로 <br>8-20자리 이상 입력해주세요.',
+            });
           }
         } else {
-          alert('이메일 형식이 아닙니다.');
+          Toast.fire({
+            icon: 'error',
+            html: '아이디는 이메일 형식으로<br> 작성해주세요.',
+          });
         }
       } else {
-        alert('비밀번호와 비밀번호 확인 불일치');
+        Toast.fire({
+          icon: 'error',
+          html: '입력하신 두 비밀번호가<br> 일치하지 않습니다.',
+        });
       }
     } else {
-      alert('모든 항목이 입력되지 않음');
+      Toast.fire({
+        icon: 'error',
+        html: '모든 항목이 입력되어야 합니다.',
+      });
     }
   };
 
@@ -184,6 +211,7 @@ function SignUp(props) {
       <Input type="text" placeholder="닉네임" onChange={(e) => setNickname(e.target.value)} />
       <Button onClick={validation}>회원 가입</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
+      {loading ? <Loading /> : <></>}
     </Wrapper>
   );
 }
