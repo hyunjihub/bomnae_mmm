@@ -40,7 +40,6 @@ const Title = styled.h1`
   color: #000000;
   font-size: 2.2rem;
   font-weight: 800;
-  margin-bottom: 1.5rem;
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
@@ -118,64 +117,28 @@ const SButton = styled(Link)`
   }
 `;
 
-const Radio = styled.input`
-  margin-right: 0.5rem;
-`;
-
-const Label = styled.label`
+const Detail = styled.h3`
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
   color: #607274;
-  font-size: 1rem;
-  margin: 0 0.5rem;
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const RadioBox = styled.div`
-  width: 24rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
-    width: 21rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
 `;
 
 function Find(props) {
-  const [type, setType] = useState('id');
-  const handleRadio = (e) => {
-    setType(e.target.value);
-  };
   return (
     <Wrapper>
       <LogoBox to="/">
         <Logo src={logo} alt="logo" />
       </LogoBox>
-      <Title>계정 찾기</Title>
-      <RadioBox>
-        <Label>
-          <Radio type="radio" value="id" name="id" checked={type === 'id'} onChange={handleRadio} />
-          아이디 찾기
-        </Label>
-        <Label>
-          <Radio type="radio" value="pw" name="pw" checked={type === 'pw'} onChange={handleRadio} />
-          비밀번호 찾기
-        </Label>
-      </RadioBox>
-      {type === 'id' ? (
-        <Input type="text" placeholder="이메일 주소 (bomnae@naver.com)" />
-      ) : (
-        <>
-          <Input type="text" placeholder="아이디" />
-          <Input type="text" placeholder="이메일 주소 (bomnae@naver.com)" />
-        </>
-      )}
-      <Button>{type === 'id' ? '아이디 찾기' : '비밀번호 찾기'}</Button>
+      <Title>비밀번호 찾기</Title>
+      <Detail>비밀번호 찾기는 비밀번호를 재설정하는 방식으로 진행되며, 이메일로 재설정 링크가 전송됩니다.</Detail>
+      <Input type="text" placeholder="아이디(이메일) (bomnae@naver.com)" />
+      <Button>비밀번호 재설정</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
     </Wrapper>
   );

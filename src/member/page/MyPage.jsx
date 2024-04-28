@@ -1,8 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { appAuth, appFireStore } from '../../firebase/config';
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { deleteUser, signOut } from 'firebase/auth';
+import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { FaCamera } from 'react-icons/fa';
 import LikeList from '../component/LikeList';
 import ReviewList from '../component/ReviewList';
+import Swal from 'sweetalert2';
 import profile from '../../common/resource/img/profile.png';
 import sample from '../../common/resource/img/sample.jpg';
 import sample2 from '../../common/resource/img/sample2.jpg';
@@ -356,6 +362,27 @@ function MyPage(props) {
     setIsEdited(!isEdited);
   };
 
+  const dispatch = useDispatch();
+  const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
+  const setMemberId = (id) => dispatch(setMemberid(id));
+  const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+
+  const { isAdmin, id } = useSelector(
+    (state) => ({
+      isAdmin: state.login.isAdmin,
+      id: state.login.memberId,
+    }),
+    shallowEqual
+  );
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const likeLists = [
     { placeId: 1, img: sample, place_name: '오야', location: '교동 149-12' },
     { placeId: 1, img: sample2, place_name: '교동부대찌개', location: '교동 156-27' },
@@ -381,6 +408,38 @@ function MyPage(props) {
     },
   ];
 
+  const handleDelete = async () => {
+    try {
+      const user = appAuth.currentUser;
+      await deleteUser(user);
+      const usersCollection = collection(appFireStore, 'users');
+      const q = query(usersCollection, where('uid', '==', id));
+      const querySnapshot = await getDocs(q);
+      const userDocRef = querySnapshot.docs[0].ref;
+      await deleteDoc(userDocRef);
+      handleLogOut();
+      Toast.fire({
+        icon: 'success',
+        html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
+    }
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await signOut(appAuth);
+      setLogIn(false);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Wrapper>
       <PageContainer>
@@ -405,7 +464,7 @@ function MyPage(props) {
               <Button className="reset" onClick={() => navigate('/auth')}>
                 비밀번호 재설정
               </Button>
-              <Withdraw>회원 탈퇴</Withdraw>
+              <Withdraw onClick={handleDelete}>회원 탈퇴</Withdraw>
             </InfoBox>
           </ProfileContainer>
         </PorfileBox>

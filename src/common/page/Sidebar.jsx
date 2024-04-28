@@ -1,5 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
+import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import SidebarItem from '../component/SideItem';
 import styled from 'styled-components';
@@ -45,8 +47,19 @@ const SMenu = styled(Link)`
 `;
 
 function Sidebar(props) {
+  const dispatch = useDispatch();
+  const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
+  const setMemberId = (id) => dispatch(setMemberid(id));
+  const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+
+  const { isAdmin } = useSelector(
+    (state) => ({
+      isAdmin: state.login.isAdmin,
+    }),
+    shallowEqual
+  );
+
   const locationNow = useLocation();
-  const [isAdmin, setIsAdmin] = useState(false);
   if (locationNow.pathname.match(/\/(login|reset|find|auth|signup)/)) {
     return null;
   }

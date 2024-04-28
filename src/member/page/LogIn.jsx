@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { setAdmin, setLogin, setMemberid, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Loading from '../../common/component/Loading';
@@ -137,19 +137,24 @@ function LogIn(props) {
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+  const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
 
   const [loading, setLoading] = useState(false);
 
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(appAuth, userEmail, password);
+      console.log(user);
       const user_docs = await getDocs(query(collection(appFireStore, 'users'), where('email', '==', user.user.email)));
       user_docs.forEach((u) => {
         setProfileImg(u.data().profile_image);
+        setIsAdmin(u.data().is_admin);
+        setMemberId(u.data().uid);
       });
       setLogIn(true);
       navigate('/');
     } catch (error) {
+      console.log(error);
       setLogInFail(true);
     } finally {
       setLoading(false);
