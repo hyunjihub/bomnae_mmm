@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { appAuth, appFireStore } from '../../firebase/config';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 import Loading from '../../common/component/Loading';
 import Swal from 'sweetalert2';
-import { appFireStore } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
 
@@ -145,8 +145,7 @@ function SignUp(props) {
   const register = async () => {
     try {
       setLoading(true);
-      const auth = getAuth();
-      const credential = await createUserWithEmailAndPassword(auth, userEmail, password);
+      const credential = await createUserWithEmailAndPassword(appAuth, userEmail, password);
       const user = credential.user;
       const userDoc = doc(collection(appFireStore, 'users'));
       await setDoc(userDoc, {

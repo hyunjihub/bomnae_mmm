@@ -1,7 +1,7 @@
+import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, signOut } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
 import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
-import { deleteUser, signOut } from 'firebase/auth';
 import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
@@ -410,18 +410,20 @@ function MyPage(props) {
 
   const handleDelete = async () => {
     try {
-      const user = appAuth.currentUser;
-      await deleteUser(user);
-      const usersCollection = collection(appFireStore, 'users');
-      const q = query(usersCollection, where('uid', '==', id));
-      const querySnapshot = await getDocs(q);
-      const userDocRef = querySnapshot.docs[0].ref;
-      await deleteDoc(userDocRef);
-      handleLogOut();
-      Toast.fire({
-        icon: 'success',
-        html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
-      });
+      if (await reAuthentication()) {
+        const user = appAuth.currentUser;
+        await deleteUser(user);
+        const usersCollection = collection(appFireStore, 'users');
+        const q = query(usersCollection, where('uid', '==', id));
+        const querySnapshot = await getDocs(q);
+        const userDocRef = querySnapshot.docs[0].ref;
+        await deleteDoc(userDocRef);
+        handleLogOut();
+        Toast.fire({
+          icon: 'success',
+          html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
+        });
+      }
     } catch (error) {
       Toast.fire({
         icon: 'error',
@@ -437,6 +439,66 @@ function MyPage(props) {
       navigate('/');
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const reAuthentication = async () => {
+    let password = '';
+    try {
+      const { dismiss } = await Swal.fire({
+        title: '본인 인증',
+        html: '비밀번호를 입력해주세요.',
+        input: 'password',
+        inputPlaceholder: '비밀번호',
+        showCancelButton: true,
+        focusConfirm: false,
+        preConfirm: () => {
+          password = Swal.getInput().value;
+          if (!password) {
+            Toast.fire({
+              icon: 'error',
+              html: '비밀번호를 입력해주세요.',
+            });
+            return false;
+          }
+        },
+      });
+
+      if (dismiss === Swal.DismissReason.cancel) {
+        return false;
+      }
+
+      if (password) {
+        const user = appAuth.currentUser;
+        const email = user.email;
+        const credential = EmailAuthProvider.credential(email, password);
+        await reauthenticateWithCredential(user, credential);
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '비밀번호가 일치하지 않습니다.',
+      });
+      return false;
+    }
+  };
+
+  const handleReset = async () => {
+    try {
+      const isAuthenticated = await reAuthentication();
+      if (isAuthenticated) {
+        await Toast.fire({
+          icon: 'success',
+          html: '본인인증이 성공했습니다.<br>재설정 페이지로 이동합니다.',
+        });
+        navigate('/reset');
+      }
+    } catch (error) {
+      console.error('Reset failed:', error);
+      // 오류 처리
     }
   };
 
@@ -461,7 +523,7 @@ function MyPage(props) {
               </InfoBox>
               <Text className="intro">현현(님)의 맛집 목록 계정 입니다.</Text>
               <Button onClick={handleIsEdited}>{isEdited ? '프로필 변경 적용' : '프로필 편집'}</Button>
-              <Button className="reset" onClick={() => navigate('/auth')}>
+              <Button className="reset" onClick={handleReset}>
                 비밀번호 재설정
               </Button>
               <Withdraw onClick={handleDelete}>회원 탈퇴</Withdraw>

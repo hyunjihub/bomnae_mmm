@@ -1,5 +1,11 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { appAuth, appFireStore } from '../../firebase/config';
+import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { signOut, updatePassword } from 'firebase/auth';
+
+import Swal from 'sweetalert2';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
 
@@ -119,15 +125,94 @@ const SButton = styled(Link)`
 `;
 
 function Reset(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
+  const setMemberId = (id) => dispatch(setMemberid(id));
+  const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+
+  const { isAdmin, id } = useSelector(
+    (state) => ({
+      isAdmin: state.login.isAdmin,
+      id: state.login.memberId,
+    }),
+    shallowEqual
+  );
+
+  const [password, setPassword] = useState('');
+  const [checkPW, setcheckPW] = useState('');
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
+  const handleReset = async () => {
+    try {
+      const user = appAuth.currentUser;
+      const res = await updatePassword(user, password);
+      await handleLogOut();
+      Toast.fire({
+        icon: 'success',
+        html: '비밀번호가 재설정됐습니다.<br>재로그인해주세요.',
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
+    } finally {
+    }
+  };
+
+  const validation = () => {
+    if (password.trim() !== '' && checkPW.trim() !== '') {
+      if (password !== checkPW) {
+        let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
+        if (pwCheck.test(password)) {
+          handleReset();
+        } else {
+          Toast.fire({
+            icon: 'error',
+            html: '영문, 숫자, 특수기호 조합으로 <br>8-20자리 이상 입력해주세요.',
+          });
+        }
+      } else {
+        Toast.fire({
+          icon: 'error',
+          html: '입력하신 두 비밀번호가<br> 일치하지 않습니다.',
+        });
+      }
+    } else {
+      Toast.fire({
+        icon: 'error',
+        html: '입력되지 않은 항목이 있습니다.',
+      });
+    }
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await signOut(appAuth);
+      setLogIn(false);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Wrapper>
       <LogoBox to="/">
         <Logo src={logo} alt="logo" />
       </LogoBox>
       <Title>비밀번호 재설정</Title>
-      <Input type="password" placeholder="새로운 비밀번호" />
-      <Input type="password" placeholder="비밀번호 확인" />
-      <Button>비밀번호 재설정</Button>
+      <Input type="password" placeholder="새로운 비밀번호" onChange={(e) => setPassword(e.target.value)} />
+      <Input type="password" placeholder="비밀번호 확인" onChange={(e) => setcheckPW(e.target.value)} />
+      <Button onClick={validation}>비밀번호 재설정</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
     </Wrapper>
   );
