@@ -375,6 +375,21 @@ function MyPage(props) {
     shallowEqual
   );
 
+  const [userInfo, setUserInfo] = useState({
+    nickname: '',
+    profile_img: '',
+  });
+
+  useEffect(() => {
+    const profileUpdate = async () => {
+      const user_docs = await getDocs(query(collection(appFireStore, 'users'), where('uid', '==', id)));
+      user_docs.forEach((u) => {
+        setUserInfo({ nickname: u.data().nickname, profile_img: u.data().profile_image });
+      });
+    };
+    profileUpdate();
+  }, []);
+
   const Toast = Swal.mixin({
     toast: true,
     position: 'center',
@@ -508,7 +523,7 @@ function MyPage(props) {
         <PorfileBox>
           <ProfileContainer>
             <ImgBox>
-              <ProfileImg src={profile} alt="profile" />
+              <ProfileImg src={userInfo.profile_img === '' ? profile : userInfo.profile_img} alt="profile" />
               {isEdited ? (
                 <Upload>
                   <FaCamera size="25" color="#000" />
@@ -519,9 +534,13 @@ function MyPage(props) {
             </ImgBox>
             <InfoBox>
               <InfoBox className="name">
-                {isEdited ? <EditInput type="text" value="현현" placeholder="닉네임" /> : <Nickname>현현</Nickname>}
+                {isEdited ? (
+                  <EditInput type="text" value={userInfo.nickname || ''} placeholder="닉네임" />
+                ) : (
+                  <Nickname>{userInfo.nickname}</Nickname>
+                )}
               </InfoBox>
-              <Text className="intro">현현(님)의 맛집 목록 계정 입니다.</Text>
+              <Text className="intro">{userInfo.nickname}(님)의 맛집 목록 계정 입니다.</Text>
               <Button onClick={handleIsEdited}>{isEdited ? '프로필 변경 적용' : '프로필 편집'}</Button>
               <Button className="reset" onClick={handleReset}>
                 비밀번호 재설정

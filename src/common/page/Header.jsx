@@ -199,6 +199,7 @@ const Box = styled.div`
   gap: 1rem;
   align-items: center;
   position: relative;
+  margin-left: 1rem;
 `;
 
 const SideMenu = styled.div`
@@ -301,7 +302,7 @@ function Header(props) {
               <LogInButton to="/login">로그인</LogInButton>
             )}
           </LoginBox>
-          <Profile to="/mypage/1"></Profile>
+          {isLog ? <Profile to="/mypage/1"></Profile> : <></>}
           <Menu onClick={handleOpen}>
             {isOpen ? (
               <SideMenu>

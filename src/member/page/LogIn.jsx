@@ -141,6 +141,14 @@ function LogIn(props) {
 
   const [loading, setLoading] = useState(false);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(appAuth, userEmail, password);
@@ -153,20 +161,35 @@ function LogIn(props) {
       setLogIn(true);
       navigate('/');
     } catch (error) {
-      console.log(error);
+      if (error.code === 'auth/user-not-found') {
+        Toast.fire({
+          icon: 'error',
+          html: '이메일과 비밀번호를<br>다시 확인해주세요.',
+        });
+      }
+      if (error.code == 'auth/too-many-requests') {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.<br>다시 시도해주세요.',
+        });
+      }
+      if (error.code === 'auth/internal-error') {
+        Toast.fire({
+          icon: 'error',
+          html: '잘못된 요청입니다.',
+        });
+      }
+      if (error.code === 'auth/network-request-failed') {
+        Toast.fire({
+          icon: 'error',
+          html: '인터넷 연결을 확인해주세요.',
+        });
+      }
       setLogInFail(true);
     } finally {
       setLoading(false);
     }
   };
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'center',
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true,
-  });
 
   const validation = () => {
     setLoading(true);
@@ -209,7 +232,6 @@ function LogIn(props) {
         onKeyUp={(e) => checkCapsLock(e)}
       />
       {capsLockFlag && <Caps>Caps Lock이 켜져 있습니다.</Caps>}
-      {logInFail && <Caps>로그인 실패 계정이 올바른지 확인해주세요.</Caps>}
       <Button onClick={validation}>로그인</Button>
       <ButtonBox>
         <SButton to="/signup">회원가입</SButton>

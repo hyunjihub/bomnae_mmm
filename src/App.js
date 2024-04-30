@@ -1,6 +1,7 @@
 import './index.css';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import Authentication from './member/page/Authentication';
 import Detail from './list/page/Detail';
@@ -12,6 +13,7 @@ import List from './list/page/List';
 import LogIn from './member/page/LogIn';
 import Main from './common/page/Main';
 import MyPage from './member/page/MyPage';
+import PrivateRoute from './member/component/PrivateRoute';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Request from './list/page/Request';
@@ -19,7 +21,14 @@ import Reset from './member/page/Reset';
 import Sidebar from './common/page/Sidebar';
 import SignUp from './member/page/SignUp';
 import app from './firebase/config';
-import styled from 'styled-components';
+import { reset } from 'styled-reset';
+
+const Global = createGlobalStyle`
+  ${reset}
+  body{
+    font-family: Pretendard;
+  }
+`;
 
 const Center = styled.div`
   display: flex;
@@ -29,6 +38,7 @@ const Center = styled.div`
 export default function App(props) {
   return (
     <BrowserRouter>
+      <Global />
       <Header />
       <Center>
         <Sidebar />
@@ -38,13 +48,16 @@ export default function App(props) {
           <Route path="/auth" element={<Authentication />} />
           <Route path="/find" element={<Find />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/reset" element={<Reset />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/mypage/:memberid" element={<MyPage />} />
-          <Route path="/mypage/:memberid/like" element={<Like />} />
           <Route path="/list/:type" element={<List />} />
-          <Route path="/request/:isadmin" element={<Request />} />
           <Route path="/place/:placeid" element={<Detail />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/reset" element={<Reset />} />
+            <Route path="/mypage/:memberid" element={<MyPage />} />
+            <Route path="/mypage/:memberid/like" element={<Like />} />
+            <Route path="/request/:isadmin" element={<Request />} />
+          </Route>
+          <Route path="*" element={<Error />} />
         </Routes>
       </Center>
     </BrowserRouter>

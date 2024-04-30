@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 import Loading from '../../common/component/Loading';
 import Swal from 'sweetalert2';
+import { Timestamp } from 'firebase/firestore';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
 
@@ -154,11 +155,29 @@ function SignUp(props) {
         nickname: nickname,
         profile_image: '',
         is_admin: false,
-        created_at: new Date().toISOString(),
+        created_at: Timestamp.fromDate(new Date()),
       });
       navigate('/');
     } catch (error) {
       console.log(error.message);
+      if (error.code === 'auth/email-already-in-use') {
+        Toast.fire({
+          icon: 'error',
+          html: '이미 가입된 이메일입니다.',
+        });
+      }
+      if (error.code === 'auth/internal-error') {
+        Toast.fire({
+          icon: 'error',
+          html: '잘못된 요청입니다.',
+        });
+      }
+      if (error.code === 'auth/network-request-failed') {
+        Toast.fire({
+          icon: 'error',
+          html: '인터넷 연결을 확인해주세요.',
+        });
+      }
     } finally {
       setLoading(false);
     }

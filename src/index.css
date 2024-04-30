@@ -90,8 +90,9 @@ http://scripts.sil.org/OFL
 body {
   overflow-x: hidden;
   min-height: 100vh;
+  font-family: Pretendard;
 }
 
 * {
-  font-family: pretendard;
+  font-family: Pretendard;
 }
