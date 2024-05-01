@@ -1,8 +1,9 @@
 import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, signOut } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
-import { appAuth, appFireStore } from '../../firebase/config';
-import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
-import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { appAuth, appFireStore, appStorage } from '../../firebase/config';
+import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { FaCamera } from 'react-icons/fa';
@@ -16,6 +17,7 @@ import sample3 from '../../common/resource/img/sample3.jpg';
 import sample4 from '../../common/resource/img/sample4.jpg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -131,7 +133,7 @@ const Upload = styled.button`
   border: none;
   border-radius: 50%;
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 1rem;
   right: 0.5rem;
   cursor: pointer;
 
@@ -358,37 +360,25 @@ const Container = styled.div`
 function MyPage(props) {
   const navigate = useNavigate();
   const [isEdited, setIsEdited] = useState(false);
-  const handleIsEdited = () => {
-    setIsEdited(!isEdited);
-  };
 
   const dispatch = useDispatch();
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
-  const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+  const setNickname = (name) => dispatch(setName(name));
 
-  const { isAdmin, id } = useSelector(
+  const { id, profileImg, name } = useSelector(
     (state) => ({
-      isAdmin: state.login.isAdmin,
       id: state.login.memberId,
+      profileImg: state.login.profileImg,
+      name: state.login.nickname,
     }),
     shallowEqual
   );
 
   const [userInfo, setUserInfo] = useState({
-    nickname: '',
-    profile_img: '',
+    nickname: name,
+    profile_img: profileImg,
   });
-
-  useEffect(() => {
-    const profileUpdate = async () => {
-      const user_docs = await getDocs(query(collection(appFireStore, 'users'), where('uid', '==', id)));
-      user_docs.forEach((u) => {
-        setUserInfo({ nickname: u.data().nickname, profile_img: u.data().profile_image });
-      });
-    };
-    profileUpdate();
-  }, []);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -512,9 +502,95 @@ function MyPage(props) {
         navigate('/reset');
       }
     } catch (error) {
-      console.error('Reset failed:', error);
-      // 오류 처리
+      await Toast.fire({
+        icon: 'error',
+        html: '본인인증에 실패했습니다.<br>',
+      });
     }
+  };
+
+  const fileInput = React.createRef();
+  const handleProfile = async (e) => {
+    fileInput.current.click();
+  };
+  const handleUpload = async (e) => {
+    try {
+      const files = e.target.files;
+      let extensionCheck = /(.*?)\.(jpg|jpeg|png)$/;
+      if (!files[0].name.match(extensionCheck)) {
+        Toast.fire({
+          icon: 'error',
+          html: '불가능한 파일 형식입니다.<br>jpg, jpeg, png만 가능합니다.',
+        });
+      } else if (files[0].size > 1024 ** 2 * 10) {
+        Toast.fire({
+          icon: 'error',
+          html: '10MB 이하의 이미지만 가능합니다.',
+        });
+      } else if (files && files.length === 1) {
+        const fileRef = ref(appStorage, `profile/${uuidv4()}`);
+        await uploadBytes(fileRef, files[0]);
+
+        const url = await getDownloadURL(ref(appStorage, fileRef));
+        setModifyImg(url);
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '파일 업로드에 실패했습니다.',
+      });
+    }
+  };
+
+  const [modifyImg, setModifyImg] = useState(userInfo.profile_img);
+  const [modifyName, setModifyName] = useState(userInfo.nickname);
+  const handleUpdate = async () => {
+    if (isEdited) {
+      try {
+        if (modifyImg === userInfo.profile_img && modifyName === userInfo.profile_img) {
+          //아무것도 바뀌지 않았으면, 변경하지 않는다.
+        } else {
+          if (modifyName.length > 1) {
+            const usersCollectionRef = collection(appFireStore, 'users');
+            const q = query(usersCollectionRef, where('uid', '==', id));
+            const querySnapshot = await getDocs(q);
+            setUserInfo({ ...userInfo, nickname: modifyName, profile_img: modifyImg });
+            setProfileImg(modifyImg);
+            setNickname(modifyName);
+            if (!querySnapshot.empty) {
+              const userDocRef = querySnapshot.docs[0].id;
+              await updateDoc(doc(appFireStore, 'users', userDocRef), {
+                nickname: modifyName,
+                profile_image: modifyImg,
+              });
+              Toast.fire({
+                icon: 'success',
+                html: '정상적으로 변경됐습니다.',
+              });
+            } else {
+              Toast.fire({
+                icon: 'error',
+                html: '회원 정보가 없습니다.',
+              });
+            }
+          } else {
+            Toast.fire({
+              icon: 'error',
+              html: '닉네임은 한 글자 이상이어야 합니다.',
+            });
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    handleIsEdited();
+  };
+
+  const handleIsEdited = () => {
+    setIsEdited(!isEdited);
+    setModifyImg(userInfo.profile_img);
+    setModifyName(userInfo.nickname);
   };
 
   return (
@@ -523,10 +599,15 @@ function MyPage(props) {
         <PorfileBox>
           <ProfileContainer>
             <ImgBox>
-              <ProfileImg src={userInfo.profile_img === '' ? profile : userInfo.profile_img} alt="profile" />
               {isEdited ? (
-                <Upload>
+                <ProfileImg src={modifyImg === '' ? profile : modifyImg} alt="profile" />
+              ) : (
+                <ProfileImg src={userInfo.profile_img === '' ? profile : userInfo.profile_img} alt="profile" />
+              )}
+              {isEdited ? (
+                <Upload onClick={handleProfile}>
                   <FaCamera size="25" color="#000" />
+                  <input type="file" ref={fileInput} onChange={handleUpload} style={{ display: 'none' }} />
                 </Upload>
               ) : (
                 <></>
@@ -535,13 +616,18 @@ function MyPage(props) {
             <InfoBox>
               <InfoBox className="name">
                 {isEdited ? (
-                  <EditInput type="text" value={userInfo.nickname || ''} placeholder="닉네임" />
+                  <EditInput
+                    type="text"
+                    value={modifyName || ''}
+                    placeholder="닉네임"
+                    onChange={(e) => setModifyName(e.target.value)}
+                  />
                 ) : (
                   <Nickname>{userInfo.nickname}</Nickname>
                 )}
               </InfoBox>
               <Text className="intro">{userInfo.nickname}(님)의 맛집 목록 계정 입니다.</Text>
-              <Button onClick={handleIsEdited}>{isEdited ? '프로필 변경 적용' : '프로필 편집'}</Button>
+              <Button onClick={handleUpdate}>{isEdited ? '프로필 변경 적용' : '프로필 편집'}</Button>
               <Button className="reset" onClick={handleReset}>
                 비밀번호 재설정
               </Button>

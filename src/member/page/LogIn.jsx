@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { setAdmin, setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Loading from '../../common/component/Loading';
@@ -131,13 +131,12 @@ function LogIn(props) {
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [logInFail, setLogInFail] = useState(false);
-
   const dispatch = useDispatch();
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
   const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
+  const setNickname = (name) => dispatch(setName(name));
 
   const [loading, setLoading] = useState(false);
 
@@ -157,10 +156,12 @@ function LogIn(props) {
         setProfileImg(u.data().profile_image);
         setIsAdmin(u.data().is_admin);
         setMemberId(u.data().uid);
+        setNickname(u.data().nickname);
       });
       setLogIn(true);
       navigate('/');
     } catch (error) {
+      console.log(error);
       if (error.code === 'auth/user-not-found') {
         Toast.fire({
           icon: 'error',
@@ -185,7 +186,6 @@ function LogIn(props) {
           html: '인터넷 연결을 확인해주세요.',
         });
       }
-      setLogInFail(true);
     } finally {
       setLoading(false);
     }

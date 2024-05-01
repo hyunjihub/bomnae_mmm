@@ -159,7 +159,7 @@ const Profile = styled(Link)`
   width: 4.3rem;
   height: 4.3rem;
   border-radius: 50%;
-  background-image: url(${profile});
+  background-image: url(${(props) => props.profile});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -249,10 +249,11 @@ function Header(props) {
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
 
-  const { isLog, id } = useSelector(
+  const { isLog, id, profileImg } = useSelector(
     (state) => ({
       isLog: state.login.isLogIn,
       id: state.login.memberId,
+      profileImg: state.login.profileImg,
     }),
     shallowEqual
   );
@@ -302,7 +303,7 @@ function Header(props) {
               <LogInButton to="/login">로그인</LogInButton>
             )}
           </LoginBox>
-          {isLog ? <Profile to="/mypage/1"></Profile> : <></>}
+          {isLog ? <Profile to="/mypage/1" profile={profileImg === '' ? profile : profileImg}></Profile> : <></>}
           <Menu onClick={handleOpen}>
             {isOpen ? (
               <SideMenu>
