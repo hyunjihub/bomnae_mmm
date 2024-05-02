@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import ListFilter from '../component/ListFilter';
 import Location from '../component/Location';
 import { MdLocationOn } from 'react-icons/md';
 import PrintList from '../component/List';
+import { appFireStore } from '../../firebase/config';
 import sample from '../../common/resource/img/sample.jpg';
 import sample10 from '../../common/resource/img/sample10.jpg';
 import sample11 from '../../common/resource/img/sample11.jpg';
@@ -187,7 +189,7 @@ function List(props) {
     '약사명동',
   ];
 
-  const restaurantLists = [
+  const restaurantLists2 = [
     { placeId: 1, img: sample, place_name: '오야', location: '교동 149-12', liked: 1 },
     { placeId: 1, img: sample2, place_name: '교동부대찌개', location: '교동 156-27', liked: 1 },
     { placeId: 1, img: sample3, place_name: '레이아웃', location: '소양로4가 115-7', liked: 1 },
@@ -200,6 +202,28 @@ function List(props) {
     { placeId: 1, img: sample10, place_name: '어반스트릿 컨템포러리', location: '거두리 1113-6', liked: 0 },
     { placeId: 1, img: sample11, place_name: '콩사랑마을', location: '퇴계동 1136-2', liked: 0 },
   ];
+
+  const [restaurantLists, setRestaurantLists] = useState([]);
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
+        const querySnapshot = await getDocs(q);
+
+        const updatedList = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          updatedList.push(data);
+        });
+        setRestaurantLists(updatedList);
+      } catch (error) {
+        console.error('쿼리 중 오류 발생:', error);
+      }
+    };
+    getList();
+  }, []);
+
   return (
     <>
       {type === 'restaurant' ? (
@@ -230,7 +254,7 @@ function List(props) {
             })}
           </LocationBox>
           <ListContainer className="cafe">
-            {restaurantLists.map((list) => {
+            {restaurantLists2.map((list) => {
               return <PrintList list={list} />;
             })}
           </ListContainer>

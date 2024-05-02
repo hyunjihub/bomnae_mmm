@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const ListBox = styled.div`
   background-color: #fff;
   width: 14.4rem;
-  height: 14rem;
+  height: 13.8rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   cursor: pointer;
@@ -145,14 +145,25 @@ const Heart = styled(IoHeart)`
 
 function List({ list }) {
   const navigate = useNavigate();
+
+  const longName = (str, length = 10) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length - 1) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
+
   return (
     <>
-      <ListBox onClick={() => navigate(`/place/${list.placeId}`)}>
+      <ListBox onClick={() => navigate(`/place/${list.place_id}`)}>
         <Like>{list.liked ? <Heart color="d80032" /> : <Heart color="ccc" />}</Like>
-        <Image backgroundImg={list.img}></Image>
+        <Image backgroundImg={list.main_img}></Image>
         <InfoBox>
-          <Name>{list.place_name}</Name>
-          <Location>{list.location}</Location>
+          <Name>{longName(list.place_name)}</Name>
+          <Location>{list.address}</Location>
         </InfoBox>
       </ListBox>
     </>
