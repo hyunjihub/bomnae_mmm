@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { GrFormPrevious } from 'react-icons/gr';
 import LikeFilter from '../../list/component/ListFilter';
@@ -109,19 +109,7 @@ function Like(props) {
 
   const filters = ['음식점', '카페', '놀거리'];
 
-  const likeLists = [
-    { placeId: 1, img: sample, place_name: '오야', location: '교동 149-12', liked: 1 },
-    { placeId: 1, img: sample2, place_name: '교동부대찌개', location: '교동 156-27', liked: 1 },
-    { placeId: 1, img: sample3, place_name: '레이아웃', location: '소양로4가 115-7', liked: 1 },
-    { placeId: 1, img: sample4, place_name: '사이라', location: '퇴계동 396-22', liked: 1 },
-    { placeId: 1, img: sample5, place_name: '한끼의 미학', location: '효자동 324', liked: 1 },
-    { placeId: 1, img: sample6, place_name: '섬마을 후평점', location: '후평동 831-6', liked: 1 },
-    { placeId: 1, img: sample7, place_name: '청미래 닭갈비', location: '효자3동 631-16', liked: 1 },
-    { placeId: 1, img: sample8, place_name: '춘천돈가스', location: '후평동 692-12', liked: 1 },
-    { placeId: 1, img: sample9, place_name: '원조숯불닭불고기집', location: '중앙로2가 66-2', liked: 1 },
-    { placeId: 1, img: sample10, place_name: '어반스트릿 컨템포러리', location: '거두리 1113-6', liked: 1 },
-    { placeId: 1, img: sample11, place_name: '콩사랑마을', location: '퇴계동 1136-2', liked: 1 },
-  ];
+  const [likeLists, setLikeLists] = useState([]);
 
   return (
     <Wrapper>

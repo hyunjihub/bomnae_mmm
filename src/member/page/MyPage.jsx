@@ -1,7 +1,7 @@
 import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, signOut } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { appAuth, appFireStore, appStorage } from '../../firebase/config';
-import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, limit, query, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -11,10 +11,6 @@ import LikeList from '../component/LikeList';
 import ReviewList from '../component/ReviewList';
 import Swal from 'sweetalert2';
 import profile from '../../common/resource/img/profile.png';
-import sample from '../../common/resource/img/sample.jpg';
-import sample2 from '../../common/resource/img/sample2.jpg';
-import sample3 from '../../common/resource/img/sample3.jpg';
-import sample4 from '../../common/resource/img/sample4.jpg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -327,7 +323,8 @@ const TitleBox = styled.div`
 
 const Box = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 1rem;
   /* 모바일 가로, 모바일 세로*/
@@ -388,13 +385,6 @@ function MyPage(props) {
     timerProgressBar: true,
   });
 
-  const likeLists = [
-    { placeId: 1, img: sample, place_name: '오야', location: '교동 149-12' },
-    { placeId: 1, img: sample2, place_name: '교동부대찌개', location: '교동 156-27' },
-    { placeId: 1, img: sample3, place_name: '레이아웃', location: '소양로4가 115-7' },
-    { placeId: 1, img: sample4, place_name: '사이라', location: '퇴계동 396-22' },
-  ];
-
   const reviewLists = [
     {
       place_name: '레이아웃',
@@ -412,6 +402,24 @@ function MyPage(props) {
       createdAt: '2024년 4월 20일',
     },
   ];
+
+  const [likeLists, setLikeLists] = useState([]);
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const q = query(collection(appFireStore, 'likes'), where('uid', '==', id), limit(4));
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data().likedRestaurants;
+          setLikeLists(data);
+        });
+      } catch (error) {
+        console.error('쿼리 중 오류 발생:', error);
+      }
+    };
+    getList();
+  }, []);
 
   const handleDelete = async () => {
     try {
@@ -440,8 +448,8 @@ function MyPage(props) {
   const handleLogOut = async () => {
     try {
       await signOut(appAuth);
-      setLogIn(false);
       navigate('/');
+      setLogIn(false);
     } catch (error) {
       console.log(error);
     }
@@ -643,8 +651,8 @@ function MyPage(props) {
             </Detail>
           </TitleBox>
           <Box>
-            {likeLists.map((likeList) => {
-              return <LikeList likeList={likeList} />;
+            {likeLists.map((id) => {
+              return <LikeList place_id={id} />;
             })}
           </Box>
         </Container>

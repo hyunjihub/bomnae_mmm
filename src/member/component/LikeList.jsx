@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const List = styled.div`
+const ListBox = styled.div`
   background-color: #fff;
   width: 11rem;
   height: 13rem;
@@ -94,17 +98,64 @@ const Location = styled.h3`
   }
 `;
 
-function LikeList({ likeList }) {
+function LikeList({ place_id = 1001 }) {
   const navigate = useNavigate();
+
+  const longName = (str, length = 10) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length - 1) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
+
+  const [placeInfo, setPlaceInfo] = useState({
+    place_id: 0,
+    img: '',
+    place_name: '',
+    address: '',
+  });
+
+  useEffect(() => {
+    const fetchPlaceInfo = async () => {
+      try {
+        console.log(place_id);
+        const restaurantRef = collection(appFireStore, 'restaurants');
+        const q = query(restaurantRef, where('place_id', '==', place_id));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            setPlaceInfo({
+              place_id: data.place_id,
+              img: data.main_img,
+              place_name: data.place_name,
+              address: data.address,
+            });
+          });
+        } else {
+          console.log('No restaurant found with this place_id');
+        }
+      } catch (error) {
+        console.log('Error fetching restaurant:', error);
+      }
+    };
+
+    fetchPlaceInfo();
+  }, []);
+
   return (
     <>
-      <List onClick={() => navigate(`/place/${likeList.placeId}`)}>
-        <Image backgroundImg={likeList.img}></Image>
+      <ListBox onClick={() => navigate(`/place/${placeInfo.place_id}`)}>
+        <Image backgroundImg={placeInfo.img}></Image>
         <InfoBox>
-          <Name>{likeList.place_name}</Name>
-          <Location>{likeList.location}</Location>
+          <Name>{longName(placeInfo.place_name)}</Name>
+          <Location>{placeInfo.address}</Location>
         </InfoBox>
-      </List>
+      </ListBox>
     </>
   );
 }

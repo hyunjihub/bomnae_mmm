@@ -148,7 +148,7 @@ function SignUp(props) {
       setLoading(true);
       const credential = await createUserWithEmailAndPassword(appAuth, userEmail, password);
       const user = credential.user;
-      const userDoc = doc(collection(appFireStore, 'users'));
+      let userDoc = doc(collection(appFireStore, 'users'));
       await setDoc(userDoc, {
         uid: user.uid,
         email: userEmail,
@@ -156,6 +156,11 @@ function SignUp(props) {
         profile_image: '',
         is_admin: false,
         created_at: Timestamp.fromDate(new Date()),
+      });
+      userDoc = doc(collection(appFireStore, 'likes'));
+      await setDoc(userDoc, {
+        uid: user.uid,
+        likedRestaurants: [],
       });
       navigate('/');
     } catch (error) {

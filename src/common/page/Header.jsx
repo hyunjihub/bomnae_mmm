@@ -279,6 +279,7 @@ function Header(props) {
     try {
       await signOut(appAuth);
       setLogIn(false);
+      navigate('/');
     } catch (error) {
       console.log(error);
     }

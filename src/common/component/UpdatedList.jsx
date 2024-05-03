@@ -4,22 +4,21 @@ import { useNavigate } from 'react-router-dom';
 
 const List = styled.div`
   background-color: #fff;
+  min-width: 11.5rem;
   height: 12rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   cursor: pointer;
-  flex-grow: 1;
-  max-width: 13rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 48%;
+    min-width: 8rem;
     height: 9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 22%;
+    min-width: 10rem;
     min-width: 7rem;
     height: 9rem;
   }
@@ -71,11 +70,12 @@ const Name = styled.h1`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
+    font-size: 0.9rem;
   }
 `;
 
@@ -96,13 +96,23 @@ const Location = styled.h3`
 
 function UpdatedList({ list }) {
   const navigate = useNavigate();
+
+  const longName = (str, length = 8) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length - 1) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
   return (
     <>
-      <List onClick={() => navigate(`/place/${list.placeId}`)}>
-        <Image backgroundImg={list.img}></Image>
+      <List onClick={() => navigate(`/place/${list.place_id}`)}>
+        <Image backgroundImg={list.main_img}></Image>
         <InfoBox>
-          <Name>{list.place_name}</Name>
-          <Location>{list.location}</Location>
+          <Name>{longName(list.place_name)}</Name>
+          <Location>{list.address}</Location>
         </InfoBox>
       </List>
     </>

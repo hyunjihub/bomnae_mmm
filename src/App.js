@@ -20,7 +20,6 @@ import Request from './list/page/Request';
 import Reset from './member/page/Reset';
 import Sidebar from './common/page/Sidebar';
 import SignUp from './member/page/SignUp';
-import app from './firebase/config';
 import { reset } from 'styled-reset';
 
 const Global = createGlobalStyle`
