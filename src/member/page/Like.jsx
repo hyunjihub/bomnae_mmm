@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { GrFormPrevious } from 'react-icons/gr';
 import LikeFilter from '../../list/component/ListFilter';
 import LikeList from '../../list/component/List';
-import sample from '../../common/resource/img/sample.jpg';
-import sample10 from '../../common/resource/img/sample10.jpg';
-import sample11 from '../../common/resource/img/sample11.jpg';
-import sample2 from '../../common/resource/img/sample2.jpg';
-import sample3 from '../../common/resource/img/sample3.jpg';
-import sample4 from '../../common/resource/img/sample4.jpg';
-import sample5 from '../../common/resource/img/sample5.jpg';
-import sample6 from '../../common/resource/img/sample6.jpg';
-import sample7 from '../../common/resource/img/sample7.jpg';
-import sample8 from '../../common/resource/img/sample8.jpg';
-import sample9 from '../../common/resource/img/sample9.jpg';
+import Swal from 'sweetalert2';
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -107,9 +100,76 @@ const Icon = styled(GrFormPrevious)`
 function Like(props) {
   const navigate = useNavigate();
 
+  const { id } = useSelector(
+    (state) => ({
+      id: state.login.memberId,
+    }),
+    shallowEqual
+  );
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const filters = ['음식점', '카페', '놀거리'];
 
   const [likeLists, setLikeLists] = useState([]);
+  const [restaurantLists, setRestaurantLists] = useState([]);
+  useEffect(() => {
+    const getLike = async () => {
+      try {
+        const likeq = query(collection(appFireStore, 'likes'), where('uid', '==', id));
+        const likeSnapshot = await getDocs(likeq);
+
+        likeSnapshot.forEach((doc) => {
+          const data = doc.data().likedRestaurants;
+          setLikeLists(data);
+        });
+
+        console.log(likeLists);
+
+        if (likeLists.length !== 0) {
+          const listq = query(collection(appFireStore, 'restaurants'), where('place_id', 'in', likeLists));
+          const listSnapshot = await getDocs(listq);
+          const matchedRestaurants = [];
+          listSnapshot.forEach((doc) => {
+            matchedRestaurants.push(doc.data());
+          });
+          setRestaurantLists(matchedRestaurants);
+          if (likeLists.length !== 0) {
+            getList();
+          }
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    getLike();
+  });
+
+  const getList = async () => {
+    try {
+      const listq = query(collection(appFireStore, 'restaurants'), where('place_id', 'in', likeLists));
+      const listSnapshot = await getDocs(listq);
+      const matchedRestaurants = [];
+      listSnapshot.forEach((doc) => {
+        matchedRestaurants.push(doc.data());
+      });
+      setRestaurantLists(matchedRestaurants);
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
+    }
+  };
 
   return (
     <Wrapper>
@@ -123,7 +183,7 @@ function Like(props) {
         })}
       </Filter>
       <ListContainer>
-        {likeLists.map((list) => {
+        {restaurantLists.map((list) => {
           return <LikeList list={list} />;
         })}
       </ListContainer>

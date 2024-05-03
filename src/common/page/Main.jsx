@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 
 import EmblaCarousel from '../component/EmblaCarousel';
+import Swal from 'sweetalert2';
 import UpdatedList from '../component/UpdatedList';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
@@ -125,6 +126,14 @@ function Main(props) {
 
   const [restaurants, setRestaurants] = useState([]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   useEffect(() => {
     const getList = async () => {
       try {
@@ -142,7 +151,10 @@ function Main(props) {
         });
         setRestaurants(updatedList);
       } catch (error) {
-        console.error('쿼리 중 오류 발생:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
     getList();

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import ListFilter from '../component/ListFilter';
 import Location from '../component/Location';
 import { MdLocationOn } from 'react-icons/md';
 import PrintList from '../component/List';
+import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
@@ -165,12 +165,13 @@ const Container = styled.div`
 function List(props) {
   const { type } = useParams();
 
-  const { id } = useSelector(
-    (state) => ({
-      id: state.login.memberId,
-    }),
-    shallowEqual
-  );
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
 
   const filters = ['한식', '중식', '양식', '일식', '기타'];
   const locations = [
@@ -185,9 +186,7 @@ function List(props) {
     '근화동',
     '약사명동',
   ];
-
   const restaurantLists2 = [];
-
   const [restaurantLists, setRestaurantLists] = useState([]);
 
   useEffect(() => {
@@ -203,7 +202,10 @@ function List(props) {
         });
         setRestaurantLists(updatedList);
       } catch (error) {
-        console.error('쿼리 중 오류 발생:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
     getList();

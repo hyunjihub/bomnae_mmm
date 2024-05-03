@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
+import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -101,6 +101,14 @@ const Location = styled.h3`
 function LikeList({ place_id = 1001 }) {
   const navigate = useNavigate();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const longName = (str, length = 10) => {
     let result = '';
     if (str.length > length) {
@@ -121,7 +129,6 @@ function LikeList({ place_id = 1001 }) {
   useEffect(() => {
     const fetchPlaceInfo = async () => {
       try {
-        console.log(place_id);
         const restaurantRef = collection(appFireStore, 'restaurants');
         const q = query(restaurantRef, where('place_id', '==', place_id));
         const querySnapshot = await getDocs(q);
@@ -137,10 +144,16 @@ function LikeList({ place_id = 1001 }) {
             });
           });
         } else {
-          console.log('No restaurant found with this place_id');
+          Toast.fire({
+            icon: 'error',
+            html: '상호가 존재하지 않습니다.',
+          });
         }
       } catch (error) {
-        console.log('Error fetching restaurant:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
 

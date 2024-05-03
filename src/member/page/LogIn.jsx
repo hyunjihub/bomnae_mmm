@@ -168,7 +168,7 @@ function LogIn(props) {
           html: '이메일과 비밀번호를<br>다시 확인해주세요.',
         });
       }
-      if (error.code == 'auth/too-many-requests') {
+      if (error.code === 'auth/too-many-requests') {
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.<br>다시 시도해주세요.',
@@ -193,7 +193,7 @@ function LogIn(props) {
 
   const validation = () => {
     setLoading(true);
-    if (userEmail.trim() !== '' && password.trim() != '') {
+    if (userEmail.trim() !== '' && password.trim() !== '') {
       let idCheck = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i; //이메일 형식 테스트
       if (idCheck.test(userEmail)) {
         login();
@@ -214,9 +214,12 @@ function LogIn(props) {
   };
 
   const [capsLockFlag, setCapsLockFlag] = useState(false);
-  const checkCapsLock = (e) => {
-    let capsLock = e.getModifierState('CapsLock');
-    setCapsLockFlag(capsLock);
+  const checkKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      validation();
+    } else if (e.key === 'CapsLock') {
+      setCapsLockFlag(e.getModifierState('CapsLock'));
+    }
   };
 
   return (
@@ -229,7 +232,7 @@ function LogIn(props) {
         type="password"
         placeholder="비밀번호"
         onChange={(e) => setPassword(e.target.value)}
-        onKeyUp={(e) => checkCapsLock(e)}
+        onKeyUp={(e) => checkKeyUp(e)}
       />
       {capsLockFlag && <Caps>Caps Lock이 켜져 있습니다.</Caps>}
       <Button onClick={validation}>로그인</Button>

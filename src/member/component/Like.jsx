@@ -3,6 +3,7 @@ import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/fire
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { IoHeart } from 'react-icons/io5';
+import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 
@@ -62,6 +63,14 @@ function Like({ place_id }) {
   const [isLiked, setIsLiked] = useState(false);
   const [list, setList] = useState([]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   useEffect(() => {
     const getLikeList = async () => {
       try {
@@ -72,7 +81,10 @@ function Like({ place_id }) {
           setIsLiked(userData.likedRestaurants.includes(place_id));
         }
       } catch (error) {
-        console.log('Error fetching user like list:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
     if (isLogIn) getLikeList();
@@ -94,10 +106,16 @@ function Like({ place_id }) {
         await updateDoc(docRef, { likedRestaurants: updatedList });
         setIsLiked(!isLiked);
       } else {
-        console.log('해당 UID에 대한 사용자 데이터를 찾을 수 없습니다.');
+        Toast.fire({
+          icon: 'error',
+          html: '사용자 정보가 없습니다.',
+        });
       }
     } catch (error) {
-      console.error('좋아요 상태 업데이트 중 오류 발생:', error);
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
     }
   };
 
