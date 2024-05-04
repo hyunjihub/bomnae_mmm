@@ -23,10 +23,10 @@ const Name = styled.h1`
   }
 `;
 
-function Location({ filter }) {
+function Location({ filter, setCurrentLocation }) {
   return (
     <>
-      <Name>{filter}</Name>
+      <Name onClick={() => setCurrentLocation(filter)}>{filter}</Name>
     </>
   );
 }

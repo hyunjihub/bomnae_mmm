@@ -56,7 +56,6 @@ const Filter = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0 3rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -115,10 +114,12 @@ function Like(props) {
     timerProgressBar: true,
   });
 
-  const filters = ['음식점', '카페', '놀거리'];
+  const filters = ['음식점', '카페'];
 
   const [likeLists, setLikeLists] = useState([]);
   const [restaurantLists, setRestaurantLists] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState('*');
+
   useEffect(() => {
     const getLike = async () => {
       try {
@@ -129,21 +130,6 @@ function Like(props) {
           const data = doc.data().likedRestaurants;
           setLikeLists(data);
         });
-
-        console.log(likeLists);
-
-        if (likeLists.length !== 0) {
-          const listq = query(collection(appFireStore, 'restaurants'), where('place_id', 'in', likeLists));
-          const listSnapshot = await getDocs(listq);
-          const matchedRestaurants = [];
-          listSnapshot.forEach((doc) => {
-            matchedRestaurants.push(doc.data());
-          });
-          setRestaurantLists(matchedRestaurants);
-          if (likeLists.length !== 0) {
-            getList();
-          }
-        }
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -152,24 +138,64 @@ function Like(props) {
       }
     };
     getLike();
-  });
+  }, []);
 
-  const getList = async () => {
-    try {
-      const listq = query(collection(appFireStore, 'restaurants'), where('place_id', 'in', likeLists));
-      const listSnapshot = await getDocs(listq);
-      const matchedRestaurants = [];
-      listSnapshot.forEach((doc) => {
-        matchedRestaurants.push(doc.data());
-      });
-      setRestaurantLists(matchedRestaurants);
-    } catch (error) {
-      Toast.fire({
-        icon: 'error',
-        html: '오류가 발생했습니다.',
-      });
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const listq = query(collection(appFireStore, 'restaurants'), where('place_id', 'in', likeLists));
+        const listSnapshot = await getDocs(listq);
+        listSnapshot.forEach((doc) => {
+          setRestaurantLists((prevList) => [...prevList, doc.data()]);
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    if (likeLists.length !== 0) {
+      getList();
     }
-  };
+  }, [likeLists]);
+
+  useEffect(() => {
+    const changeFilter = async (filter) => {
+      try {
+        let q;
+
+        if (filter === '카페') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', 'in', likeLists),
+            where('category', '==', '카페')
+          );
+        } else if (filter === '음식점') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', 'in', likeLists),
+            where('category', '!=', '카페')
+          );
+        }
+        const querySnapshot = await getDocs(q);
+
+        const updatedList = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          updatedList.push(data);
+        });
+        setRestaurantLists(updatedList);
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    if (currentFilter !== '*') changeFilter(currentFilter);
+  }, [currentFilter]);
 
   return (
     <Wrapper>
@@ -179,7 +205,7 @@ function Like(props) {
       </Title>
       <Filter>
         {filters.map((filter) => {
-          return <LikeFilter filter={filter} />;
+          return <LikeFilter filter={filter} setCurrentFilter={setCurrentFilter} />;
         })}
       </Filter>
       <ListContainer>

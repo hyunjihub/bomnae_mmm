@@ -23,10 +23,10 @@ const Name = styled.h1`
   text-align: center;
 `;
 
-function LikeFilter({ filter }) {
+function LikeFilter({ filter, setCurrentFilter }) {
   return (
     <>
-      <Filter>
+      <Filter onClick={() => setCurrentFilter(filter)}>
         <Name>{filter}</Name>
       </Filter>
     </>

@@ -174,11 +174,13 @@ function List(props) {
   });
 
   const filters = ['한식', '중식', '양식', '일식', '기타'];
+  const [currentFilter, setCurrentFilter] = useState('*');
+  const [currentLocation, setCurrentLocation] = useState('*');
   const locations = [
     '퇴계동',
     '석사동',
     '후평동',
-    '효자동 ',
+    '효자동',
     '강남동',
     '동내면',
     '조운동',
@@ -211,6 +213,65 @@ function List(props) {
     getList();
   }, []);
 
+  useEffect(() => {
+    const changeFilter = async (filter) => {
+      try {
+        let q;
+        if (currentLocation === '*')
+          q = query(collection(appFireStore, 'restaurants'), where('category', '==', filter));
+        else
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('category', '==', filter),
+            where('dong', '==', currentLocation)
+          );
+        const querySnapshot = await getDocs(q);
+
+        const updatedList = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          updatedList.push(data);
+        });
+        setRestaurantLists(updatedList);
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    if (currentFilter !== '*') changeFilter(currentFilter);
+  }, [currentFilter]);
+
+  useEffect(() => {
+    const changeLocation = async (filter) => {
+      try {
+        let q;
+        if (currentFilter === '*') q = query(collection(appFireStore, 'restaurants'), where('dong', '==', filter));
+        else
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('dong', '==', filter),
+            where('category', '==', currentFilter)
+          );
+        const querySnapshot = await getDocs(q);
+
+        const updatedList = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          updatedList.push(data);
+        });
+        setRestaurantLists(updatedList);
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    if (currentLocation !== '*') changeLocation(currentLocation);
+  }, [currentLocation]);
+
   return (
     <>
       {type === 'restaurant' ? (
@@ -218,12 +279,12 @@ function List(props) {
           <LocationBox>
             <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
-              return <Location filter={filter} />;
+              return <Location filter={filter} setCurrentLocation={setCurrentLocation} />;
             })}
           </LocationBox>
           <Filter>
             {filters.map((filter) => {
-              return <ListFilter filter={filter} />;
+              return <ListFilter filter={filter} setCurrentFilter={setCurrentFilter} />;
             })}
           </Filter>
           <ListContainer>
