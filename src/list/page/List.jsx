@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
 
 import ListFilter from '../component/ListFilter';
 import Location from '../component/Location';
@@ -8,6 +8,7 @@ import PrintList from '../component/List';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
+import { useInView } from 'react-intersection-observer';
 import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -190,28 +191,82 @@ function List(props) {
   ];
   const restaurantLists2 = [];
   const [restaurantLists, setRestaurantLists] = useState([]);
+  const [key, setKey] = useState(null); //마지막 스냅샷
+  const [noMore, setNoMore] = useState(false);
+  const [target, setTarget] = useState(null);
 
   useEffect(() => {
-    const getList = async () => {
+    const getFirstList = async () => {
       try {
-        const q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
+        const q = query(
+          collection(appFireStore, 'restaurants'),
+          where('place_id', '<', 2000),
+          orderBy('place_id'),
+          limit(15)
+        );
         const querySnapshot = await getDocs(q);
-
-        const updatedList = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          updatedList.push(data);
-        });
+        const updatedList = querySnapshot.docs.map((doc) => doc.data());
         setRestaurantLists(updatedList);
+        setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
         });
       }
     };
-    getList();
+    getFirstList();
   }, []);
+
+  const loadMore = useCallback(async () => {
+    if (currentFilter === '*' && currentLocation === '*') {
+      try {
+        const q = query(
+          collection(appFireStore, 'restaurants'),
+          where('place_id', '<', 2000),
+          orderBy('place_id'),
+          startAfter(key),
+          limit(10)
+        );
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          setNoMore(true);
+        } else {
+          const updatedList = querySnapshot.docs.map((doc) => doc.data());
+          setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          setRestaurantLists((prevList) => [...prevList, ...updatedList]);
+        }
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    }
+  }, [key]);
+
+  const onIntersect = useCallback(
+    async ([entry], observer) => {
+      if (entry.isIntersecting && !noMore) {
+        observer.unobserve(entry.target);
+        await loadMore();
+      }
+    },
+    [loadMore, noMore]
+  );
+
+  useEffect(() => {
+    let observer;
+    if (target && !noMore) {
+      observer = new IntersectionObserver(onIntersect, { threshold: 0 });
+      observer.observe(target);
+    }
+    return () => {
+      observer && observer.disconnect();
+    };
+  }, [target, onIntersect, noMore]);
 
   useEffect(() => {
     const changeFilter = async (filter) => {
@@ -234,6 +289,7 @@ function List(props) {
         });
         setRestaurantLists(updatedList);
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -263,6 +319,7 @@ function List(props) {
         });
         setRestaurantLists(updatedList);
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -291,6 +348,7 @@ function List(props) {
             {restaurantLists.map((list) => {
               return <PrintList list={list} />;
             })}
+            <div ref={setTarget}></div>
           </ListContainer>
         </Wrapper>
       ) : type === 'cafe' ? (

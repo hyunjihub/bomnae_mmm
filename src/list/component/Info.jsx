@@ -24,23 +24,23 @@ function Info({ info }) {
     <>
       <Content>
         <Bold>영업시간 : </Bold>
-        {info.time}
+        {info.time ? info.time : '정보 없음'}
       </Content>
       <Content>
         <Bold>브레이크 타임 : </Bold>
-        {info.breaktime}
+        {info.break_time ? info.break_time : '없음'}
       </Content>
       <Content>
         <Bold>전화번호 : </Bold>
-        {info.number}
+        {info.number ? info.number : '정보없음'}
       </Content>
       <Content>
         <Bold>편의시설 및 서비스 : </Bold>
-        {info.service}
+        {info.service ? info.service : '없음'}
       </Content>
       <Content>
         <Bold>주차 : </Bold>
-        {info.parking}
+        {info.parking ? info.parking : '정보 없음'}
       </Content>
     </>
   );

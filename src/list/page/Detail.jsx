@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import Info from '../component/Info';
 import { IoHeart } from 'react-icons/io5';
 import Menu from '../component/Menu';
 import Review from '../component/Review';
-import sample from '../../common/resource/img/sample.jpg';
-import sample2 from '../../common/resource/img/sample12.jpg';
+import Swal from 'sweetalert2';
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -124,13 +126,13 @@ const Box = styled.div`
   }
 
   &.info {
-    width: 49%;
+    width: 60%;
     flex-direction: column;
     gap: 0.5rem;
   }
 
   &.menu {
-    width: 48%;
+    width: 40%;
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -150,9 +152,9 @@ const Image = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    width: 100%;
+    width: 50%;
     &.second {
-      display: none;
+      width: 48%;
     }
   }
 `;
@@ -165,7 +167,7 @@ const TitleBox = styled.div`
   box-sizing: border-box;
 
   &.menu {
-    width: 90%;
+    width: 100%;
   }
 `;
 
@@ -346,22 +348,51 @@ const BlogBox = styled.div`
 `;
 
 function Detail(props) {
-  const information = {
-    time: '11:30 ~ 22:00 (일요일 휴무)',
-    breaktime: '15:00 ~ 17:00',
-    number: '0507-1434-5877',
-    service: '포장, 단체 이용 가능, 예약',
-    parking: '주차 가능 (무료)',
-  };
+  const { placeid } = useParams();
 
-  const menus = [
-    { menu: '오야 초밥(10pcs)', price: '13,000원' },
-    { menu: '오야동', price: '14,000원' },
-    { menu: '오야 특초밥(12pcs)', price: '16,000원' },
-    { menu: '카이센동', price: '15,000원' },
-    { menu: '연어덮밥', price: '13,000원' },
-    { menu: '가라아게동', price: '10,000원' },
-  ];
+  const [place, setPlace] = useState({});
+  const [menu, setMenu] = useState([]);
+  const [info, setInfo] = useState({
+    break_time: null,
+    number: null,
+    parking: null,
+    service: null,
+    time: null,
+  });
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const q = query(collection(appFireStore, 'restaurants'), where('place_id', '==', Number(placeid)));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.docs.map((doc) => {
+          setPlace(doc.data());
+          setMenu(doc.data().menus);
+          setInfo({
+            break_time: doc.data().break_time,
+            number: doc.data().number,
+            parking: doc.data().parking,
+            service: doc.data().service,
+            time: doc.data().time,
+          });
+        });
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    getInfo();
+  }, [placeid]);
 
   const reviews = [
     {
@@ -384,33 +415,37 @@ function Detail(props) {
     },
   ];
 
+  const test = () => {
+    console.log(place.main_img);
+  };
   return (
     <Wrapper>
       <Container>
         <DetailBox>
           <Box>
-            <Image backgroundImg={sample} />
-            <Image className="second" backgroundImg={sample2} />
+            <Image backgroundImg={place.main_img} />
+            <Image className="second" backgroundImg={place.other_img} />
           </Box>
           <TitleBox>
-            <Name>오야</Name>
+            <Name>{place.place_name}</Name>
             <Like>
               <IoHeart size="26" color="d80032" />
             </Like>
           </TitleBox>
-          <Intro>특색 있는 공간 그리고 음악과 함께 따뜻한 식전 계란찜과 맛있는 초밥과 사시미를 제공합니다.</Intro>
+          {place.intro ? <Intro>{place.intro}</Intro> : null}
           <Divider />
           <InfoBox>
             <Box className="detail">
               <Box className="info">
                 <Title>정보</Title>
-                <Info info={information} />
+                <Info info={info} />
               </Box>
               <Box className="menu">
                 <TitleBox className="menu">
                   <Title>메뉴</Title>
+                  <TitleDetail>실제와 상이할 수 있음</TitleDetail>
                 </TitleBox>
-                {menus.map((menu) => {
+                {menu.map((menu) => {
                   return <Menu menu={menu} />;
                 })}
               </Box>
@@ -424,8 +459,8 @@ function Detail(props) {
         </DetailBox>
         <LocationBox>
           <Title>위치</Title>
-          <Intro className="location">교동 149-12</Intro>
-          <TitleDetail>한림대학교 정문에서 향교 방면으로 도보 200M 내려오시면 좌측에 있습니다.</TitleDetail>
+          <Intro className="location">{place.address}</Intro>
+          <TitleDetail>{place.address_detail}</TitleDetail>
         </LocationBox>
         <ReviewBox>
           <Title>후기</Title>
