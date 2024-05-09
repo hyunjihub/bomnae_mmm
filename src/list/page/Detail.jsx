@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import Info from '../component/Info';
 import { IoHeart } from 'react-icons/io5';
 import Menu from '../component/Menu';
+import NaverMapContainer from '../component/NaverMapContainer';
+import { NavermapsProvider } from 'react-naver-maps';
 import Review from '../component/Review';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
@@ -12,7 +14,7 @@ import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 1000px;
+  height: 1100px;
   background-color: #f7f6f9;
   box-sizing: border-box;
   margin-left: 230px;
@@ -46,7 +48,7 @@ const Container = styled.div`
   padding: 0.5vh 8vw;
   gap: 2rem;
   grid-template-columns: 1.8fr 1fr;
-  grid-template-rows: 0.8fr 1.5fr;
+  grid-template-rows: 1fr 1.5fr;
   grid-template-areas:
     'd l'
     'd r';
@@ -119,7 +121,7 @@ const ReviewBox = styled.div`
 const Box = styled.div`
   width: 90%;
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
 
   &.detail {
     width: 100%;
@@ -128,7 +130,7 @@ const Box = styled.div`
   &.info {
     width: 60%;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
 
   &.menu {
@@ -140,11 +142,12 @@ const Box = styled.div`
 
 const Image = styled.div`
   width: 60%;
-  height: 10rem;
+  height: 13rem;
   border-radius: 16px;
   background-position: center;
   background-size: cover;
   background-image: url(${(props) => props.backgroundImg});
+  margin-bottom: 1rem;
 
   &.second {
     width: 39%;
@@ -211,6 +214,8 @@ const Intro = styled.h2`
 
   &.location {
     color: #222831;
+    font-weight: 600;
+    font-size: 1.1rem;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
@@ -244,6 +249,10 @@ const Title = styled.h1`
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 1rem;
+
+  &.location {
+    margin-bottom: 0.7rem;
+  }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
@@ -359,6 +368,7 @@ function Detail(props) {
     service: null,
     time: null,
   });
+
   const Toast = Swal.mixin({
     toast: true,
     position: 'center',
@@ -372,15 +382,18 @@ function Detail(props) {
       try {
         const q = query(collection(appFireStore, 'restaurants'), where('place_id', '==', Number(placeid)));
         const querySnapshot = await getDocs(q);
-        querySnapshot.docs.map((doc) => {
-          setPlace(doc.data());
-          setMenu(doc.data().menus);
-          setInfo({
-            break_time: doc.data().break_time,
-            number: doc.data().number,
-            parking: doc.data().parking,
-            service: doc.data().service,
-            time: doc.data().time,
+
+        await startTransition(() => {
+          querySnapshot.docs.map((doc) => {
+            setPlace(doc.data());
+            setMenu(doc.data().menus);
+            setInfo({
+              break_time: doc.data().break_time,
+              number: doc.data().number,
+              parking: doc.data().parking,
+              service: doc.data().service,
+              time: doc.data().time,
+            });
           });
         });
       } catch (error) {
@@ -415,72 +428,72 @@ function Detail(props) {
     },
   ];
 
-  const test = () => {
-    console.log(place.main_img);
-  };
   return (
-    <Wrapper>
-      <Container>
-        <DetailBox>
-          <Box>
-            <Image backgroundImg={place.main_img} />
-            <Image className="second" backgroundImg={place.other_img} />
-          </Box>
-          <TitleBox>
-            <Name>{place.place_name}</Name>
-            <Like>
-              <IoHeart size="26" color="d80032" />
-            </Like>
-          </TitleBox>
-          {place.intro ? <Intro>{place.intro}</Intro> : null}
-          <Divider />
-          <InfoBox>
-            <Box className="detail">
-              <Box className="info">
-                <Title>정보</Title>
-                <Info info={info} />
-              </Box>
-              <Box className="menu">
-                <TitleBox className="menu">
-                  <Title>메뉴</Title>
-                  <TitleDetail>실제와 상이할 수 있음</TitleDetail>
-                </TitleBox>
-                {menu.map((menu) => {
-                  return <Menu menu={menu} />;
-                })}
-              </Box>
+    <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
+      <Wrapper>
+        <Container>
+          <DetailBox>
+            <Box>
+              <Image backgroundImg={place.main_img} />
+              <Image className="second" backgroundImg={place.other_img} />
             </Box>
-          </InfoBox>
-          <Divider />
-          <InfoBox>
-            <Title>블로그 리뷰</Title>
-            <BlogBox></BlogBox>
-          </InfoBox>
-        </DetailBox>
-        <LocationBox>
-          <Title>위치</Title>
-          <Intro className="location">{place.address}</Intro>
-          <TitleDetail>{place.address_detail}</TitleDetail>
-        </LocationBox>
-        <ReviewBox>
-          <Title>후기</Title>
-          <ReviewContainer>
-            {reviews.map((review) => {
-              return <Review review={review} />;
-            })}
-          </ReviewContainer>
-          <Divider className="review" />
-          <WriteContainer>
-            <Write placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."></Write>
-            <Button>
-              후기
-              <br />
-              등록
-            </Button>
-          </WriteContainer>
-        </ReviewBox>
-      </Container>
-    </Wrapper>
+            <TitleBox>
+              <Name>{place.place_name}</Name>
+              <Like>
+                <IoHeart size="26" color="d80032" />
+              </Like>
+            </TitleBox>
+            {place.intro ? <Intro>{place.intro}</Intro> : null}
+            <Divider />
+            <InfoBox>
+              <Box className="detail">
+                <Box className="info">
+                  <Title>정보</Title>
+                  <Info info={info} />
+                </Box>
+                <Box className="menu">
+                  <TitleBox className="menu">
+                    <Title>메뉴</Title>
+                    <TitleDetail>실제 정보와 상이할 수 있습니다.</TitleDetail>
+                  </TitleBox>
+                  {menu.map((menu) => {
+                    return <Menu menu={menu} />;
+                  })}
+                </Box>
+              </Box>
+            </InfoBox>
+            <Divider />
+            <InfoBox>
+              <Title>블로그 리뷰</Title>
+              <BlogBox></BlogBox>
+            </InfoBox>
+          </DetailBox>
+          <LocationBox>
+            <Title className="location">위치</Title>
+            <NaverMapContainer address={place.address} />
+            <Intro className="location">{place.address}</Intro>
+            <TitleDetail>{place.address_detail}</TitleDetail>
+          </LocationBox>
+          <ReviewBox>
+            <Title>후기</Title>
+            <ReviewContainer>
+              {reviews.map((review) => {
+                return <Review review={review} />;
+              })}
+            </ReviewContainer>
+            <Divider className="review" />
+            <WriteContainer>
+              <Write placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."></Write>
+              <Button>
+                후기
+                <br />
+                등록
+              </Button>
+            </WriteContainer>
+          </ReviewBox>
+        </Container>
+      </Wrapper>
+    </NavermapsProvider>
   );
 }
 export default Detail;

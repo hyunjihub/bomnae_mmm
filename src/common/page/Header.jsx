@@ -1,7 +1,7 @@
 import { CiLogin, CiLogout, CiSearch } from 'react-icons/ci';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
+import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import SidebarItem from '../component/SideItem';
@@ -248,12 +248,15 @@ function Header(props) {
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+  const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
+  const setName = (name) => dispatch(setName(name));
 
-  const { isLog, id, profileImg } = useSelector(
+  const { isLog, id, profileImg, isAdmin } = useSelector(
     (state) => ({
       isLog: state.login.isLogIn,
       id: state.login.memberId,
       profileImg: state.login.profileImg,
+      isAdmin: state.login.isAdmin,
     }),
     shallowEqual
   );
@@ -268,7 +271,6 @@ function Header(props) {
     if (isOpen) setIsOpen(false);
     else setIsOpen(true);
   };
-  const [isAdmin, setIsAdmin] = useState(false);
   const locationNow = useLocation();
 
   if (locationNow.pathname.match(/\/(login|reset|find|auth|signup)/)) {
@@ -279,6 +281,10 @@ function Header(props) {
     try {
       await signOut(appAuth);
       setLogIn(false);
+      setMemberId(null);
+      setProfileImg(null);
+      setIsAdmin(false);
+      setName(null);
       navigate('/');
     } catch (error) {
       console.log(error);

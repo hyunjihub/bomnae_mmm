@@ -13,6 +13,7 @@ import List from './list/page/List';
 import LogIn from './member/page/LogIn';
 import Main from './common/page/Main';
 import MyPage from './member/page/MyPage';
+import { NavermapsProvider } from 'react-naver-maps';
 import PrivateRoute from './member/component/PrivateRoute';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -36,29 +37,31 @@ const Center = styled.div`
 
 export default function App(props) {
   return (
-    <BrowserRouter>
-      <Global />
-      <Header />
-      <Center>
-        <Sidebar />
-        <Routes>
-          <Route index element={<Main />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/auth" element={<Authentication />} />
-          <Route path="/find" element={<Find />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/list/:type" element={<List />} />
-          <Route path="/place/:placeid" element={<Detail />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="/reset" element={<Reset />} />
-            <Route path="/mypage/:memberid" element={<MyPage />} />
-            <Route path="/mypage/:memberid/like" element={<Like />} />
-            <Route path="/request/:isadmin" element={<Request />} />
-          </Route>
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </Center>
-    </BrowserRouter>
+    <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
+      <BrowserRouter>
+        <Global />
+        <Header />
+        <Center>
+          <Sidebar />
+          <Routes>
+            <Route index element={<Main />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/auth" element={<Authentication />} />
+            <Route path="/find" element={<Find />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/list/:type" element={<List />} />
+            <Route path="/place/:placeid" element={<Detail />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/reset" element={<Reset />} />
+              <Route path="/mypage/:memberid" element={<MyPage />} />
+              <Route path="/mypage/:memberid/like" element={<Like />} />
+              <Route path="/request/:isadmin" element={<Request />} />
+            </Route>
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </Center>
+      </BrowserRouter>
+    </NavermapsProvider>
   );
 }

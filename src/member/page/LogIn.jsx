@@ -186,6 +186,12 @@ function LogIn(props) {
           html: '인터넷 연결을 확인해주세요.',
         });
       }
+      if (error.code === 'auth/invalid-credential') {
+        Toast.fire({
+          icon: 'error',
+          html: '가입되지 않은 계정입니다.',
+        });
+      }
     } finally {
       setLoading(false);
     }
