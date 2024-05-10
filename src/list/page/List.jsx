@@ -188,6 +188,7 @@ function List(props) {
     '소양동',
     '근화동',
     '약사명동',
+    '교동'
   ];
   const restaurantLists2 = [];
   const [restaurantLists, setRestaurantLists] = useState([]);

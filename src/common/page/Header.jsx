@@ -105,14 +105,18 @@ const SearchBox = styled.div`
 
 const Search = styled.input`
   color: #a49f9f;
-  font-size: 0.9rem;
+  font-size: 1rem;
   outline: none;
   border: none;
   background-color: transparent;
   width: 80%;
+  color: #000;
+  font-weight: 600;
 
   &::placeholder {
     color: #a49f9f;
+    font-size: 0.9rem;
+    font-weight: 400;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -271,6 +275,22 @@ function Header(props) {
     if (isOpen) setIsOpen(false);
     else setIsOpen(true);
   };
+
+  const [search, setSearch] = useState('');
+  const checkKeyUp = (e) => {
+    if (e.key === 'Enter' && search.trim() !== '') {
+      navigate(`/search/${search}`);
+      setSearch('');
+    }
+  };
+
+  const searchClick = () => {
+    if (search.trim() !== '') {
+      navigate(`/search/${search}`);
+      setSearch('');
+    }
+  };
+
   const locationNow = useLocation();
 
   if (locationNow.pathname.match(/\/(login|reset|find|auth|signup)/)) {
@@ -298,8 +318,14 @@ function Header(props) {
           <Logo src={logo} alt="logo" />
         </LogoBox>
         <SearchBox>
-          <CiSearch size="20" color="#a49f9f" />
-          <Search type="text" placeholder="검색"></Search>
+          <CiSearch onClick={searchClick} size="20" color="#a49f9f" />
+          <Search
+            type="text"
+            placeholder="검색 (상호명, 대표메뉴 검색 가능)"
+            value={search || ''}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyUp={(e) => checkKeyUp(e)}
+          ></Search>
         </SearchBox>
         <Box>
           <LoginBox>

@@ -4,7 +4,7 @@ import React from 'react';
 
 const NaverMapContainer = ({ address }) => {
   return (
-    <MapDiv style={{ width: '100%', height: '75%', marginBottom: '1rem' }}>
+    <MapDiv style={{ width: '100%', height: '70%', marginBottom: '1rem' }}>
       <Map address={address} />
     </MapDiv>
   );

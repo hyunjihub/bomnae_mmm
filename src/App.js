@@ -19,6 +19,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Request from './list/page/Request';
 import Reset from './member/page/Reset';
+import Search from './list/page/Search';
 import Sidebar from './common/page/Sidebar';
 import SignUp from './member/page/SignUp';
 import { reset } from 'styled-reset';
@@ -52,6 +53,7 @@ export default function App(props) {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/list/:type" element={<List />} />
             <Route path="/place/:placeid" element={<Detail />} />
+            <Route path="/search/:search" element={<Search />} />
             <Route element={<PrivateRoute />}>
               <Route path="/reset" element={<Reset />} />
               <Route path="/mypage/:memberid" element={<MyPage />} />
