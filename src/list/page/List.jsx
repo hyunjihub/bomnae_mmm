@@ -188,7 +188,7 @@ function List(props) {
     '소양동',
     '근화동',
     '약사명동',
-    '교동'
+    '교동',
   ];
   const restaurantLists2 = [];
   const [restaurantLists, setRestaurantLists] = useState([]);
@@ -203,7 +203,7 @@ function List(props) {
           collection(appFireStore, 'restaurants'),
           where('place_id', '<', 2000),
           orderBy('place_id'),
-          limit(15)
+          limit(30)
         );
         const querySnapshot = await getDocs(q);
         const updatedList = querySnapshot.docs.map((doc) => doc.data());
@@ -221,7 +221,7 @@ function List(props) {
   }, []);
 
   const loadMore = useCallback(async () => {
-    if (currentFilter === '*' && currentLocation === '*') {
+    if (currentFilter === '*' && currentLocation === '*' && key !== null) {
       try {
         const q = query(
           collection(appFireStore, 'restaurants'),

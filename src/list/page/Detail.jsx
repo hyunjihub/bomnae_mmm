@@ -1,6 +1,7 @@
 import React, { startTransition, useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+import Blog from '../component/Blog';
 import Info from '../component/Info';
 import { IoHeart } from 'react-icons/io5';
 import Menu from '../component/Menu';
@@ -9,6 +10,7 @@ import { NavermapsProvider } from 'react-naver-maps';
 import Review from '../component/Review';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
+import axios from 'axios';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -177,6 +179,20 @@ const TitleBox = styled.div`
 const TitleDetail = styled.h3`
   font-size: 0.8rem;
   color: #9a95a3;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    &.menu {
+      display: none;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    &.menu {
+      display: none;
+    }
+  }
 `;
 
 const Name = styled.div`
@@ -343,8 +359,13 @@ const Button = styled.button`
 
 const BlogBox = styled.div`
   width: 100%;
-  height: 12rem;
-  background-color: #000;
+  height: 17rem;
+  padding-top: 0.8rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
@@ -407,6 +428,31 @@ function Detail(props) {
     getInfo();
   }, [placeid]);
 
+  let search = `춘천 맛집 ${place.place_name}`;
+  const [blogReviews, setBlogReviews] = useState([]);
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await axios.get(
+          `https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/blog.json?query=${encodeURI(
+            search
+          )}`,
+          {
+            headers: {
+              'X-Naver-Client-Id': process.env.REACT_APP_NAVER_CLIENT_ID,
+              'X-Naver-Client-Secret': process.env.REACT_APP_NAVER_CLIENT_SECRECT,
+            },
+          }
+        );
+        if (response.status === 200) {
+          const selectedItems = response.data.items.slice(0, 3); // 처음 3개 아이템 선택
+          setBlogReviews(selectedItems);
+        }
+      } catch {}
+    };
+    if (place.place_name !== undefined) getBlog();
+  }, [place.place_name, search]);
+
   const reviews = [
     {
       nickname: '닉네임',
@@ -454,7 +500,7 @@ function Detail(props) {
                 <Box className="menu">
                   <TitleBox className="menu">
                     <Title>메뉴</Title>
-                    <TitleDetail>실제 정보와 상이할 수 있습니다.</TitleDetail>
+                    <TitleDetail className="menu">실제 정보와 상이할 수 있습니다.</TitleDetail>
                   </TitleBox>
                   {menu.map((menu) => {
                     return <Menu menu={menu} />;
@@ -465,7 +511,11 @@ function Detail(props) {
             <Divider />
             <InfoBox>
               <Title>블로그 리뷰</Title>
-              <BlogBox></BlogBox>
+              <BlogBox>
+                {blogReviews.map((blog) => {
+                  return <Blog blog={blog} />;
+                })}
+              </BlogBox>
             </InfoBox>
           </DetailBox>
           <LocationBox>
