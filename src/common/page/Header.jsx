@@ -33,7 +33,13 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    height: 9vh;
+    gap: 1rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     height: 9vh;
     gap: 1rem;
   }
@@ -60,10 +66,18 @@ const LogoBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding-right: 5vw;
     min-width: calc(4rem + 65px);
     padding-left: 0;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding-right: 2vw;
+    min-width: calc(2rem + 50px);
+    padding-left: 0;
+    margin-right: 0;
   }
 `;
 
@@ -75,8 +89,13 @@ const Logo = styled.img`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 4.5rem;
   }
 `;
 
@@ -98,7 +117,12 @@ const SearchBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    display: none;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     display: none;
   }
 `;
@@ -120,7 +144,12 @@ const Search = styled.input`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    display: none;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     display: none;
   }
 `;
@@ -139,23 +168,29 @@ const LoginBox = styled(Link)`
     width: 5rem;
   }
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 5rem;
     font-size: 0.9rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 3rem;
+    font-size: 0.8rem;
   }
 `;
 
 const Logout = styled(CiLogout)`
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    opacity: 0;
+    display: none;
   }
 `;
 
 const Login = styled(CiLogin)`
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    opacity: 0;
+    display: none;
   }
 `;
 
@@ -177,9 +212,15 @@ const Profile = styled(Link)`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 3.5rem;
     height: 3.5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 3.3rem;
+    height: 3.3rem;
   }
 `;
 
@@ -204,6 +245,11 @@ const Box = styled.div`
   align-items: center;
   position: relative;
   margin-left: 1rem;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    gap: 0.6rem;
+  }
 `;
 
 const SideMenu = styled.div`
@@ -226,6 +272,11 @@ const SMenu = styled(Link)`
   margin-left: 4vh;
   cursor: pointer;
   text-decoration: none;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    margin-left: 3vh;
+  }
 `;
 
 const LogInButton = styled(Link)`

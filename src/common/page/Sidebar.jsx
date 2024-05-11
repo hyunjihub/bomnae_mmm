@@ -19,7 +19,12 @@ const Side = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    display: none;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     display: none;
   }
   padding-top: 6rem;
@@ -41,7 +46,7 @@ const SMenu = styled(Link)`
   color: #84828a;
   font-size: 0.8rem;
   margin-top: 0.8rem;
-  margin-left: 4vh;
+  margin-left: 4vw;
   cursor: pointer;
   text-decoration: none;
 `;

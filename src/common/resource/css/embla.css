@@ -13,8 +13,13 @@
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 80vw;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 85vw;
   }
 }
 
@@ -53,7 +58,12 @@
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    height: 10rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     height: 10rem;
   }
 }
@@ -86,6 +96,12 @@
   align-items: center;
   fill: #00a3e0;
   padding: 0;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .embla__button:disabled {

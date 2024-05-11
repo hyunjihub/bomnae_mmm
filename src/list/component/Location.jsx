@@ -18,7 +18,7 @@ const Name = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;

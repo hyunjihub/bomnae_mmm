@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
   }
 `;
@@ -40,7 +40,7 @@ const Title = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
   }
 `;
@@ -57,7 +57,7 @@ const Detail = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;
@@ -85,7 +85,7 @@ const RequstBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 23.5rem;
     padding: 2rem;
   }
@@ -102,7 +102,7 @@ const Label = styled.label`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-bottom: 0.2rem;
   }
 `;
@@ -133,7 +133,7 @@ const Input = styled.input`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
     &::placeholder {
       font-size: 0.7rem;
@@ -166,7 +166,7 @@ const Button = styled.button`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
     margin-top: 0;
   }

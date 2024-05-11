@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 100vw;
     margin-left: 0;
     padding: 2vh 0;
@@ -55,20 +55,11 @@ const ListContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 24.5rem;
     gap: 1rem;
     padding: 0 1rem;
   }
-`;
-
-const Container = styled.div`
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
 `;
 
 function Search(props) {

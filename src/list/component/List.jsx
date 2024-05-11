@@ -21,7 +21,7 @@ const ListBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 11.7rem;
     height: 10rem;
   }
@@ -46,7 +46,7 @@ const Image = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     height: 6.5rem;
   }
 `;
@@ -68,7 +68,7 @@ const InfoBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 11rem;
     height: 2rem;
     padding: 0.6rem;
@@ -85,7 +85,7 @@ const Name = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1rem;
   }
 `;
@@ -100,7 +100,7 @@ const Location = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;

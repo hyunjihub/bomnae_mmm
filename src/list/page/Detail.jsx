@@ -4,6 +4,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import Blog from '../component/Blog';
 import Info from '../component/Info';
 import { IoHeart } from 'react-icons/io5';
+import Like from '../../member/component/Like';
 import Menu from '../component/Menu';
 import NaverMapContainer from '../component/NaverMapContainer';
 import { NavermapsProvider } from 'react-naver-maps';
@@ -38,7 +39,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     padding: 3vh 1vw;
     height: 1900px;
@@ -67,7 +68,7 @@ const Container = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 0.5fr 0.8fr;
     grid-template-areas:
@@ -97,7 +98,7 @@ const DetailBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding: 2rem 1rem;
   }
 `;
@@ -156,7 +157,7 @@ const Image = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 50%;
     &.second {
       width: 48%;
@@ -168,8 +169,9 @@ const TitleBox = styled.div`
   width: 90%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   box-sizing: border-box;
+  position: relative;
 
   &.menu {
     width: 100%;
@@ -188,7 +190,7 @@ const TitleDetail = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     &.menu {
       display: none;
     }
@@ -205,21 +207,9 @@ const Name = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
   }
-`;
-
-const Like = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: #fff;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px,
-    rgba(17, 17, 26, 0.1) 0px 16px 56px;
-  border-radius: 50%;
-  box-sizing: border-box;
-  padding: 0.5rem 0.46rem;
-  cursor: pointer;
 `;
 
 const Intro = styled.h2`
@@ -240,7 +230,7 @@ const Intro = styled.h2`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.85rem;
 
     &.location {
@@ -276,7 +266,7 @@ const Title = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.4rem;
   }
 `;
@@ -302,7 +292,7 @@ const ReviewContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     height: 20rem;
   }
 `;
@@ -342,7 +332,7 @@ const Write = styled.textarea`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
   }
 `;
 
@@ -373,7 +363,7 @@ const BlogBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
   }
 `;
 
@@ -428,7 +418,7 @@ function Detail(props) {
     getInfo();
   }, [placeid]);
 
-  let search = `춘천 맛집 ${place.place_name}`;
+  let search = `춘천 ${place.dong} 맛집 ${place.place_name}`;
   const [blogReviews, setBlogReviews] = useState([]);
   useEffect(() => {
     const getBlog = async () => {
@@ -485,9 +475,7 @@ function Detail(props) {
             </Box>
             <TitleBox>
               <Name>{place.place_name}</Name>
-              <Like>
-                <IoHeart size="26" color="d80032" />
-              </Like>
+              <Like place_id={place.place_id} type="detail" />
             </TitleBox>
             {place.intro ? <Intro>{place.intro}</Intro> : null}
             <Divider />

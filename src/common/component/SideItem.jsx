@@ -33,10 +33,17 @@ const Menu = styled(NavLink)`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 9rem;
     height: 2.6rem;
     font-size: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1rem;
+    width: 9rem;
+    height: 2.5rem;
   }
 `;
 

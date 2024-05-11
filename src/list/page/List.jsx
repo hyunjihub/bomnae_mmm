@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 100vw;
     margin-left: 0;
     padding: 2vh 0;
@@ -48,7 +48,7 @@ const Filter = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding-left: 1rem;
   }
 `;
@@ -75,7 +75,7 @@ const LocationBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 1rem;
     width: 24rem;
     gap: 0.3rem 2rem;
@@ -90,7 +90,7 @@ const Icon = styled(MdLocationOn)`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     display: none;
   }
 `;
@@ -117,7 +117,7 @@ const ListContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 24.5rem;
     gap: 1rem;
     padding: 0 1rem;
@@ -144,7 +144,7 @@ const NotAvailable = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.5rem;
 
     &.detail {

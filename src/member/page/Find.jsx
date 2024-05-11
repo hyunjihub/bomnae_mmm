@@ -24,8 +24,14 @@ const LogoBox = styled(Link)`
   cursor: pointer;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 14rem;
+    margin-bottom: 0.3rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 13rem;
     margin-bottom: 0.3rem;
   }
 `;
@@ -34,8 +40,13 @@ const Logo = styled.img`
   width: 16rem;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 14rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 13rem;
   }
 `;
 
@@ -45,9 +56,15 @@ const Title = styled.h1`
   font-weight: 800;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
     margin-bottom: 1rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -67,9 +84,20 @@ const Input = styled.input`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
     padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+
+    &::placeholder {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 17rem;
+    padding: 0.7rem 1.3rem;
     font-size: 0.9rem;
 
     &::placeholder {
@@ -96,8 +124,15 @@ const Button = styled.button`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 17rem;
     padding: 0.6rem 1.5rem;
     font-size: 1rem;
   }
@@ -128,9 +163,16 @@ const Detail = styled.h3`
   line-height: 1.5;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.8rem;
     margin-bottom: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+    width: 16rem;
   }
 `;
 

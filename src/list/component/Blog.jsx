@@ -32,7 +32,7 @@ const Description = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     height: 1.5rem;
   }
 `;

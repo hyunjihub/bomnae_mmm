@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     padding: 3vh 1vw;
   }
@@ -47,7 +47,7 @@ const Title = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
   }
 `;
@@ -63,7 +63,7 @@ const Filter = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding: 0 1rem;
   }
 `;
@@ -86,7 +86,7 @@ const ListContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding: 0 0.8rem;
     gap: 1rem 0.8rem;
   }

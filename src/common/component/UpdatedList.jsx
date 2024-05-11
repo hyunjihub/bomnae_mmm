@@ -17,9 +17,14 @@ const List = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
-    min-width: 10rem;
+  @media all and (min-width: 480px) and (max-width: 767px) {
     min-width: 7rem;
+    height: 9rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    min-width: 8rem;
     height: 9rem;
   }
 `;
@@ -39,8 +44,13 @@ const Image = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     height: 5.8rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    height: 6rem;
   }
 `;
 
@@ -59,8 +69,13 @@ const InfoBox = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     padding: 0.5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding: 0.4rem;
   }
 `;
 
@@ -69,12 +84,7 @@ const Name = styled.h1`
   font-size: 1.1rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    font-size: 0.9rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (max-width: 1023px) {
     font-size: 0.9rem;
   }
 `;
@@ -83,14 +93,8 @@ const Location = styled.h3`
   font-size: 0.8rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (max-width: 1023px) {
     font-size: 0.7rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
-    height: 9vh;
-    gap: 1rem;
   }
 `;
 

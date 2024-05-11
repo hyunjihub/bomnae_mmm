@@ -27,9 +27,15 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     padding: 2vh 2vw;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    margin-left: 0;
+    padding: 1vh 1vw;
   }
 `;
 
@@ -49,7 +55,13 @@ const Container = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 80vw;
+    flex-wrap: nowrap;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     width: 80vw;
     flex-wrap: nowrap;
   }
@@ -71,8 +83,13 @@ const Title = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.6rem;
   }
 `;
 
@@ -111,7 +128,14 @@ const Box = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    gap: 1rem;
+    margin-bottom: 0;
+    height: 9rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
     gap: 1rem;
     margin-bottom: 0;
     height: 9rem;

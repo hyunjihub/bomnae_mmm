@@ -27,17 +27,29 @@ const Wrapper = styled.div`
   padding: 5vh 6vw;
   margin-left: 230px;
 
+  @media all and (min-width: 1024px) and (max-width: 1380px) {
+    margin-left: 230px;
+    height: 1200px;
+  }
+
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     margin-left: 170px;
-    height: 950px;
+    height: 1200px;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     height: 1250px;
     padding: 3vh 2vw;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    margin-left: 0;
+    height: 1000px;
+    padding: 2vh 2vw;
   }
 `;
 
@@ -45,17 +57,24 @@ const PageContainer = styled.div`
   box-sizing: border-box;
   width: 50rem;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 2rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 35rem;
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    width: 30rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 23rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 20rem;
   }
 `;
 
@@ -68,14 +87,20 @@ const PorfileBox = styled.div`
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 35rem;
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    width: 30rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 23rem;
     padding: 3vh 3vw;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 18rem;
+    padding: 2vh 2vw;
   }
 `;
 
@@ -89,12 +114,18 @@ const ProfileContainer = styled.div`
   gap: 2.5rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     gap: 1.5rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    margin-left: 0;
+    gap: 1rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
     margin-left: 0;
     gap: 1rem;
   }
@@ -110,15 +141,21 @@ const ProfileImg = styled.img`
   border-radius: 50%;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 12rem;
-    height: 12rem;
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    width: 10rem;
+    height: 10rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 9rem;
     height: 9rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 7rem;
+    height: 7rem;
   }
 `;
 
@@ -132,17 +169,29 @@ const Upload = styled.button`
   bottom: 1rem;
   right: 0.5rem;
   cursor: pointer;
+  font-size: 1.8rem;
+  padding: 0.6rem 0.7rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     bottom: 1rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 2rem;
     height: 2rem;
     bottom: 1.2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 2rem;
+    height: 2rem;
+    bottom: 0.5rem;
+    right: 0;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.45rem;
   }
 `;
 
@@ -159,13 +208,19 @@ const InfoBox = styled.div`
   }
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     gap: 0.3rem;
   }
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 9rem;
     gap: 0.3rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 8rem;
+    gap: 0.2rem;
   }
 `;
 
@@ -175,15 +230,21 @@ const Nickname = styled.h1`
   font-weight: 800;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     width: 10rem;
     font-size: 2.2rem;
     height: 2.2rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
+    height: 2rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.6rem;
     height: 2rem;
   }
 `;
@@ -198,8 +259,17 @@ const Text = styled.p`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.8rem;
+
+    &.intro {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.6rem;
 
     &.intro {
       margin-bottom: 0.5rem;
@@ -233,17 +303,24 @@ const Button = styled.button`
   }
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     font-size: 1.1rem;
     width: 15rem;
     padding: 0.7rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 9rem;
     font-size: 0.9rem;
     padding: 0.6rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 8rem;
+    font-size: 0.7rem;
+    padding: 0.4rem;
   }
 `;
 
@@ -256,7 +333,12 @@ const Withdraw = styled.button`
   cursor: pointer;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    font-size: 0.7rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
     font-size: 0.7rem;
   }
 `;
@@ -273,10 +355,18 @@ const EditInput = styled.input`
   font-family: pretendard;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
     height: 2rem;
     width: 8rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+    width: 7rem;
+    height: 2rem;
   }
 `;
 
@@ -285,13 +375,18 @@ const Title = styled.h1`
   font-size: 2.3rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (min-width: 768px) and (max-width: 1380px) {
     font-size: 2.1rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.5rem;
   }
 `;
 
@@ -304,8 +399,13 @@ const Detail = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.85rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.7rem;
   }
 `;
 
@@ -316,21 +416,38 @@ const TitleBox = styled.div`
   margin-bottom: 1rem;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     gap: 0.5rem;
   }
 `;
 
 const Box = styled.div`
   display: flex;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    &.review {
+      gap: 0.5rem;
+      flex-direction: column;
+    }
+  }
+
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     gap: 1rem;
 
+    &.review {
+      gap: 0.5rem;
+      flex-direction: column;
+    }
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    gap: 0.1rem;
     &.review {
       gap: 0.5rem;
       flex-direction: column;
@@ -344,13 +461,18 @@ const Container = styled.div`
   width: 45rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 35rem;
+  @media all and (min-width: 768px) and (max-width: 1380px) {
+    width: 30rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 23rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 18rem;
   }
 `;
 
@@ -614,7 +736,7 @@ function MyPage(props) {
               )}
               {isEdited ? (
                 <Upload onClick={handleProfile}>
-                  <FaCamera size="25" color="#000" />
+                  <FaCamera color="#000" />
                   <input type="file" ref={fileInput} onChange={handleUpload} style={{ display: 'none' }} />
                 </Upload>
               ) : (
@@ -658,7 +780,7 @@ function MyPage(props) {
         </Container>
         <Container>
           <TitleBox>
-            <Title>최근 작성 후기</Title>
+            <Title>작성 후기</Title>
             <Detail>최대 3개까지만 확인 가능 합니다.</Detail>
           </TitleBox>
           <Box className="review">

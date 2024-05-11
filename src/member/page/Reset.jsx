@@ -26,7 +26,7 @@ const LogoBox = styled(Link)`
   cursor: pointer;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 14rem;
     margin-bottom: 0.3rem;
   }
@@ -36,7 +36,7 @@ const Logo = styled.img`
   width: 16rem;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 14rem;
   }
 `;
@@ -48,7 +48,7 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
     margin-bottom: 1rem;
   }
@@ -70,7 +70,7 @@ const Input = styled.input`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
     padding: 0.8rem 1.5rem;
     font-size: 0.9rem;
@@ -100,7 +100,7 @@ const Button = styled.button`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 20rem;
     padding: 0.6rem 1.5rem;
     font-size: 1rem;
@@ -119,7 +119,7 @@ const SButton = styled(Link)`
   margin-bottom: 5rem;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 0.9rem;
   }
 `;

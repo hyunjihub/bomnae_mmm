@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import styled, { css } from 'styled-components';
 
 import { IoHeart } from 'react-icons/io5';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
-import styled from 'styled-components';
 
 const Heart = styled(IoHeart)`
   font-size: 1.5rem;
@@ -17,7 +17,7 @@ const Heart = styled(IoHeart)`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.1rem;
   }
 `;
@@ -28,31 +28,44 @@ const LikeBox = styled.div`
   background-color: #fff;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px,
     rgba(17, 17, 26, 0.1) 0px 16px 56px;
-  position: absolute;
-  top: 0.4rem;
-  right: 0.5rem;
   border-radius: 50%;
   box-sizing: border-box;
   padding: 0.5rem;
   cursor: pointer;
   z-index: 10;
 
-  /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     width: 2rem;
     height: 2rem;
     padding: 0.3rem;
   }
 
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     width: 1.5rem;
     height: 1.5rem;
     padding: 0.2rem 0.15rem;
   }
+
+  ${(props) =>
+    props.type === 'list' &&
+    css`
+      position: absolute;
+      top: 0.4rem;
+      right: 0.5rem;
+
+      @media all and (min-width: 768px) and (max-width: 1023px) {
+        top: 0.3rem;
+        right: 0.4rem;
+      }
+
+      @media all and (min-width: 480px) and (max-width: 767px) {
+        top: 0.2rem;
+        right: 0.3rem;
+      }
+    `}
 `;
 
-function Like({ place_id }) {
+function Like({ place_id, type = 'list' }) {
   const { id, isLogIn } = useSelector(
     (state) => ({
       isLogIn: state.login.isLogIn,
@@ -120,7 +133,7 @@ function Like({ place_id }) {
   };
 
   return (
-    <LikeBox onClick={handleLike}>
+    <LikeBox type={type} onClick={handleLike}>
       <Heart color={isLiked ? '#d80032' : '#ccc'} />
     </LikeBox>
   );
