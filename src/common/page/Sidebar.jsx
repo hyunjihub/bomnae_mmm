@@ -46,7 +46,7 @@ const SMenu = styled(Link)`
   color: #84828a;
   font-size: 0.8rem;
   margin-top: 0.8rem;
-  margin-left: 4vw;
+  margin-left: 3vw;
   cursor: pointer;
   text-decoration: none;
 `;

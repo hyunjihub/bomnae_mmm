@@ -44,6 +44,13 @@ const Wrapper = styled.div`
     padding: 3vh 1vw;
     height: 1900px;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    margin-left: 0;
+    padding: 2vh 1vw;
+    height: 2100px;
+  }
 `;
 
 const Container = styled.div`
@@ -58,7 +65,7 @@ const Container = styled.div`
   box-sizing: border-box;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1380px) {
+  @media all and (min-width: 1024px) and (max-width: 1380px) {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 2fr 1fr;
     grid-template-areas:
@@ -67,15 +74,37 @@ const Container = styled.div`
     padding: 0 6vw;
   }
 
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.5fr 0.8fr;
+    grid-template-rows: 1fr 0.5fr 0.5fr;
     grid-template-areas:
       'd'
       'l'
       'r';
     padding: 0 6vw;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.5fr 0.5fr;
+    grid-template-areas:
+      'd'
+      'l'
+      'r';
+    padding: 0 6vw;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.4fr 0.4fr;
+    grid-template-areas:
+      'd'
+      'l'
+      'r';
+    padding: 0 2vw;
   }
 `;
 
@@ -101,6 +130,11 @@ const DetailBox = styled.div`
   @media all and (min-width: 480px) and (max-width: 767px) {
     padding: 2rem 1rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding: 1rem 0.5rem;
+  }
 `;
 
 const LocationBox = styled.div`
@@ -110,6 +144,11 @@ const LocationBox = styled.div`
   box-sizing: border-box;
   grid-area: l;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding: 1.2rem;
+  }
 `;
 
 const ReviewBox = styled.div`
@@ -119,6 +158,11 @@ const ReviewBox = styled.div`
   box-sizing: border-box;
   grid-area: r;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding: 1.2rem;
+  }
 `;
 
 const Box = styled.div`
@@ -140,6 +184,19 @@ const Box = styled.div`
     width: 40%;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    flex-direction: column;
+
+    &.info {
+      width: 100%;
+    }
+
+    &.menu {
+      width: 100%;
+    }
   }
 `;
 
@@ -163,6 +220,16 @@ const Image = styled.div`
       width: 48%;
     }
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 100%;
+    height: 11rem;
+    margin-bottom: 0.3rem;
+    &.second {
+      display: none;
+    }
+  }
 `;
 
 const TitleBox = styled.div`
@@ -183,14 +250,7 @@ const TitleDetail = styled.h3`
   color: #9a95a3;
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 768px) and (max-width: 1380px) {
-    &.menu {
-      display: none;
-    }
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 1380px) {
     &.menu {
       display: none;
     }
@@ -209,6 +269,11 @@ const Name = styled.div`
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.8rem;
   }
 `;
 
@@ -230,7 +295,7 @@ const Intro = styled.h2`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     font-size: 0.85rem;
 
     &.location {
@@ -269,6 +334,11 @@ const Title = styled.h1`
   @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.4rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const InfoBox = styled.div`
@@ -292,7 +362,7 @@ const ReviewContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     height: 20rem;
   }
 `;

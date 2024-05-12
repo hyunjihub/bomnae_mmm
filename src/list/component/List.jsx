@@ -25,6 +25,12 @@ const ListBox = styled.div`
     width: 11.7rem;
     height: 10rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 8.4rem;
+    height: 9.5rem;
+  }
 `;
 
 const Image = styled.div`
@@ -48,6 +54,11 @@ const Image = styled.div`
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
     height: 6.5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    height: 6rem;
   }
 `;
 
@@ -73,6 +84,12 @@ const InfoBox = styled.div`
     height: 2rem;
     padding: 0.6rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 8.4rem;
+    padding: 0.6rem;
+  }
 `;
 
 const Name = styled.h1`
@@ -85,8 +102,13 @@ const Name = styled.h1`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     font-size: 1rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.9rem;
   }
 `;
 
@@ -100,7 +122,7 @@ const Location = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;
@@ -115,7 +137,7 @@ function List({ list }) {
     shallowEqual
   );
 
-  const longName = (str, length = 10) => {
+  const longName = (str, length = 9) => {
     let result = '';
     if (str.length > length) {
       result = str.substr(0, length - 1) + '...';

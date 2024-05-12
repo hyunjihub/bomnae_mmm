@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     margin-left: 0;
     padding: 3vh 1vw;
   }
@@ -50,6 +50,11 @@ const Title = styled.h1`
   @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const Filter = styled.div`
@@ -58,12 +63,7 @@ const Filter = styled.div`
   gap: 0.8rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    padding: 0 1rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 1023px) {
     padding: 0 1rem;
   }
 `;
@@ -86,7 +86,7 @@ const ListContainer = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     padding: 0 0.8rem;
     gap: 1rem 0.8rem;
   }
@@ -94,6 +94,12 @@ const ListContainer = styled.div`
 
 const Icon = styled(GrFormPrevious)`
   cursor: pointer;
+  font-size: 2.8rem;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 2rem;
+  }
 `;
 
 function Like(props) {
@@ -200,7 +206,7 @@ function Like(props) {
   return (
     <Wrapper>
       <Title>
-        <Icon onClick={() => navigate(-1)} size="50" />
+        <Icon onClick={() => navigate(-1)} />
         현현님이 좋아요한 장소
       </Title>
       <Filter>

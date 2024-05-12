@@ -17,6 +17,11 @@ const Title = styled.a`
   &:hover {
     text-decoration: underline;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1rem;
+  }
 `;
 
 const Description = styled.h3`
@@ -33,6 +38,12 @@ const Description = styled.h3`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
+    height: 1.5rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.85rem;
     height: 1.5rem;
   }
 `;

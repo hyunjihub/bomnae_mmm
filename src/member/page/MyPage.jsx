@@ -293,6 +293,10 @@ const Button = styled.button`
     background-color: #4cb9e7;
   }
 
+  &.edit {
+    width: 7rem;
+  }
+
   &.reset {
     background-color: #c7c8cc;
     color: #000;
@@ -314,6 +318,10 @@ const Button = styled.button`
     width: 9rem;
     font-size: 0.9rem;
     padding: 0.6rem;
+
+    &.edit {
+      width: 4rem;
+    }
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -321,6 +329,26 @@ const Button = styled.button`
     width: 8rem;
     font-size: 0.7rem;
     padding: 0.4rem;
+
+    &.edit {
+      width: 3.8rem;
+    }
+  }
+`;
+
+const ButtonBox = styled.div`
+  width: 15rem;
+  display: flex;
+  justify-content: space-between;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 9rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 8rem;
   }
 `;
 
@@ -529,7 +557,7 @@ function MyPage(props) {
   useEffect(() => {
     const getList = async () => {
       try {
-        const q = query(collection(appFireStore, 'likes'), where('uid', '==', id), limit(4));
+        const q = query(collection(appFireStore, 'likes'), where('uid', '==', id), limit(3));
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((doc) => {
@@ -723,6 +751,10 @@ function MyPage(props) {
     setModifyName(userInfo.nickname);
   };
 
+  const handleCancel = () => {
+    setIsEdited(!isEdited);
+  };
+
   return (
     <Wrapper>
       <PageContainer>
@@ -757,7 +789,18 @@ function MyPage(props) {
                 )}
               </InfoBox>
               <Text className="intro">{userInfo.nickname}(님)의 맛집 목록 계정 입니다.</Text>
-              <Button onClick={handleUpdate}>{isEdited ? '프로필 변경 적용' : '프로필 편집'}</Button>
+              {isEdited ? (
+                <ButtonBox>
+                  <Button className="edit" onClick={handleUpdate}>
+                    변경
+                  </Button>
+                  <Button className="edit" onClick={handleCancel}>
+                    취소
+                  </Button>
+                </ButtonBox>
+              ) : (
+                <Button onClick={handleUpdate}>프로필 편집</Button>
+              )}
               <Button className="reset" onClick={handleReset}>
                 비밀번호 재설정
               </Button>

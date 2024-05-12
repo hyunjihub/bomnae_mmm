@@ -15,12 +15,23 @@ const Filter = styled.div`
   &:hover {
     background-color: #c4e4ff;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 3.2rem;
+    padding: 0.5rem 0.3rem;
+  }
 `;
 
 const Name = styled.h1`
   font-size: 0.9rem;
   color: #222831;
   text-align: center;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 0.8rem;
+  }
 `;
 
 function LikeFilter({ filter, setCurrentFilter }) {

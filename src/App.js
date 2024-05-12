@@ -3,7 +3,6 @@ import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import Authentication from './member/page/Authentication';
 import Detail from './list/page/Detail';
 import Error from './common/page/Error';
 import Find from './member/page/Find';
@@ -47,7 +46,6 @@ export default function App(props) {
           <Routes>
             <Route index element={<Main />} />
             <Route path="/main" element={<Main />} />
-            <Route path="/auth" element={<Authentication />} />
             <Route path="/find" element={<Find />} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -56,8 +54,8 @@ export default function App(props) {
             <Route path="/search/:search" element={<Search />} />
             <Route element={<PrivateRoute />}>
               <Route path="/reset" element={<Reset />} />
-              <Route path="/mypage/:memberid" element={<MyPage />} />
-              <Route path="/mypage/:memberid/like" element={<Like />} />
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage/like" element={<Like />} />
               <Route path="/request/:isadmin" element={<Request />} />
             </Route>
             <Route path="*" element={<Error />} />

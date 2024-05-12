@@ -18,8 +18,9 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     margin-left: 0;
+    padding: 4vh 5vw;
   }
 `;
 
@@ -43,6 +44,11 @@ const Title = styled.h1`
   @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Detail = styled.h3`
@@ -57,7 +63,7 @@ const Detail = styled.h3`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;
@@ -89,6 +95,12 @@ const RequstBox = styled.div`
     width: 23.5rem;
     padding: 2rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 100%;
+    padding: 1.2rem;
+  }
 `;
 
 const Label = styled.label`
@@ -97,12 +109,7 @@ const Label = styled.label`
   margin-bottom: 0.5rem;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    margin-bottom: 0.2rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 1023px) {
     margin-bottom: 0.2rem;
   }
 `;
@@ -139,6 +146,14 @@ const Input = styled.input`
       font-size: 0.7rem;
     }
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 100%;
+    &::placeholder {
+      font-size: 0.7rem;
+    }
+  }
 `;
 
 const Button = styled.button`
@@ -170,6 +185,12 @@ const Button = styled.button`
     width: 20rem;
     margin-top: 0;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 100%;
+    margin-top: 0;
+  }
 `;
 
 const RequestContainer = styled.div`
@@ -178,6 +199,15 @@ const RequestContainer = styled.div`
   width: 70rem;
   background-color: transparent;
   gap: 2rem;
+  justify-content: center;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 100%;
+    gap: 1rem;
+    height: 30rem;
+    overflow-y: auto;
+  }
 `;
 
 function Request(props) {

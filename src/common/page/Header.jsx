@@ -304,7 +304,7 @@ function Header(props) {
   const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
   const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
-  const setName = (name) => dispatch(setName(name));
+  const setNickname = (name) => dispatch(setName(name));
 
   const { isLog, id, profileImg, isAdmin } = useSelector(
     (state) => ({
@@ -349,14 +349,14 @@ function Header(props) {
   }
 
   const handleLogOut = async () => {
+    navigate('/');
     try {
       await signOut(appAuth);
       setLogIn(false);
       setMemberId(null);
       setProfileImg(null);
       setIsAdmin(false);
-      setName(null);
-      navigate('/');
+      setNickname(null);
     } catch (error) {
       console.log(error);
     }
@@ -387,7 +387,7 @@ function Header(props) {
               <LogInButton to="/login">로그인</LogInButton>
             )}
           </LoginBox>
-          {isLog ? <Profile to="/mypage/1" profile={profileImg === '' ? profile : profileImg}></Profile> : <></>}
+          {isLog ? <Profile to="/mypage" profile={profileImg === '' ? profile : profileImg}></Profile> : <></>}
           <Menu onClick={handleOpen}>
             {isOpen ? (
               <SideMenu>

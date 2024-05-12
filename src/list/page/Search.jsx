@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -26,7 +27,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     width: 100vw;
     margin-left: 0;
     padding: 2vh 0;
@@ -34,7 +35,7 @@ const Wrapper = styled.div`
 `;
 
 const ListContainer = styled.div`
-  max-height: 70vh;
+  max-height: 80vh;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1rem;
@@ -42,10 +43,6 @@ const ListContainer = styled.div`
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  &.cafe {
-    max-height: 80vh;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
@@ -59,6 +56,12 @@ const ListContainer = styled.div`
     width: 24.5rem;
     gap: 1rem;
     padding: 0 1rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 18rem;
+    padding: 0.2rem;
   }
 `;
 

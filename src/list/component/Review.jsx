@@ -7,7 +7,7 @@ const Content = styled.h3`
   color: #607274;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (max-width: 1023px) {
     font-size: 0.85rem;
   }
 `;
@@ -17,7 +17,7 @@ const Time = styled.h4`
   color: #838383;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (max-width: 1023px) {
     font-size: 0.7rem;
   }
 `;
@@ -27,7 +27,7 @@ const Name = styled.h1`
   font-weight: 700;
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (max-width: 1023px) {
     font-size: 1rem;
   }
 `;

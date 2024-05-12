@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 767px) {
     width: 100vw;
     margin-left: 0;
     padding: 2vh 0;
@@ -40,16 +41,10 @@ const Filter = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding-left: 3rem;
 
-  /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    padding-left: 1rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
-    padding-left: 1rem;
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    gap: 0.5rem;
   }
 `;
 
@@ -61,7 +56,6 @@ const LocationBox = styled.div`
   padding: 0.2rem 1.5rem;
   justify-content: space-between;
   border-radius: 16px;
-  margin-left: 3rem;
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -71,26 +65,26 @@ const LocationBox = styled.div`
   @media all and (min-width: 768px) and (max-width: 1023px) {
     width: 30rem;
     gap: 0.1rem;
-    margin-left: 1rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    margin-left: 1rem;
     width: 24rem;
-    gap: 0.3rem 2rem;
+    gap: 0.3rem 1.5rem;
     height: 3rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 18rem;
+    gap: 0.2rem 1.5rem;
+    height: 5rem;
   }
 `;
 
 const Icon = styled(MdLocationOn)`
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    display: none;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
+  @media all and (max-width: 1023px) {
     display: none;
   }
 `;
@@ -122,6 +116,12 @@ const ListContainer = styled.div`
     gap: 1rem;
     padding: 0 1rem;
   }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 18rem;
+    padding: 0.2rem;
+  }
 `;
 
 const NotAvailable = styled.h1`
@@ -138,7 +138,6 @@ const NotAvailable = styled.h1`
     font-size: 2rem;
 
     &.detail {
-      font-weight: 500;
       font-size: 1rem;
     }
   }
@@ -148,8 +147,16 @@ const NotAvailable = styled.h1`
     font-size: 1.5rem;
 
     &.detail {
-      font-weight: 500;
       font-size: 0.9rem;
+    }
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.2rem;
+
+    &.detail {
+      font-size: 0.8rem;
     }
   }
 `;

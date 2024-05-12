@@ -7,6 +7,11 @@ const List = styled.div`
   height: 10rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    height: 8rem;
+  }
 `;
 
 const InfoBox = styled.div`
@@ -18,6 +23,11 @@ const InfoBox = styled.div`
   box-sizing: border-box;
   padding: 2rem 1.5rem;
   position: relative;
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    padding: 1.3rem 1rem;
+  }
 `;
 
 const Cancel = styled.button`
