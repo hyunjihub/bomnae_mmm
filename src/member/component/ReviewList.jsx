@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -34,9 +35,15 @@ const List = styled.div`
   }
 `;
 
-const Name = styled.h1`
+const Name = styled(Link)`
   font-size: 1.5rem;
   font-weight: 800;
+  text-decoration: none;
+  color: #000;
+
+  &:hover {
+    text-decoration: underline;
+  }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
@@ -75,9 +82,9 @@ function ReviewList({ reviewList }) {
   return (
     <>
       <List>
-        <Name>{reviewList.place_name}</Name>
-        <Time>{reviewList.createdAt}</Time>
-        <Review>{reviewList.review}</Review>
+        <Name to={`/place/${reviewList.place_id}`}>{reviewList.place_name}</Name>
+        <Time>{reviewList.created_at}</Time>
+        <Review>{reviewList.content}</Review>
       </List>
     </>
   );

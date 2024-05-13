@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 import RequestList from '../component/RequestList';
+import Swal from 'sweetalert2';
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -213,6 +216,20 @@ const RequestContainer = styled.div`
 function Request(props) {
   const { isadmin } = useParams();
 
+  const [request, setRequest] = useState({
+    place_name: '',
+    address: '',
+    category: '',
+  });
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
   const requestLists = [
     { place_name: '오야', location: '교동 149-12', category: '일식' },
     { place_name: '교동부대찌개', location: '교동 156-27', category: '한식' },
@@ -224,6 +241,47 @@ function Request(props) {
     { place_name: '사이라', location: '퇴계동 396-22', category: null },
   ];
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRequest({
+      ...request,
+      [name]: value,
+    });
+  };
+
+  const handleRequest = async () => {
+    if (request.address !== '' && request.place_name !== '') {
+      try {
+        let userDoc = doc(collection(appFireStore, 'requests'));
+        await setDoc(userDoc, {
+          place_name: request.place_name,
+          category: request.category,
+          address: request.address,
+        });
+        Toast.fire({
+          icon: 'success',
+          html: '정상적으로 요청되었습니다.',
+        });
+        setRequest({
+          place_name: null,
+          address: null,
+          category: null,
+        });
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    } else {
+      Toast.fire({
+        icon: 'error',
+        html: '상호명과 위치는 필수입니다.',
+      });
+    }
+  };
+
   return (
     <>
       {isadmin === 'common' ? (
@@ -233,15 +291,22 @@ function Request(props) {
           <RequstBox>
             <Title className="request">맛집 등록 요청</Title>
             <Label>상호명 (필수)</Label>
-            <Input type="text" placeholder="상호명을 입력해주세요." />
+            <Input type="text" name="place_name" placeholder="상호명을 입력해주세요." onChange={handleInputChange} />
             <Label>위치 (필수)</Label>
             <Input
               type="text"
+              name="address"
               placeholder="위치를 입력해주세요. (동명의 상호가 있을 수 있으므로 정확한 입력을 부탁드립니다.)"
+              onChange={handleInputChange}
             />
             <Label>카테고리 (선택)</Label>
-            <Input type="text" placeholder="한식, 중식, 일식, 카페 등 자유롭게 작성해주세요." />
-            <Button>맛집 등록 요청</Button>
+            <Input
+              type="text"
+              name="category"
+              placeholder="한식, 중식, 일식, 카페 등 자유롭게 작성해주세요."
+              onChange={handleInputChange}
+            />
+            <Button onClick={handleRequest}>맛집 등록 요청</Button>
           </RequstBox>
           <Detail>
             <Strong>※ 신청 시 꼭 읽어주세요!</Strong>

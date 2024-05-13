@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 
 import EmblaCarousel from '../component/EmblaCarousel';
 import Swal from 'sweetalert2';
@@ -149,6 +149,7 @@ function Main(props) {
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
   const [restaurants, setRestaurants] = useState([]);
+  const [cafes, setCafes] = useState([]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -161,20 +162,37 @@ function Main(props) {
   useEffect(() => {
     const getList = async () => {
       try {
-        const q = query(
+        let q = query(
           collection(appFireStore, 'restaurants'),
+          where('place_id', '<', 2000),
           orderBy('created_at', 'desc'), // created_at 필드를 내림차순으로 정렬
           limit(6)
         );
-        const querySnapshot = await getDocs(q);
+        let querySnapshot = await getDocs(q);
 
-        const updatedList = [];
+        let updatedList = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           updatedList.push(data);
         });
         setRestaurants(updatedList);
+
+        q = query(
+          collection(appFireStore, 'restaurants'),
+          where('place_id', '>', 2000),
+          orderBy('created_at', 'desc'), // created_at 필드를 내림차순으로 정렬
+          limit(6)
+        );
+        querySnapshot = await getDocs(q);
+
+        updatedList = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          updatedList.push(data);
+        });
+        setCafes(updatedList);
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -205,7 +223,7 @@ function Main(props) {
             <More to="/list/cafe">더보기</More>
           </TitleBox>
           <Box>
-            {restaurants.map((restaurant) => {
+            {cafes.map((restaurant) => {
               return <UpdatedList list={restaurant} />;
             })}
           </Box>

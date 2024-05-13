@@ -1,9 +1,9 @@
 import React, { startTransition, useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { Timestamp, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Blog from '../component/Blog';
 import Info from '../component/Info';
-import { IoHeart } from 'react-icons/io5';
 import Like from '../../member/component/Like';
 import Menu from '../component/Menu';
 import NaverMapContainer from '../component/NaverMapContainer';
@@ -355,6 +355,8 @@ const ReviewContainer = styled.div`
     display: none;
   }
   gap: 1rem;
+  margin-top: 1.5rem;
+  box-sizing: border-box;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
@@ -440,6 +442,15 @@ const BlogBox = styled.div`
 function Detail(props) {
   const { placeid } = useParams();
 
+  const { id, profileImg, name } = useSelector(
+    (state) => ({
+      id: state.login.memberId,
+      profileImg: state.login.profileImg,
+      name: state.login.nickname,
+    }),
+    shallowEqual
+  );
+
   const [place, setPlace] = useState({});
   const [menu, setMenu] = useState([]);
   const [info, setInfo] = useState({
@@ -448,7 +459,10 @@ function Detail(props) {
     parking: null,
     service: null,
     time: null,
+    insta: null,
+    category: null,
   });
+  const [reviewList, setReviewList] = useState([]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -464,7 +478,7 @@ function Detail(props) {
         const q = query(collection(appFireStore, 'restaurants'), where('place_id', '==', Number(placeid)));
         const querySnapshot = await getDocs(q);
 
-        await startTransition(() => {
+        startTransition(() => {
           querySnapshot.docs.map((doc) => {
             setPlace(doc.data());
             setMenu(doc.data().menus);
@@ -474,6 +488,8 @@ function Detail(props) {
               parking: doc.data().parking,
               service: doc.data().service,
               time: doc.data().time,
+              insta: doc.data().instagram,
+              category: doc.data().category,
             });
           });
         });
@@ -486,6 +502,30 @@ function Detail(props) {
       }
     };
     getInfo();
+    const getReview = async () => {
+      try {
+        const q = query(collection(appFireStore, 'reviews'), where('place_id', '==', Number(placeid)));
+        const querySnapshot = await getDocs(q);
+
+        const reviews = [];
+        querySnapshot.forEach((doc) => {
+          let review = {
+            writer: doc.data().writer,
+            content: doc.data().content,
+            created_at: doc.data().created_at.toDate().toISOString().substring(0, 10),
+          };
+          reviews.push(review);
+        });
+        setReviewList(reviews);
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    getReview();
   }, [placeid]);
 
   let search = `춘천 ${place.dong} 맛집 ${place.place_name}`;
@@ -513,26 +553,36 @@ function Detail(props) {
     if (place.place_name !== undefined) getBlog();
   }, [place.place_name, search]);
 
-  const reviews = [
-    {
-      nickname: '닉네임',
-      time: '2024-04-22',
-      review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
-    },
-    {
-      nickname: '닉네임',
-      time: '2024-04-22',
-      review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
-    },
-    {
-      nickname: '닉네임',
-      time: '2024-04-22',
-      review:
-        '후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력 될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리 후기가 입력될 자리',
-    },
-  ];
+  const [review, setReview] = useState('');
+  const handleReview = async () => {
+    try {
+      let userDoc = doc(collection(appFireStore, 'reviews'));
+      await setDoc(userDoc, {
+        uid: id,
+        writer: name,
+        place_id: place.place_id,
+        content: review,
+        created_at: Timestamp.fromDate(new Date()),
+        place_name: place.place_name,
+      });
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().slice(0, 10);
+      let newReview = {
+        writer: name,
+        content: review,
+        created_at: formattedDate,
+      };
+      setReviewList([newReview, ...reviewList]);
+      Toast.fire({
+        icon: 'success',
+        html: '후기가 등록되었습니다.',
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReview('');
+    }
+  };
 
   return (
     <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
@@ -585,14 +635,24 @@ function Detail(props) {
           <ReviewBox>
             <Title>후기</Title>
             <ReviewContainer>
-              {reviews.map((review) => {
-                return <Review review={review} />;
-              })}
+              {reviewList.length === 0 ? (
+                <p>작성된 후기가 없습니다.</p>
+              ) : (
+                reviewList.map((review) => {
+                  return <Review review={review} />;
+                })
+              )}
             </ReviewContainer>
             <Divider className="review" />
             <WriteContainer>
-              <Write placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."></Write>
-              <Button>
+              <Write
+                value={review || ''}
+                placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."
+                onChange={(e) => setReview(e.target.value)}
+                rows={4}
+                cols={50}
+              ></Write>
+              <Button onClick={handleReview}>
                 후기
                 <br />
                 등록

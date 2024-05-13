@@ -49,10 +49,10 @@ function Review({ review }) {
   return (
     <ReviewContainer>
       <UserBox>
-        <Name>{review.nickname}</Name>
-        <Time>{review.time}</Time>
+        <Name>{review.writer}</Name>
+        <Time>{review.created_at}</Time>
       </UserBox>
-      <Content>{review.review}</Content>
+      <Content>{review.content}</Content>
     </ReviewContainer>
   );
 }

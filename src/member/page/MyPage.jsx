@@ -1,7 +1,7 @@
 import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, signOut } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { appAuth, appFireStore, appStorage } from '../../firebase/config';
-import { collection, deleteDoc, doc, getDocs, limit, query, updateDoc, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -451,9 +451,10 @@ const TitleBox = styled.div`
 
 const Box = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+  gap: 1rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
@@ -535,25 +536,9 @@ function MyPage(props) {
     timerProgressBar: true,
   });
 
-  const reviewLists = [
-    {
-      place_name: '레이아웃',
-      review: '정말 맛있고 사장님이 친절하세요. 정말 자주 가는 식당입니다. 항상 갈 때마다 만족해요!',
-      createdAt: '2024년 4월 20일',
-    },
-    {
-      place_name: '레이아웃',
-      review: '정말 맛있고 사장님이 친절하세요. 정말 자주 가는 식당입니다. 항상 갈 때마다 만족해요!',
-      createdAt: '2024년 4월 20일',
-    },
-    {
-      place_name: '레이아웃',
-      review: '정말 맛있고 사장님이 친절하세요. 정말 자주 가는 식당입니다. 항상 갈 때마다 만족해요!',
-      createdAt: '2024년 4월 20일',
-    },
-  ];
-
+  const [reviewList, setReviewList] = useState([]);
   const [likeLists, setLikeLists] = useState([]);
+
   useEffect(() => {
     const getList = async () => {
       try {
@@ -569,6 +554,37 @@ function MyPage(props) {
       }
     };
     getList();
+    const getReview = async () => {
+      try {
+        const q = query(
+          collection(appFireStore, 'reviews'),
+          where('uid', '==', id),
+          orderBy('created_at', 'desc'), // created_at 필드를 내림차순으로 정렬
+          limit(3)
+        );
+        const querySnapshot = await getDocs(q);
+
+        const reviews = [];
+        querySnapshot.forEach((doc) => {
+          let review = {
+            writer: doc.data().writer,
+            content: doc.data().content,
+            created_at: doc.data().created_at.toDate().toISOString().substring(0, 10),
+            place_name: doc.data().place_name,
+            place_id: doc.data().place_id,
+          };
+          reviews.push(review);
+        });
+        setReviewList(reviews);
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    getReview();
   }, []);
 
   const handleDelete = async () => {
@@ -827,7 +843,7 @@ function MyPage(props) {
             <Detail>최대 3개까지만 확인 가능 합니다.</Detail>
           </TitleBox>
           <Box className="review">
-            {reviewLists.map((reviewList) => {
+            {reviewList.map((reviewList) => {
               return <ReviewList reviewList={reviewList} />;
             })}
           </Box>

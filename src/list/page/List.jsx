@@ -197,8 +197,8 @@ function List(props) {
     '약사명동',
     '교동',
   ];
-  const restaurantLists2 = [];
   const [restaurantLists, setRestaurantLists] = useState([]);
+  const [cafeLists, setCafeLists] = useState([]);
   const [key, setKey] = useState(null); //마지막 스냅샷
   const [noMore, setNoMore] = useState(false);
   const [target, setTarget] = useState(null);
@@ -206,15 +206,26 @@ function List(props) {
   useEffect(() => {
     const getFirstList = async () => {
       try {
-        const q = query(
-          collection(appFireStore, 'restaurants'),
-          where('place_id', '<', 2000),
-          orderBy('place_id'),
-          limit(30)
-        );
+        let q;
+        if (type === 'restaurant') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', '<', 2000),
+            orderBy('place_id'),
+            limit(30)
+          );
+        } else if (type === 'cafe') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', '>', 2000),
+            orderBy('place_id'),
+            limit(30)
+          );
+        }
         const querySnapshot = await getDocs(q);
         const updatedList = querySnapshot.docs.map((doc) => doc.data());
-        setRestaurantLists(updatedList);
+        if (type === 'restaurant') setRestaurantLists(updatedList);
+        else if (type === 'cafe') setCafeLists(updatedList);
         setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
       } catch (error) {
         console.log(error);
@@ -224,26 +235,40 @@ function List(props) {
         });
       }
     };
-    getFirstList();
-  }, []);
+    if (type === 'cafe') setCurrentFilter('카페');
+    if (type !== 'entertainment') getFirstList();
+  }, [type]);
 
   const loadMore = useCallback(async () => {
     if (currentFilter === '*' && currentLocation === '*' && key !== null) {
       try {
-        const q = query(
-          collection(appFireStore, 'restaurants'),
-          where('place_id', '<', 2000),
-          orderBy('place_id'),
-          startAfter(key),
-          limit(10)
-        );
+        let q;
+        if (type === 'restaurant') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', '<', 2000),
+            orderBy('place_id'),
+            startAfter(key),
+            limit(10)
+          );
+        } else if (type === 'cafe') {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', '>', 2000),
+            orderBy('place_id'),
+            startAfter(key),
+            limit(10)
+          );
+        }
+
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
           setNoMore(true);
         } else {
           const updatedList = querySnapshot.docs.map((doc) => doc.data());
           setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          setRestaurantLists((prevList) => [...prevList, ...updatedList]);
+          if (type === 'restaurant') setRestaurantLists((prevList) => [...prevList, ...updatedList]);
+          else if (type === 'cafe') setCafeLists((prevList) => [...prevList, ...updatedList]);
         }
       } catch (error) {
         console.log(error);
@@ -325,7 +350,8 @@ function List(props) {
           const data = doc.data();
           updatedList.push(data);
         });
-        setRestaurantLists(updatedList);
+        if (type === 'restaurant') setRestaurantLists(updatedList);
+        if (type === 'cafe') setCafeLists(updatedList);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -364,11 +390,11 @@ function List(props) {
           <LocationBox>
             <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
-              return <Location filter={filter} />;
+              return <Location filter={filter} setCurrentLocation={setCurrentLocation} />;
             })}
           </LocationBox>
           <ListContainer className="cafe">
-            {restaurantLists2.map((list) => {
+            {cafeLists.map((list) => {
               return <PrintList list={list} />;
             })}
           </ListContainer>
