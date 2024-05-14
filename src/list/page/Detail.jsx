@@ -1,6 +1,6 @@
 import React, { startTransition, useEffect, useState } from 'react';
 import { Timestamp, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import Blog from '../component/Blog';
 import Info from '../component/Info';
@@ -14,6 +14,7 @@ import { appFireStore } from '../../firebase/config';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -442,10 +443,9 @@ const BlogBox = styled.div`
 function Detail(props) {
   const { placeid } = useParams();
 
-  const { id, profileImg, name } = useSelector(
+  const { id, name } = useSelector(
     (state) => ({
       id: state.login.memberId,
-      profileImg: state.login.profileImg,
       name: state.login.nickname,
     }),
     shallowEqual
@@ -463,6 +463,7 @@ function Detail(props) {
     category: null,
   });
   const [reviewList, setReviewList] = useState([]);
+  const [isDelete, setIsDelete] = useState(true);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -494,7 +495,6 @@ function Detail(props) {
           });
         });
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -502,6 +502,9 @@ function Detail(props) {
       }
     };
     getInfo();
+  }, [placeid]);
+
+  useEffect(() => {
     const getReview = async () => {
       try {
         const q = query(collection(appFireStore, 'reviews'), where('place_id', '==', Number(placeid)));
@@ -510,6 +513,7 @@ function Detail(props) {
         const reviews = [];
         querySnapshot.forEach((doc) => {
           let review = {
+            review_id: doc.data().review_id,
             writer: doc.data().writer,
             content: doc.data().content,
             created_at: doc.data().created_at.toDate().toISOString().substring(0, 10),
@@ -518,18 +522,21 @@ function Detail(props) {
         });
         setReviewList(reviews);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
         });
       }
     };
-    getReview();
-  }, [placeid]);
+    if (isDelete) {
+      getReview();
+      setIsDelete(false);
+    }
+  }, [isDelete]);
 
   let search = `춘천 ${place.dong} 맛집 ${place.place_name}`;
   const [blogReviews, setBlogReviews] = useState([]);
+
   useEffect(() => {
     const getBlog = async () => {
       try {
@@ -547,8 +554,18 @@ function Detail(props) {
         if (response.status === 200) {
           const selectedItems = response.data.items.slice(0, 3); // 처음 3개 아이템 선택
           setBlogReviews(selectedItems);
+        } else {
+          Toast.fire({
+            icon: 'error',
+            html: '검색 결과를 불러오지 못했습니다.',
+          });
         }
-      } catch {}
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
     };
     if (place.place_name !== undefined) getBlog();
   }, [place.place_name, search]);
@@ -557,7 +574,9 @@ function Detail(props) {
   const handleReview = async () => {
     try {
       let userDoc = doc(collection(appFireStore, 'reviews'));
+      let reviewId = uuidv4();
       await setDoc(userDoc, {
+        review_id: reviewId,
         uid: id,
         writer: name,
         place_id: place.place_id,
@@ -568,6 +587,7 @@ function Detail(props) {
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString().slice(0, 10);
       let newReview = {
+        review_id: reviewId,
         writer: name,
         content: review,
         created_at: formattedDate,
@@ -578,7 +598,10 @@ function Detail(props) {
         html: '후기가 등록되었습니다.',
       });
     } catch (error) {
-      console.log(error);
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
     } finally {
       setReview('');
     }
@@ -639,7 +662,7 @@ function Detail(props) {
                 <p>작성된 후기가 없습니다.</p>
               ) : (
                 reviewList.map((review) => {
-                  return <Review review={review} />;
+                  return <Review review={review} setIsDelete={setIsDelete} />;
                 })
               )}
             </ReviewContainer>

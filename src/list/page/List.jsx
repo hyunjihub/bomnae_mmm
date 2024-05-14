@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
 
 import ListFilter from '../component/ListFilter';
@@ -8,7 +8,6 @@ import PrintList from '../component/List';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
-import { useInView } from 'react-intersection-observer';
 import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -228,7 +227,6 @@ function List(props) {
         else if (type === 'cafe') setCafeLists(updatedList);
         setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -271,7 +269,6 @@ function List(props) {
           else if (type === 'cafe') setCafeLists((prevList) => [...prevList, ...updatedList]);
         }
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -322,7 +319,6 @@ function List(props) {
         });
         setRestaurantLists(updatedList);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -353,7 +349,6 @@ function List(props) {
         if (type === 'restaurant') setRestaurantLists(updatedList);
         if (type === 'cafe') setCafeLists(updatedList);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',

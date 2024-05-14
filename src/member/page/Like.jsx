@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import { GrFormPrevious } from 'react-icons/gr';
 import LikeFilter from '../../list/component/ListFilter';
@@ -193,7 +193,6 @@ function Like(props) {
         });
         setRestaurantLists(updatedList);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',

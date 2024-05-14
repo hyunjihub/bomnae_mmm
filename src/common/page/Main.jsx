@@ -1,8 +1,8 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 
 import EmblaCarousel from '../component/EmblaCarousel';
+import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UpdatedList from '../component/UpdatedList';
 import { appFireStore } from '../../firebase/config';
@@ -143,7 +143,6 @@ const Box = styled.div`
 `;
 
 function Main(props) {
-  const navigate = useNavigate();
   const OPTIONS = { dragFree: true, loop: true };
   const SLIDE_COUNT = 3;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
@@ -192,7 +191,6 @@ function Main(props) {
         });
         setCafes(updatedList);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',

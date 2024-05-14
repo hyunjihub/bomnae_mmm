@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore';
 
 import RequestList from '../component/RequestList';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -230,16 +231,29 @@ function Request(props) {
     timerProgressBar: true,
   });
 
-  const requestLists = [
-    { place_name: '오야', location: '교동 149-12', category: '일식' },
-    { place_name: '교동부대찌개', location: '교동 156-27', category: '한식' },
-    { place_name: '레이아웃', location: '소양로4가 115-7', category: '양식' },
-    { place_name: '사이라', location: '퇴계동 396-22', category: null },
-    { place_name: '오야', location: '교동 149-12', category: '일식' },
-    { place_name: '교동부대찌개', location: '교동 156-27', category: '한식' },
-    { place_name: '레이아웃', location: '소양로4가 115-7', category: '양식' },
-    { place_name: '사이라', location: '퇴계동 396-22', category: null },
-  ];
+  const [requestList, setRequestList] = useState([]);
+  const [isDelete, setIsDelete] = useState(true);
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        let q;
+        q = query(collection(appFireStore, 'requests'));
+        const querySnapshot = await getDocs(q);
+        const updatedList = querySnapshot.docs.map((doc) => doc.data());
+        setRequestList(updatedList);
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      }
+    };
+    if (isadmin === 'admin' && isDelete) {
+      getList();
+      setIsDelete(false);
+    }
+  }, [isDelete]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -254,6 +268,7 @@ function Request(props) {
       try {
         let userDoc = doc(collection(appFireStore, 'requests'));
         await setDoc(userDoc, {
+          request_id: uuidv4(),
           place_name: request.place_name,
           category: request.category,
           address: request.address,
@@ -268,7 +283,6 @@ function Request(props) {
           category: null,
         });
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -329,8 +343,8 @@ function Request(props) {
             제공됩니다.
           </Detail>
           <RequestContainer>
-            {requestLists.map((requestList) => {
-              return <RequestList list={requestList} />;
+            {requestList.map((requestList) => {
+              return <RequestList list={requestList} setIsDelete={setIsDelete} />;
             })}
           </RequestContainer>
         </Wrapper>

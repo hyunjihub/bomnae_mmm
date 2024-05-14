@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 const PrivateRoute = () => {
   const { isLog } = useSelector(

@@ -1,10 +1,5 @@
 import { MoonLoader } from 'react-spinners';
 import React from 'react';
-import styled from 'styled-components';
-
-const Image = styled.img`
-  width: 5%;
-`;
 
 function Loading(props) {
   return (

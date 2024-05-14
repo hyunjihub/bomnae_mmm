@@ -1,13 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { appAuth, appFireStore } from '../../firebase/config';
-import { setLogin, setMemberid, setProfileimg } from '../../redux/login';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { signOut, updatePassword } from 'firebase/auth';
 
 import Swal from 'sweetalert2';
+import { appAuth } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
+import { setLogin } from '../../redux/login';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -128,16 +128,6 @@ function Reset(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
-  const setMemberId = (id) => dispatch(setMemberid(id));
-  const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
-
-  const { isAdmin, id } = useSelector(
-    (state) => ({
-      isAdmin: state.login.isAdmin,
-      id: state.login.memberId,
-    }),
-    shallowEqual
-  );
 
   const [password, setPassword] = useState('');
   const [checkPW, setcheckPW] = useState('');
@@ -153,7 +143,7 @@ function Reset(props) {
   const handleReset = async () => {
     try {
       const user = appAuth.currentUser;
-      const res = await updatePassword(user, password);
+      await updatePassword(user, password);
       await handleLogOut();
       Toast.fire({
         icon: 'success',
@@ -200,7 +190,10 @@ function Reset(props) {
       setLogIn(false);
       navigate('/');
     } catch (error) {
-      console.log(error);
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
     }
   };
 

@@ -1,15 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Loading from '../../common/component/Loading';
 import Swal from 'sweetalert2';
 import logo from '../../common/resource/img/logo.png';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -198,7 +198,6 @@ function LogIn(props) {
       setLogIn(true);
       navigate('/');
     } catch (error) {
-      console.log(error);
       if (error.code === 'auth/user-not-found') {
         Toast.fire({
           icon: 'error',

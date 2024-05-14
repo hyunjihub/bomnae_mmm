@@ -5,6 +5,7 @@ import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../r
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import SidebarItem from '../component/SideItem';
+import Swal from 'sweetalert2';
 import { appAuth } from '../../firebase/config';
 import logo from '../resource/img/logo.png';
 import menu from '../resource/img/menu.png';
@@ -306,10 +307,9 @@ function Header(props) {
   const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
   const setNickname = (name) => dispatch(setName(name));
 
-  const { isLog, id, profileImg, isAdmin } = useSelector(
+  const { isLog, profileImg, isAdmin } = useSelector(
     (state) => ({
       isLog: state.login.isLogIn,
-      id: state.login.memberId,
       profileImg: state.login.profileImg,
       isAdmin: state.login.isAdmin,
     }),
@@ -320,6 +320,14 @@ function Header(props) {
     { name: '카페', path: '/list/cafe' },
     { name: '놀거리', path: '/list/entertainment' },
   ];
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
 
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -358,7 +366,10 @@ function Header(props) {
       setIsAdmin(false);
       setNickname(null);
     } catch (error) {
-      console.log(error);
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
     }
   };
 

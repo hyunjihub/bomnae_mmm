@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { appAuth } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
@@ -210,7 +210,6 @@ function Find(props) {
               html: '인터넷 연결을 확인해주세요.',
             });
           }
-          console.log(error);
         }
       } else {
         Toast.fire({

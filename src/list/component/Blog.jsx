@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -44,7 +43,7 @@ const Description = styled.h3`
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
     font-size: 0.85rem;
-    height: 1.5rem;
+    height: 1.3rem;
   }
 `;
 

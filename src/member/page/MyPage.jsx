@@ -1,9 +1,9 @@
 import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, signOut } from 'firebase/auth';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { appAuth, appFireStore, appStorage } from '../../firebase/config';
 import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
+import { setLogin, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { FaCamera } from 'react-icons/fa';
@@ -550,7 +550,10 @@ function MyPage(props) {
           setLikeLists(data);
         });
       } catch (error) {
-        console.error('쿼리 중 오류 발생:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
     getList();
@@ -577,7 +580,6 @@ function MyPage(props) {
         });
         setReviewList(reviews);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -755,7 +757,10 @@ function MyPage(props) {
           }
         }
       } catch (error) {
-        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     }
     handleIsEdited();

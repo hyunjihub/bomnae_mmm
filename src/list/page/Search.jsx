@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
 
 import PrintList from '../component/List';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
-import { useInView } from 'react-intersection-observer';
 import { useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -94,7 +93,6 @@ function Search(props) {
         setRestaurantLists(updatedList);
         setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -123,7 +121,6 @@ function Search(props) {
           setRestaurantLists((prevList) => [...prevList, ...updatedList]);
         }
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',

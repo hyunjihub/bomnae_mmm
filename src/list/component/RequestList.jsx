@@ -1,4 +1,8 @@
+import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
+
 import React from 'react';
+import Swal from 'sweetalert2';
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 
 const List = styled.div`
@@ -61,15 +65,43 @@ const Location = styled.h3`
   }
 `;
 
-function RequestList({ list }) {
+function RequestList({ list, setIsDelete }) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
+  const handleDelete = async () => {
+    try {
+      const usersCollection = collection(appFireStore, 'requests');
+      const q = query(usersCollection, where('request_id', '==', list.request_id));
+      const querySnapshot = await getDocs(q);
+      const userDocRef = querySnapshot.docs[0].ref;
+      await deleteDoc(userDocRef);
+      setIsDelete(true);
+      Toast.fire({
+        icon: 'success',
+        html: '삭제 완료',
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
+    }
+  };
+
   return (
     <>
       <List>
         <InfoBox>
-          <Cancel>X</Cancel>
+          <Cancel onClick={handleDelete}>X</Cancel>
           <Name>{list.place_name}</Name>
           <Location className="category">{list.category !== null ? list.category : '카테고리 미기재'}</Location>
-          <Location>{list.location}</Location>
+          <Location>{list.address}</Location>
         </InfoBox>
       </List>
     </>

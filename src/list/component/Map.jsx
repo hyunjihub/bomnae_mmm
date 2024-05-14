@@ -1,11 +1,20 @@
-import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
+import { Container as Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import React, { useEffect, useState } from 'react';
 
-import axios from 'axios'; // axios 라이브러리 추가
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const Map = ({ address }) => {
   const navermaps = useNavermaps();
   const [coordinates, setCoordinates] = useState(null);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -27,14 +36,18 @@ const Map = ({ address }) => {
           if (firstResult) {
             const { x, y } = firstResult;
             setCoordinates(new navermaps.LatLng(y, x));
-          } else {
-            console.error('No coordinates found for the address');
           }
         } else {
-          console.error('Failed to fetch coordinates');
+          Toast.fire({
+            icon: 'error',
+            html: '위치 정보를 불러오는 데 실패했습니다.',
+          });
         }
       } catch (error) {
-        console.error('Error fetching coordinates:', error);
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
       }
     };
 

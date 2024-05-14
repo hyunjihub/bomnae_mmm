@@ -1,8 +1,7 @@
-import { Link, NavLink } from 'react-router-dom';
-
 import { FaCoffee } from 'react-icons/fa';
 import { LuPopcorn } from 'react-icons/lu';
 import { MdOutlineRestaurant } from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 

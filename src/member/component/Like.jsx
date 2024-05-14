@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 import { IoHeart } from 'react-icons/io5';

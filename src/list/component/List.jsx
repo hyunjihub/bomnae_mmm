@@ -1,9 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import Like from '../../member/component/Like';
+import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const ListBox = styled.div`
   background-color: #fff;
