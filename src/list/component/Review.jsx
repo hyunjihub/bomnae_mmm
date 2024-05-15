@@ -63,9 +63,10 @@ const ReviewContainer = styled.div`
 `;
 
 function Review({ review, setIsDelete }) {
-  const { isAdmin } = useSelector(
+  const { isAdmin, id } = useSelector(
     (state) => ({
       isAdmin: state.login.isAdmin,
+      id: state.login.memberId,
     }),
     shallowEqual
   );
@@ -79,7 +80,7 @@ function Review({ review, setIsDelete }) {
   });
 
   const handleDelete = async () => {
-    if (isAdmin) {
+    if (isAdmin || id === review.uid) {
       try {
         const usersCollection = collection(appFireStore, 'reviews');
         const q = query(usersCollection, where('review_id', '==', review.review_id));
@@ -105,7 +106,7 @@ function Review({ review, setIsDelete }) {
       <UserBox>
         <Name>{review.writer}</Name>
         <Time>{review.created_at}</Time>
-        {isAdmin ? <Delete onClick={handleDelete}>삭제</Delete> : null}
+        {isAdmin || id === review.uid ? <Delete onClick={handleDelete}>삭제</Delete> : null}
       </UserBox>
       <Content>{review.content}</Content>
     </ReviewContainer>

@@ -64,6 +64,15 @@ const ListContainer = styled.div`
   }
 `;
 
+const EmptyList = styled.div`
+  font-size: 2rem;
+  font-weight: 600;
+  height: 50rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 function Search(props) {
   const { search } = useParams();
   const Toast = Swal.mixin({
@@ -153,12 +162,16 @@ function Search(props) {
   return (
     <>
       <Wrapper>
-        <ListContainer>
-          {restaurantLists.map((list) => {
-            return <PrintList list={list} />;
-          })}
-          <div ref={setTarget}></div>
-        </ListContainer>
+        {restaurantLists.length !== 0 ? (
+          <ListContainer>
+            {restaurantLists.map((list) => {
+              return <PrintList list={list} />;
+            })}
+            <div ref={setTarget}></div>
+          </ListContainer>
+        ) : (
+          <EmptyList>검색 결과가 존재하지 않습니다.</EmptyList>
+        )}
       </Wrapper>
     </>
   );

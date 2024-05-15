@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 import Loading from '../../common/component/Loading';
@@ -223,6 +223,15 @@ function SignUp(props) {
     }
   };
 
+  const duplication = async () => {
+    try {
+      const querySnapshot = await appFireStore.collection('users').where('nickname', '==', nickname).get();
+      return querySnapshot.empty;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const validation = () => {
     if (userEmail.trim() !== '' && password.trim() !== '' && checkPW.trim() !== '' && nickname.trim() !== '') {
       if (password === checkPW) {
@@ -230,7 +239,14 @@ function SignUp(props) {
         if (idCheck.test(userEmail)) {
           let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
           if (pwCheck.test(password)) {
-            register();
+            if (duplication()) {
+              register();
+            } else {
+              Toast.fire({
+                icon: 'error',
+                html: '이미 사용 중인 닉네임입니다.',
+              });
+            }
           } else {
             Toast.fire({
               icon: 'error',

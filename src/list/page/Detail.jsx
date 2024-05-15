@@ -5,6 +5,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import Blog from '../component/Blog';
 import Info from '../component/Info';
 import Like from '../../member/component/Like';
+import { MdLocationOn } from 'react-icons/md';
 import Menu from '../component/Menu';
 import NaverMapContainer from '../component/NaverMapContainer';
 import { NavermapsProvider } from 'react-naver-maps';
@@ -12,6 +13,7 @@ import Review from '../component/Review';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import axios from 'axios';
+import naver from '../resoucre/img/naver.png';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -176,13 +178,13 @@ const Box = styled.div`
   }
 
   &.info {
-    width: 60%;
+    width: 55%;
     flex-direction: column;
     gap: 0.8rem;
   }
 
   &.menu {
-    width: 40%;
+    width: 45%;
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -440,11 +442,38 @@ const BlogBox = styled.div`
   }
 `;
 
+const Naver = styled.div`
+  background-image: url(${naver});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+`;
+
+const Location = styled(MdLocationOn)`
+  font-size: 2.1rem;
+  margin-bottom: 1rem;
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (max-width: 1023px) {
+    display: none;
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
 function Detail(props) {
   const { placeid } = useParams();
 
-  const { id, name } = useSelector(
+  const { id, name, isLog } = useSelector(
     (state) => ({
+      isLog: state.login.isLogIn,
       id: state.login.memberId,
       name: state.login.nickname,
     }),
@@ -513,6 +542,7 @@ function Detail(props) {
         const reviews = [];
         querySnapshot.forEach((doc) => {
           let review = {
+            uid: doc.data().uid,
             review_id: doc.data().review_id,
             writer: doc.data().writer,
             content: doc.data().content,
@@ -572,38 +602,46 @@ function Detail(props) {
 
   const [review, setReview] = useState('');
   const handleReview = async () => {
-    try {
-      let userDoc = doc(collection(appFireStore, 'reviews'));
-      let reviewId = uuidv4();
-      await setDoc(userDoc, {
-        review_id: reviewId,
-        uid: id,
-        writer: name,
-        place_id: place.place_id,
-        content: review,
-        created_at: Timestamp.fromDate(new Date()),
-        place_name: place.place_name,
-      });
-      const currentDate = new Date();
-      const formattedDate = currentDate.toISOString().slice(0, 10);
-      let newReview = {
-        review_id: reviewId,
-        writer: name,
-        content: review,
-        created_at: formattedDate,
-      };
-      setReviewList([newReview, ...reviewList]);
-      Toast.fire({
-        icon: 'success',
-        html: '후기가 등록되었습니다.',
-      });
-    } catch (error) {
+    if (isLog) {
+      try {
+        let userDoc = doc(collection(appFireStore, 'reviews'));
+        let reviewId = uuidv4();
+        await setDoc(userDoc, {
+          review_id: reviewId,
+          uid: id,
+          writer: name,
+          place_id: place.place_id,
+          content: review,
+          created_at: Timestamp.fromDate(new Date()),
+          place_name: place.place_name,
+        });
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().slice(0, 10);
+        let newReview = {
+          review_id: reviewId,
+          uid: id,
+          writer: name,
+          content: review,
+          created_at: formattedDate,
+        };
+        setReviewList([newReview, ...reviewList]);
+        Toast.fire({
+          icon: 'success',
+          html: '후기가 등록되었습니다.',
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          html: '오류가 발생했습니다.',
+        });
+      } finally {
+        setReview('');
+      }
+    } else {
       Toast.fire({
         icon: 'error',
-        html: '오류가 발생했습니다.',
+        html: '로그인 후 작성가능합니다.',
       });
-    } finally {
-      setReview('');
     }
   };
 
@@ -641,7 +679,11 @@ function Detail(props) {
             </InfoBox>
             <Divider />
             <InfoBox>
-              <Title>블로그 리뷰</Title>
+              <TitleContainer>
+                <Title>블로그 리뷰</Title>
+                <Naver />
+              </TitleContainer>
+
               <BlogBox>
                 {blogReviews.map((blog) => {
                   return <Blog blog={blog} />;
@@ -650,7 +692,10 @@ function Detail(props) {
             </InfoBox>
           </DetailBox>
           <LocationBox>
-            <Title className="location">위치</Title>
+            <TitleContainer>
+              <Title className="location">위치</Title>
+              <Location color="#00a8dd" />
+            </TitleContainer>
             <NaverMapContainer address={place.address} />
             <Intro className="location">{place.address}</Intro>
             <TitleDetail>{place.address_detail}</TitleDetail>

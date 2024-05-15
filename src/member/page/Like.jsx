@@ -102,6 +102,15 @@ const Icon = styled(GrFormPrevious)`
   }
 `;
 
+const EmptyList = styled.div`
+  font-size: 2rem;
+  font-weight: 600;
+  height: 50rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 function Like(props) {
   const navigate = useNavigate();
 
@@ -213,11 +222,15 @@ function Like(props) {
           return <LikeFilter filter={filter} setCurrentFilter={setCurrentFilter} />;
         })}
       </Filter>
-      <ListContainer>
-        {restaurantLists.map((list) => {
-          return <LikeList list={list} />;
-        })}
-      </ListContainer>
+      {restaurantLists.length !== 0 ? (
+        <ListContainer>
+          {restaurantLists.map((list) => {
+            return <LikeList list={list} />;
+          })}
+        </ListContainer>
+      ) : (
+        <EmptyList>좋아요한 장소가 없습니다.</EmptyList>
+      )}
     </Wrapper>
   );
 }

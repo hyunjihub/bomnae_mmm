@@ -87,6 +87,14 @@ http://scripts.sil.org/OFL
     url(../src/common/resource/font/insungit\ Cutelively\ jisu\ Regular.woff) format('woff');
 }
 
+@font-face {
+  font-family: 'TTHakgyoansimMulgyeolB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimMulgyeolB.woff2')
+    format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 body {
   overflow-x: hidden;
   min-height: 100vh;

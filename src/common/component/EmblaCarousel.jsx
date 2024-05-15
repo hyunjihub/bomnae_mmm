@@ -6,8 +6,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import { mediaByIndex } from './Index';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useNavigate } from 'react-router-dom';
 
 const EmblaCarousel = ({ slides, options = { loop: false } }) => {
+  const navigate = useNavigate();
   const autoplay = useRef(Autoplay({ delay: 6000, stopOnInteraction: false }, (emblaRoot) => emblaRoot.parentElement));
 
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [autoplay.current]);
@@ -46,6 +48,13 @@ const EmblaCarousel = ({ slides, options = { loop: false } }) => {
             <div className="embla__slide" key={index}>
               <div className="embla__slide__inner">
                 <img className="embla__slide__img" src={mediaByIndex(index)} alt="slider" />
+                <span className="search__txt">
+                  춘천의 찐<br />
+                  닭갈비 맛집은
+                </span>
+                <button className="search__button" onClick={() => navigate('/search/%EB%8B%AD%EA%B0%88%EB%B9%84')}>
+                  여기서 확인!
+                </button>
               </div>
             </div>
           ))}

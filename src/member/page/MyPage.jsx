@@ -505,6 +505,17 @@ const Container = styled.div`
   }
 `;
 
+const EmptyList = styled.div`
+  font-size: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+  border-radius: 8px;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 function MyPage(props) {
   const navigate = useNavigate();
   const [isEdited, setIsEdited] = useState(false);
@@ -836,22 +847,30 @@ function MyPage(props) {
               더보기
             </Detail>
           </TitleBox>
-          <Box>
-            {likeLists.map((id) => {
-              return <LikeList place_id={id} />;
-            })}
-          </Box>
+          {likeLists.length !== 0 ? (
+            <Box>
+              {likeLists.map((id) => {
+                return <LikeList place_id={id} />;
+              })}
+            </Box>
+          ) : (
+            <EmptyList>좋아요한 맛집이 없습니다.</EmptyList>
+          )}
         </Container>
         <Container>
           <TitleBox>
             <Title>작성 후기</Title>
             <Detail>최대 3개까지만 확인 가능 합니다.</Detail>
           </TitleBox>
-          <Box className="review">
-            {reviewList.map((reviewList) => {
-              return <ReviewList reviewList={reviewList} />;
-            })}
-          </Box>
+          {reviewList.length !== 0 ? (
+            <Box className="review">
+              {reviewList.map((reviewList) => {
+                return <ReviewList reviewList={reviewList} />;
+              })}
+            </Box>
+          ) : (
+            <EmptyList>작성하신 후기가 없습니다.</EmptyList>
+          )}
         </Container>
       </PageContainer>
     </Wrapper>
