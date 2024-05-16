@@ -238,41 +238,56 @@ function List(props) {
   }, [type]);
 
   const loadMore = useCallback(async () => {
-    if (currentFilter === '*' && currentLocation === '*' && key !== null) {
-      try {
-        let q;
-        if (type === 'restaurant') {
-          q = query(
-            collection(appFireStore, 'restaurants'),
-            where('place_id', '<', 2000),
-            orderBy('place_id'),
-            startAfter(key),
-            limit(10)
-          );
-        } else if (type === 'cafe') {
-          q = query(
-            collection(appFireStore, 'restaurants'),
-            where('place_id', '>', 2000),
-            orderBy('place_id'),
-            startAfter(key),
-            limit(10)
-          );
+    let q;
+    if (type === 'restaurant') {
+      if (currentFilter === '*' && currentLocation === '*' && key !== null) {
+        q = query(
+          collection(appFireStore, 'restaurants'),
+          where('place_id', '<', 2000),
+          orderBy('place_id'),
+          startAfter(key),
+          limit(10)
+        );
+        try {
+          const querySnapshot = await getDocs(q);
+          if (querySnapshot.empty) {
+            setNoMore(true);
+          } else {
+            const updatedList = querySnapshot.docs.map((doc) => doc.data());
+            setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
+            setRestaurantLists((prevList) => [...prevList, ...updatedList]);
+          }
+        } catch (error) {
+          Toast.fire({
+            icon: 'error',
+            html: '오류가 발생했습니다.',
+          });
         }
-
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          setNoMore(true);
-        } else {
-          const updatedList = querySnapshot.docs.map((doc) => doc.data());
-          setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          if (type === 'restaurant') setRestaurantLists((prevList) => [...prevList, ...updatedList]);
-          else if (type === 'cafe') setCafeLists((prevList) => [...prevList, ...updatedList]);
+      }
+    } else if (type === 'cafe') {
+      if (currentFilter === '카페' && currentLocation === '*' && key !== null) {
+        q = query(
+          collection(appFireStore, 'restaurants'),
+          where('place_id', '>', 2000),
+          orderBy('place_id'),
+          startAfter(key),
+          limit(10)
+        );
+        try {
+          const querySnapshot = await getDocs(q);
+          if (querySnapshot.empty) {
+            setNoMore(true);
+          } else {
+            const updatedList = querySnapshot.docs.map((doc) => doc.data());
+            setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
+            setCafeLists((prevList) => [...prevList, ...updatedList]);
+          }
+        } catch (error) {
+          Toast.fire({
+            icon: 'error',
+            html: '오류가 발생했습니다.',
+          });
         }
-      } catch (error) {
-        Toast.fire({
-          icon: 'error',
-          html: '오류가 발생했습니다.',
-        });
       }
     }
   }, [key]);
@@ -392,6 +407,7 @@ function List(props) {
             {cafeLists.map((list) => {
               return <PrintList list={list} />;
             })}
+            <div ref={setTarget}></div>
           </ListContainer>
         </Wrapper>
       ) : (

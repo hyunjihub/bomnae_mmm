@@ -605,10 +605,15 @@ function MyPage(props) {
       if (await reAuthentication()) {
         const user = appAuth.currentUser;
         await deleteUser(user);
-        const usersCollection = collection(appFireStore, 'users');
-        const q = query(usersCollection, where('uid', '==', id));
-        const querySnapshot = await getDocs(q);
-        const userDocRef = querySnapshot.docs[0].ref;
+        let userCollection = collection(appFireStore, 'users');
+        let q = query(userCollection, where('uid', '==', id));
+        let querySnapshot = await getDocs(q);
+        let userDocRef = querySnapshot.docs[0].ref;
+        await deleteDoc(userDocRef);
+        userCollection = collection(appFireStore, 'likes');
+        q = query(userCollection, where('uid', '==', id));
+        querySnapshot = await getDocs(q);
+        userDocRef = querySnapshot.docs[0].ref;
         await deleteDoc(userDocRef);
         handleLogOut();
         Toast.fire({
@@ -617,6 +622,7 @@ function MyPage(props) {
         });
       }
     } catch (error) {
+      console.log(error);
       Toast.fire({
         icon: 'error',
         html: '오류가 발생했습니다.',
@@ -670,6 +676,7 @@ function MyPage(props) {
 
       return false;
     } catch (error) {
+      console.log(error);
       Toast.fire({
         icon: 'error',
         html: '비밀번호가 일치하지 않습니다.',
@@ -787,8 +794,13 @@ function MyPage(props) {
     setIsEdited(!isEdited);
   };
 
+  const test = () => {
+    console.log(id);
+  };
+
   return (
     <Wrapper>
+      <button onClick={test}>test</button>
       <PageContainer>
         <PorfileBox>
           <ProfileContainer>

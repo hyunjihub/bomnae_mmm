@@ -564,7 +564,10 @@ function Detail(props) {
     }
   }, [isDelete]);
 
-  let search = `춘천 ${place.dong} 맛집 ${place.place_name}`;
+  let search =
+    place.category === '카페'
+      ? `춘천 ${place.dong} 카페 ${place.place_name}`
+      : `춘천 ${place.dong} 맛집 ${place.place_name}`;
   const [blogReviews, setBlogReviews] = useState([]);
 
   useEffect(() => {

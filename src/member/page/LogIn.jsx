@@ -188,6 +188,7 @@ function LogIn(props) {
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(appAuth, userEmail, password);
+      console.log(user);
       const user_docs = await getDocs(query(collection(appFireStore, 'users'), where('email', '==', user.user.email)));
       user_docs.forEach((u) => {
         setProfileImg(u.data().profile_image);
