@@ -1,4 +1,5 @@
 import React from 'react';
+import { decode } from 'html-entities';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -55,9 +56,9 @@ const Blog = ({ blog }) => {
   return (
     <Wrapper>
       <Title href={blog.link} target="_blank">
-        {removeHtmlTags(blog.title)}
+        {removeHtmlTags(decode(blog.title))}
       </Title>
-      <Description>{removeHtmlTags(blog.description)}</Description>
+      <Description>{removeHtmlTags(decode(blog.description))}</Description>
     </Wrapper>
   );
 };

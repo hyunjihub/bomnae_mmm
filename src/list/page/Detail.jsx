@@ -32,20 +32,20 @@ const Wrapper = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 1024px) and (max-width: 1380px) {
     margin-left: 230px;
-    height: 1400px;
+    height: 1500px;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     margin-left: 170px;
-    height: 1400px;
+    height: 1850px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     padding: 3vh 1vw;
-    height: 1900px;
+    height: 2100px;
   }
 
   /* 모바일 세로*/

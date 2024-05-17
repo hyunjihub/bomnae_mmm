@@ -171,6 +171,10 @@ const Container = styled.div`
   gap: 1rem;
 `;
 
+const Target = styled.div`
+  width: 10rem;
+`;
+
 function List(props) {
   const { type } = useParams();
 
@@ -203,12 +207,15 @@ function List(props) {
   const [key, setKey] = useState(null); //마지막 스냅샷
   const [noMore, setNoMore] = useState(false);
   const [target, setTarget] = useState(null);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
     if (type === 'cafe') setCurrentFilter('카페');
     else if (type === 'restaurant') setCurrentFilter('*');
     setKey(null);
     setCurrentLocation('*');
+    setNoMore(false);
+    setIsFirstRender(true);
     const getFirstList = async () => {
       try {
         let q;
@@ -217,14 +224,14 @@ function List(props) {
             collection(appFireStore, 'restaurants'),
             where('place_id', '<', 2000),
             orderBy('place_id'),
-            limit(30)
+            limit(29)
           );
         } else if (type === 'cafe') {
           q = query(
             collection(appFireStore, 'restaurants'),
             where('place_id', '>', 2000),
             orderBy('place_id'),
-            limit(30)
+            limit(29)
           );
         }
         const querySnapshot = await getDocs(q);
@@ -253,6 +260,7 @@ function List(props) {
   }, []);
 
   const loadMore = useCallback(async () => {
+    console.log('불러오기');
     let q;
     if (type === 'restaurant') {
       if (currentFilter === '*' && currentLocation === '*' && key !== null) {
@@ -261,7 +269,7 @@ function List(props) {
           where('place_id', '<', 2000),
           orderBy('place_id'),
           startAfter(key),
-          limit(10)
+          limit(14)
         );
         try {
           const querySnapshot = await getDocs(q);
@@ -329,8 +337,6 @@ function List(props) {
       observer && observer.disconnect();
     };
   }, [target, onIntersect, noMore]);
-
-  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
     if (isFirstRender) {
@@ -462,7 +468,7 @@ function List(props) {
             {restaurantLists.map((list) => {
               return <PrintList list={list} />;
             })}
-            <div ref={setTarget}></div>
+            <Target ref={setTarget}></Target>
           </ListContainer>
         </Wrapper>
       ) : type === 'cafe' ? (
@@ -479,7 +485,7 @@ function List(props) {
             {cafeLists.map((list) => {
               return <PrintList list={list} />;
             })}
-            <div ref={setTarget}></div>
+            <Target ref={setTarget}></Target>
           </ListContainer>
         </Wrapper>
       ) : (
