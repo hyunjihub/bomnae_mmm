@@ -4,6 +4,7 @@ import { NextButton, PrevButton } from './EmblaCarouselButtons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Autoplay from 'embla-carousel-autoplay';
+import dakgalb from '../resource/img/dakgalb.png';
 import { mediaByIndex } from './Index';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useNavigate } from 'react-router-dom';
@@ -46,15 +47,13 @@ const EmblaCarousel = ({ slides, options = { loop: false } }) => {
         <div className="embla__container">
           {slides.map((index) => (
             <div className="embla__slide" key={index}>
-              <div className="embla__slide__inner">
+              <div className="embla__slide__inner" onClick={() => navigate('/search/%EB%8B%AD%EA%B0%88%EB%B9%84')}>
                 <img className="embla__slide__img" src={mediaByIndex(index)} alt="slider" />
-                <span className="search__txt">
-                  춘천의 찐<br />
-                  닭갈비 맛집은
-                </span>
-                <button className="search__button" onClick={() => navigate('/search/%EB%8B%AD%EA%B0%88%EB%B9%84')}>
-                  여기서 확인!
-                </button>
+                <div className="search__txt">
+                  <span className="white">춘천</span>
+                  <span className="big"> 닭갈비</span>
+                  <span className="white big"> 찐</span> 맛집
+                </div>
               </div>
             </div>
           ))}

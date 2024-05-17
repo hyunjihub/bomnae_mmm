@@ -89,6 +89,7 @@ const Icon = styled(MdLocationOn)`
 `;
 
 const ListContainer = styled.div`
+  width: 90%;
   max-height: 70vh;
   display: flex;
   flex-wrap: wrap;
@@ -98,6 +99,7 @@ const ListContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  justify-content: flex-start;
 
   &.cafe {
     max-height: 80vh;
@@ -317,14 +319,27 @@ function List(props) {
     const changeFilter = async (filter) => {
       try {
         let q;
-        if (currentLocation === '*')
-          q = query(collection(appFireStore, 'restaurants'), where('category', '==', filter));
-        else
-          q = query(
-            collection(appFireStore, 'restaurants'),
-            where('category', '==', filter),
-            where('dong', '==', currentLocation)
-          );
+        if (currentLocation === '*') {
+          if (filter === '*') {
+            q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
+          } else {
+            q = query(collection(appFireStore, 'restaurants'), where('category', '==', filter));
+          }
+        } else {
+          if (filter === '*') {
+            q = query(
+              collection(appFireStore, 'restaurants'),
+              where('place_id', '<', 2000),
+              where('dong', '==', currentLocation)
+            );
+          } else {
+            q = query(
+              collection(appFireStore, 'restaurants'),
+              where('category', '==', filter),
+              where('dong', '==', currentLocation)
+            );
+          }
+        }
         const querySnapshot = await getDocs(q);
 
         const updatedList = [];
@@ -340,20 +355,46 @@ function List(props) {
         });
       }
     };
-    if (currentFilter !== '*') changeFilter(currentFilter);
+    changeFilter(currentFilter);
   }, [currentFilter]);
 
   useEffect(() => {
     const changeLocation = async (filter) => {
       try {
         let q;
-        if (currentFilter === '*') q = query(collection(appFireStore, 'restaurants'), where('dong', '==', filter));
-        else
-          q = query(
-            collection(appFireStore, 'restaurants'),
-            where('dong', '==', filter),
-            where('category', '==', currentFilter)
-          );
+        if (type === 'restaurant') {
+          if (currentLocation === '*') {
+            if (currentFilter === '*') {
+              q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
+            } else {
+              q = query(collection(appFireStore, 'restaurants'), where('category', '==', currentFilter));
+            }
+          } else {
+            if (currentFilter === '*') {
+              q = query(
+                collection(appFireStore, 'restaurants'),
+                where('place_id', '<', 2000),
+                where('dong', '==', filter)
+              );
+            } else {
+              q = query(
+                collection(appFireStore, 'restaurants'),
+                where('category', '==', currentFilter),
+                where('dong', '==', filter)
+              );
+            }
+          }
+        } else if (type === 'cafe') {
+          if (currentLocation === '*') {
+            q = query(collection(appFireStore, 'restaurants'), where('category', '==', currentFilter));
+          } else {
+            q = query(
+              collection(appFireStore, 'restaurants'),
+              where('category', '==', currentFilter),
+              where('dong', '==', filter)
+            );
+          }
+        }
         const querySnapshot = await getDocs(q);
 
         const updatedList = [];
@@ -370,7 +411,7 @@ function List(props) {
         });
       }
     };
-    if (currentLocation !== '*') changeLocation(currentLocation);
+    changeLocation(currentLocation);
   }, [currentLocation]);
 
   return (
@@ -380,12 +421,14 @@ function List(props) {
           <LocationBox>
             <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
-              return <Location filter={filter} setCurrentLocation={setCurrentLocation} />;
+              return (
+                <Location filter={filter} setCurrentLocation={setCurrentLocation} currentLocation={currentLocation} />
+              );
             })}
           </LocationBox>
           <Filter>
             {filters.map((filter) => {
-              return <ListFilter filter={filter} setCurrentFilter={setCurrentFilter} />;
+              return <ListFilter filter={filter} setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} />;
             })}
           </Filter>
           <ListContainer>
@@ -400,7 +443,9 @@ function List(props) {
           <LocationBox>
             <Icon size="25" color="#00a8dd" />
             {locations.map((filter) => {
-              return <Location filter={filter} setCurrentLocation={setCurrentLocation} />;
+              return (
+                <Location filter={filter} setCurrentLocation={setCurrentLocation} currentLocation={currentLocation} />
+              );
             })}
           </LocationBox>
           <ListContainer className="cafe">

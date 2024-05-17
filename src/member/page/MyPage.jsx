@@ -794,13 +794,8 @@ function MyPage(props) {
     setIsEdited(!isEdited);
   };
 
-  const test = () => {
-    console.log(id);
-  };
-
   return (
     <Wrapper>
-      <button onClick={test}>test</button>
       <PageContainer>
         <PorfileBox>
           <ProfileContainer>

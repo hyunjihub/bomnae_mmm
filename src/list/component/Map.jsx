@@ -1,4 +1,4 @@
-import { Container as Marker, NaverMap, useNavermaps } from 'react-naver-maps';
+import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import React, { useEffect, useState } from 'react';
 
 import Swal from 'sweetalert2';
@@ -54,11 +54,15 @@ const Map = ({ address }) => {
     fetchCoordinates();
   }, [address, navermaps]);
 
+  const test = () => {
+    console.log(coordinates);
+  };
+
   return (
     <>
       {coordinates && ( //coordinates가 null이 아닐 때 렌더링
         <NaverMap defaultCenter={coordinates} defaultZoom={17}>
-          <Marker defaultPosition={coordinates} />
+          <Marker position={coordinates} />
         </NaverMap>
       )}
     </>

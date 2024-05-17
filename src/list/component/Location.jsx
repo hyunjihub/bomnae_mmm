@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 const Name = styled.h1`
   font-size: 0.9rem;
-  color: #838383;
+  color: ${({ isActive }) => (isActive ? '#31363f' : '#838383')};
+  font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
   text-align: center;
   cursor: pointer;
 
@@ -23,10 +24,17 @@ const Name = styled.h1`
   }
 `;
 
-function Location({ filter, setCurrentLocation }) {
+function Location({ filter, setCurrentLocation, currentLocation }) {
+  const handleFilter = () => {
+    if (currentLocation === filter) setCurrentLocation('*');
+    else setCurrentLocation(filter);
+  };
+
   return (
     <>
-      <Name onClick={() => setCurrentLocation(filter)}>{filter}</Name>
+      <Name onClick={handleFilter} isActive={filter === currentLocation}>
+        {filter}
+      </Name>
     </>
   );
 }

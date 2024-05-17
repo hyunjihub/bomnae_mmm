@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Filter = styled.div`
-  background-color: #fff;
+  background-color: ${({ isActive }) => (isActive ? '#c4e4ff' : '#fff')};
   width: 4rem;
   height: 1.8rem;
   border-radius: 16px;
@@ -33,10 +33,15 @@ const Name = styled.h1`
   }
 `;
 
-function LikeFilter({ filter, setCurrentFilter }) {
+function LikeFilter({ filter, setCurrentFilter, currentFilter }) {
+  const handleFilter = () => {
+    if (currentFilter === filter) setCurrentFilter('*');
+    else setCurrentFilter(filter);
+  };
+
   return (
     <>
-      <Filter onClick={() => setCurrentFilter(filter)}>
+      <Filter onClick={handleFilter} isActive={currentFilter === filter}>
         <Name>{filter}</Name>
       </Filter>
     </>
