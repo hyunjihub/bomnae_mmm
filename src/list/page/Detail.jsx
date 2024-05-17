@@ -686,7 +686,6 @@ function Detail(props) {
                 <Title>블로그 리뷰</Title>
                 <Naver />
               </TitleContainer>
-
               <BlogBox>
                 {blogReviews.map((blog) => {
                   return <Blog blog={blog} />;
@@ -699,7 +698,7 @@ function Detail(props) {
               <Title className="location">위치</Title>
               <Location color="#00a8dd" />
             </TitleContainer>
-            <NaverMapContainer address={place.address} />
+            <NaverMapContainer address={`춘천시 ${place.address}`} />
             <Intro className="location">{place.address}</Intro>
             <TitleDetail>{place.address_detail}</TitleDetail>
           </LocationBox>

@@ -102,7 +102,7 @@ const ListContainer = styled.div`
   justify-content: flex-start;
 
   &.cafe {
-    max-height: 80vh;
+    max-height: 75vh;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
@@ -205,6 +205,10 @@ function List(props) {
   const [target, setTarget] = useState(null);
 
   useEffect(() => {
+    if (type === 'cafe') setCurrentFilter('카페');
+    else if (type === 'restaurant') setCurrentFilter('*');
+    setKey(null);
+    setCurrentLocation('*');
     const getFirstList = async () => {
       try {
         let q;
@@ -225,8 +229,9 @@ function List(props) {
         }
         const querySnapshot = await getDocs(q);
         const updatedList = querySnapshot.docs.map((doc) => doc.data());
+        if (type === 'cafe') setCafeLists(updatedList);
         if (type === 'restaurant') setRestaurantLists(updatedList);
-        else if (type === 'cafe') setCafeLists(updatedList);
+
         setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
       } catch (error) {
         Toast.fire({
@@ -235,9 +240,17 @@ function List(props) {
         });
       }
     };
-    if (type === 'cafe') setCurrentFilter('카페');
+
     if (type !== 'entertainment') getFirstList();
   }, [type]);
+
+  useEffect(() => {
+    return () => {
+      setKey(null);
+      setCurrentLocation('*');
+      setCurrentFilter('*');
+    };
+  }, []);
 
   const loadMore = useCallback(async () => {
     let q;
@@ -267,28 +280,30 @@ function List(props) {
         }
       }
     } else if (type === 'cafe') {
-      if (currentFilter === '카페' && currentLocation === '*' && key !== null) {
-        q = query(
-          collection(appFireStore, 'restaurants'),
-          where('place_id', '>', 2000),
-          orderBy('place_id'),
-          startAfter(key),
-          limit(10)
-        );
-        try {
-          const querySnapshot = await getDocs(q);
-          if (querySnapshot.empty) {
-            setNoMore(true);
-          } else {
-            const updatedList = querySnapshot.docs.map((doc) => doc.data());
-            setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
-            setCafeLists((prevList) => [...prevList, ...updatedList]);
+      if (cafeLists.length !== 0) {
+        if (currentFilter === '카페' && currentLocation === '*' && key !== null) {
+          q = query(
+            collection(appFireStore, 'restaurants'),
+            where('place_id', '>', 2000),
+            orderBy('place_id'),
+            startAfter(key),
+            limit(10)
+          );
+          try {
+            const querySnapshot = await getDocs(q);
+            if (querySnapshot.empty) {
+              setNoMore(true);
+            } else {
+              const updatedList = querySnapshot.docs.map((doc) => doc.data());
+              setKey(querySnapshot.docs[querySnapshot.docs.length - 1]);
+              setCafeLists((prevList) => [...prevList, ...updatedList]);
+            }
+          } catch (error) {
+            Toast.fire({
+              icon: 'error',
+              html: '오류가 발생했습니다.',
+            });
           }
-        } catch (error) {
-          Toast.fire({
-            icon: 'error',
-            html: '오류가 발생했습니다.',
-          });
         }
       }
     }
@@ -315,7 +330,14 @@ function List(props) {
     };
   }, [target, onIntersect, noMore]);
 
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return; // 첫 렌더링 시 아무것도 하지 않음
+    }
+
     const changeFilter = async (filter) => {
       try {
         let q;
@@ -355,10 +377,15 @@ function List(props) {
         });
       }
     };
-    changeFilter(currentFilter);
+    if (currentFilter !== '카페') changeFilter(currentFilter);
   }, [currentFilter]);
 
   useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return; // 첫 렌더링 시 아무것도 하지 않음
+    }
+
     const changeLocation = async (filter) => {
       try {
         let q;
