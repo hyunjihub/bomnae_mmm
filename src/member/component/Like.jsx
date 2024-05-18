@@ -90,8 +90,9 @@ function Like({ place_id, type = 'list' }) {
         const userDocs = await getDocs(query(collection(appFireStore, 'likes'), where('uid', '==', id)));
         if (!userDocs.empty) {
           const userData = userDocs.docs[0].data();
-          setList(userData.likedRestaurants || []);
-          setIsLiked(userData.likedRestaurants.includes(place_id));
+          const likedRestaurants = userData.likedRestaurants || [];
+          setList(likedRestaurants);
+          setIsLiked(likedRestaurants.includes(place_id));
         }
       } catch (error) {
         Toast.fire({
@@ -100,8 +101,11 @@ function Like({ place_id, type = 'list' }) {
         });
       }
     };
-    if (isLogIn) getLikeList();
-  }, []);
+
+    if (isLogIn && id && place_id) {
+      getLikeList();
+    }
+  }, [isLogIn, id, place_id]);
 
   const handleLike = async () => {
     try {
