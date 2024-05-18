@@ -557,7 +557,7 @@ function MyPage(props) {
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((doc) => {
-          const data = doc.data().likedRestaurants;
+          const data = doc.data().likedRestaurants.slice(0, 3);
           setLikeLists(data);
         });
       } catch (error) {
@@ -653,7 +653,7 @@ function MyPage(props) {
       try {
         const { dismiss } = await Swal.fire({
           title: '본인 인증',
-          html: '비밀번호를 입력해주세요.',
+          html: '현재 비밀번호를 입력해주세요.',
           input: 'password',
           inputPlaceholder: '비밀번호',
           showCancelButton: true,
@@ -765,7 +765,7 @@ function MyPage(props) {
         if (modifyImg === userInfo.profile_img && modifyName === userInfo.profile_img) {
           //아무것도 바뀌지 않았으면, 변경하지 않는다.
         } else {
-          if (modifyName.length > 1) {
+          if (modifyName.length > 1 && modifyName.length <= 6) {
             const usersCollectionRef = collection(appFireStore, 'users');
             const q = query(usersCollectionRef, where('uid', '==', id));
             const querySnapshot = await getDocs(q);
@@ -791,7 +791,7 @@ function MyPage(props) {
           } else {
             Toast.fire({
               icon: 'error',
-              html: '닉네임은 한 글자 이상이어야 합니다.',
+              html: '닉네임은 1글자 이상<br> 6글자 이하만 가능 합니다.',
             });
           }
         }
@@ -888,7 +888,7 @@ function MyPage(props) {
         <Container>
           <TitleBox>
             <Title>작성 후기</Title>
-            <Detail>최대 3개까지만 확인 가능 합니다.</Detail>
+            <Detail>최근 작성된 3개의 후기만 확인 가능합니다.</Detail>
           </TitleBox>
           {reviewList.length !== 0 ? (
             <Box className="review">

@@ -240,7 +240,14 @@ function SignUp(props) {
           let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
           if (pwCheck.test(password)) {
             if (duplication()) {
-              register();
+              if (nickname.trim().length <= 6) {
+                register();
+              } else {
+                Toast.fire({
+                  icon: 'error',
+                  html: '닉네임은 최대 6글자까지 가능합니다.',
+                });
+              }
             } else {
               Toast.fire({
                 icon: 'error',

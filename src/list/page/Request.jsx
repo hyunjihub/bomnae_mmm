@@ -278,9 +278,9 @@ function Request(props) {
           html: '정상적으로 요청되었습니다.',
         });
         setRequest({
-          place_name: null,
-          address: null,
-          category: null,
+          place_name: '',
+          address: '',
+          category: '',
         });
       } catch (error) {
         Toast.fire({
@@ -305,11 +305,18 @@ function Request(props) {
           <RequstBox>
             <Title className="request">맛집 등록 요청</Title>
             <Label>상호명 (필수)</Label>
-            <Input type="text" name="place_name" placeholder="상호명을 입력해주세요." onChange={handleInputChange} />
+            <Input
+              type="text"
+              name="place_name"
+              value={request.place_name || ''}
+              placeholder="상호명을 입력해주세요."
+              onChange={handleInputChange}
+            />
             <Label>위치 (필수)</Label>
             <Input
               type="text"
               name="address"
+              value={request.address || ''}
               placeholder="위치를 입력해주세요. (동명의 상호가 있을 수 있으므로 정확한 입력을 부탁드립니다.)"
               onChange={handleInputChange}
             />
@@ -317,6 +324,7 @@ function Request(props) {
             <Input
               type="text"
               name="category"
+              value={request.category || ''}
               placeholder="한식, 중식, 일식, 카페 등 자유롭게 작성해주세요."
               onChange={handleInputChange}
             />

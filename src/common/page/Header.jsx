@@ -156,10 +156,10 @@ const Search = styled.input`
 `;
 
 const LoginBox = styled(Link)`
-  width: 7rem;
+  width: 6.5rem;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.3rem;
   cursor: pointer;
   text-decoration: none;
   box-sizing: border-box;
@@ -297,6 +297,10 @@ const LogOutButton = styled.button`
   font-size: 1rem;
 `;
 
+const SearchIcon = styled(CiSearch)`
+  cursor: pointer;
+`;
+
 function Header(props) {
   const navigate = useNavigate();
 
@@ -380,7 +384,7 @@ function Header(props) {
           <Logo src={logo} alt="logo" />
         </LogoBox>
         <SearchBox>
-          <CiSearch onClick={searchClick} size="20" color="#a49f9f" />
+          <SearchIcon onClick={searchClick} size="20" color="#a49f9f" />
           <Search
             type="text"
             placeholder="검색 (상호명, 대표메뉴 검색 가능)"
@@ -391,7 +395,11 @@ function Header(props) {
         </SearchBox>
         <Box>
           <LoginBox>
-            {isLog ? <Login size="23" color="#84828a" /> : <Logout size="23" color="#84828a" />}
+            {isLog ? (
+              <Logout onClick={handleLogOut} size="23" color="#84828a" />
+            ) : (
+              <Login onClick={() => navigate('/login')} size="23" color="#84828a" />
+            )}
             {isLog ? (
               <LogOutButton onClick={handleLogOut}>로그아웃</LogOutButton>
             ) : (

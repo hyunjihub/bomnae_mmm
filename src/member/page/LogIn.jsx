@@ -226,7 +226,7 @@ function LogIn(props) {
       if (error.code === 'auth/invalid-credential') {
         Toast.fire({
           icon: 'error',
-          html: '가입되지 않은 계정입니다.',
+          html: '로그인정보가 올바르지 않습니다.',
         });
       }
     } finally {

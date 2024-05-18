@@ -114,9 +114,10 @@ const EmptyList = styled.div`
 function Like(props) {
   const navigate = useNavigate();
 
-  const { id } = useSelector(
+  const { id, name } = useSelector(
     (state) => ({
       id: state.login.memberId,
+      name: state.login.nickname,
     }),
     shallowEqual
   );
@@ -215,7 +216,7 @@ function Like(props) {
     <Wrapper>
       <Title>
         <Icon onClick={() => navigate(-1)} />
-        현현님이 좋아요한 장소
+        {name}님이 좋아요한 장소
       </Title>
       <Filter>
         {filters.map((filter) => {

@@ -1,6 +1,6 @@
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { appAuth } from '../../firebase/config';
 import logo from '../../common/resource/img/logo.png';
@@ -177,6 +177,7 @@ const Detail = styled.h3`
 `;
 
 function Find(props) {
+  const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState('');
 
   const Toast = Swal.mixin({
@@ -197,6 +198,7 @@ function Find(props) {
             icon: 'success',
             html: '이메일이 전송됐습니다.<br>이메일을 확인해주세요.',
           });
+          navigate('/login');
         } catch (error) {
           if (error.code === 'auth/invalid-email') {
             Toast.fire({
