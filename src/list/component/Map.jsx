@@ -18,25 +18,14 @@ const Map = ({ address }) => {
 
   useEffect(() => {
     const fetchCoordinates = async () => {
+      const fullAddress = `춘천시 ${address}`;
       try {
-        const response = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURI(
-            address
-          )}`,
-          {
-            headers: {
-              'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NCP_CLIENT_ID,
-              'X-NCP-APIGW-API-KEY': process.env.REACT_APP_CLIENT_SECRECT,
-            },
-          }
-        );
+        const response = await axios.get(`https://us-central1-bomnae-mmm.cloudfunctions.net/api/getCoordinates`, {
+          params: { address: fullAddress },
+        });
         if (response.status === 200) {
-          const data = response.data;
-          const firstResult = data.addresses[0];
-          if (firstResult) {
-            const { x, y } = firstResult;
-            setCoordinates(new navermaps.LatLng(y, x));
-          }
+          const { x, y } = response.data;
+          setCoordinates(new navermaps.LatLng(y, x));
         } else {
           Toast.fire({
             icon: 'error',
@@ -51,12 +40,8 @@ const Map = ({ address }) => {
       }
     };
 
-    fetchCoordinates();
+    if (address !== undefined && navermaps) fetchCoordinates();
   }, [address, navermaps]);
-
-  const test = () => {
-    console.log(coordinates);
-  };
 
   return (
     <>

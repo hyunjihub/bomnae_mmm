@@ -61,7 +61,7 @@ const Container = styled.div`
   padding: 0.5vh 8vw;
   gap: 2rem;
   grid-template-columns: 1.8fr 1fr;
-  grid-template-rows: 1fr 1.5fr;
+  grid-template-rows: 1.1fr 1.5fr;
   grid-template-areas:
     'd l'
     'd r';
@@ -573,19 +573,11 @@ function Detail(props) {
   useEffect(() => {
     const getBlog = async () => {
       try {
-        const response = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/blog.json?query=${encodeURI(
-            search
-          )}`,
-          {
-            headers: {
-              'X-Naver-Client-Id': process.env.REACT_APP_NAVER_CLIENT_ID,
-              'X-Naver-Client-Secret': process.env.REACT_APP_NAVER_CLIENT_SECRECT,
-            },
-          }
-        );
+        const response = await axios.get(`https://us-central1-bomnae-mmm.cloudfunctions.net/api/getBlog`, {
+          params: { search: search },
+        });
         if (response.status === 200) {
-          const selectedItems = response.data.items.slice(0, 3); // 처음 3개 아이템 선택
+          const selectedItems = response.data.slice(0, 3); // 처음 3개 아이템 선택
           setBlogReviews(selectedItems);
         } else {
           Toast.fire({
@@ -594,6 +586,7 @@ function Detail(props) {
           });
         }
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -698,7 +691,7 @@ function Detail(props) {
               <Title className="location">위치</Title>
               <Location color="#00a8dd" />
             </TitleContainer>
-            <NaverMapContainer address={`춘천시 ${place.address}`} />
+            <NaverMapContainer address={place.address} />
             <Intro className="location">{place.address}</Intro>
             <TitleDetail>{place.address_detail}</TitleDetail>
           </LocationBox>

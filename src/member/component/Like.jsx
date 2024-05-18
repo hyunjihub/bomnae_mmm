@@ -121,7 +121,7 @@ function Like({ place_id, type = 'list' }) {
       } else {
         Toast.fire({
           icon: 'error',
-          html: '사용자 정보가 없습니다.',
+          html: '로그인이 필요합니다.',
         });
       }
     } catch (error) {

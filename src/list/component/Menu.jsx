@@ -35,11 +35,18 @@ const MenuBox = styled.div`
 `;
 
 function Menu({ menu }) {
+  const addCommas = () => {
+    let price = String(menu.price);
+    price = price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    return price;
+  };
+
   return (
     <>
       <MenuBox>
         <Content>{menu.menu}</Content>
-        <Price>{menu.price}</Price>
+        <Price>{addCommas()}</Price>
       </MenuBox>
     </>
   );

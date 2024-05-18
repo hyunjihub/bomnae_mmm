@@ -601,31 +601,38 @@ function MyPage(props) {
   }, []);
 
   const handleDelete = async () => {
-    try {
-      if (await reAuthentication()) {
-        const user = appAuth.currentUser;
-        await deleteUser(user);
-        let userCollection = collection(appFireStore, 'users');
-        let q = query(userCollection, where('uid', '==', id));
-        let querySnapshot = await getDocs(q);
-        let userDocRef = querySnapshot.docs[0].ref;
-        await deleteDoc(userDocRef);
-        userCollection = collection(appFireStore, 'likes');
-        q = query(userCollection, where('uid', '==', id));
-        querySnapshot = await getDocs(q);
-        userDocRef = querySnapshot.docs[0].ref;
-        await deleteDoc(userDocRef);
-        handleLogOut();
+    if (id !== 'nNmBOFPqsTOGnHZcJVptNpBdTwu2') {
+      try {
+        if (await reAuthentication()) {
+          const user = appAuth.currentUser;
+          await deleteUser(user);
+          let userCollection = collection(appFireStore, 'users');
+          let q = query(userCollection, where('uid', '==', id));
+          let querySnapshot = await getDocs(q);
+          let userDocRef = querySnapshot.docs[0].ref;
+          await deleteDoc(userDocRef);
+          userCollection = collection(appFireStore, 'likes');
+          q = query(userCollection, where('uid', '==', id));
+          querySnapshot = await getDocs(q);
+          userDocRef = querySnapshot.docs[0].ref;
+          await deleteDoc(userDocRef);
+          handleLogOut();
+          Toast.fire({
+            icon: 'success',
+            html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
+          });
+        }
+      } catch (error) {
+        console.log(error);
         Toast.fire({
-          icon: 'success',
-          html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
+          icon: 'error',
+          html: '오류가 발생했습니다.',
         });
       }
-    } catch (error) {
-      console.log(error);
+    } else {
       Toast.fire({
         icon: 'error',
-        html: '오류가 발생했습니다.',
+        html: '테스트계정은 이용할 수 없는 기능입니다.',
       });
     }
   };
@@ -641,64 +648,78 @@ function MyPage(props) {
   };
 
   const reAuthentication = async () => {
-    let password = '';
-    try {
-      const { dismiss } = await Swal.fire({
-        title: '본인 인증',
-        html: '비밀번호를 입력해주세요.',
-        input: 'password',
-        inputPlaceholder: '비밀번호',
-        showCancelButton: true,
-        focusConfirm: false,
-        preConfirm: () => {
-          password = Swal.getInput().value;
-          if (!password) {
-            Toast.fire({
-              icon: 'error',
-              html: '비밀번호를 입력해주세요.',
-            });
-            return false;
-          }
-        },
-      });
+    if (id !== 'nNmBOFPqsTOGnHZcJVptNpBdTwu2') {
+      let password = '';
+      try {
+        const { dismiss } = await Swal.fire({
+          title: '본인 인증',
+          html: '비밀번호를 입력해주세요.',
+          input: 'password',
+          inputPlaceholder: '비밀번호',
+          showCancelButton: true,
+          focusConfirm: false,
+          preConfirm: () => {
+            password = Swal.getInput().value;
+            if (!password) {
+              Toast.fire({
+                icon: 'error',
+                html: '비밀번호를 입력해주세요.',
+              });
+              return false;
+            }
+          },
+        });
 
-      if (dismiss === Swal.DismissReason.cancel) {
+        if (dismiss === Swal.DismissReason.cancel) {
+          return false;
+        }
+
+        if (password) {
+          const user = appAuth.currentUser;
+          const email = user.email;
+          const credential = EmailAuthProvider.credential(email, password);
+          await reauthenticateWithCredential(user, credential);
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          html: '비밀번호가 일치하지 않습니다.',
+        });
         return false;
       }
-
-      if (password) {
-        const user = appAuth.currentUser;
-        const email = user.email;
-        const credential = EmailAuthProvider.credential(email, password);
-        await reauthenticateWithCredential(user, credential);
-        return true;
-      }
-
-      return false;
-    } catch (error) {
-      console.log(error);
+    } else {
       Toast.fire({
         icon: 'error',
-        html: '비밀번호가 일치하지 않습니다.',
+        html: '테스트계정은 이용할 수 없는 기능입니다.',
       });
-      return false;
     }
   };
 
   const handleReset = async () => {
-    try {
-      const isAuthenticated = await reAuthentication();
-      if (isAuthenticated) {
+    if (id !== 'nNmBOFPqsTOGnHZcJVptNpBdTwu2') {
+      try {
+        const isAuthenticated = await reAuthentication();
+        if (isAuthenticated) {
+          await Toast.fire({
+            icon: 'success',
+            html: '본인인증이 성공했습니다.<br>재설정 페이지로 이동합니다.',
+          });
+          navigate('/reset');
+        }
+      } catch (error) {
         await Toast.fire({
-          icon: 'success',
-          html: '본인인증이 성공했습니다.<br>재설정 페이지로 이동합니다.',
+          icon: 'error',
+          html: '본인인증에 실패했습니다.<br>',
         });
-        navigate('/reset');
       }
-    } catch (error) {
-      await Toast.fire({
+    } else {
+      Toast.fire({
         icon: 'error',
-        html: '본인인증에 실패했습니다.<br>',
+        html: '테스트계정은 이용할 수 없는 기능입니다.',
       });
     }
   };

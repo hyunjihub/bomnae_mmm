@@ -260,7 +260,6 @@ function List(props) {
   }, []);
 
   const loadMore = useCallback(async () => {
-    console.log('불러오기');
     let q;
     if (type === 'restaurant') {
       if (currentFilter === '*' && currentLocation === '*' && key !== null) {

@@ -357,7 +357,7 @@ function Header(props) {
   }
 
   const handleLogOut = async () => {
-    navigate('/');
+    navigate('/main');
     try {
       await signOut(appAuth);
       setLogIn(false);
