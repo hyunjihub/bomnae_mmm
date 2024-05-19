@@ -164,10 +164,6 @@ const LoginBox = styled(Link)`
   text-decoration: none;
   box-sizing: border-box;
 
-  /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 5rem;
-  }
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
     width: 5rem;
@@ -176,7 +172,7 @@ const LoginBox = styled(Link)`
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    width: 3rem;
+    width: 4.5rem;
     font-size: 0.8rem;
   }
 `;
@@ -249,7 +245,7 @@ const Box = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
 `;
 
@@ -416,7 +412,7 @@ function Header(props) {
                 {isAdmin ? (
                   <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
                 ) : (
-                  <SMenu to="/request/common">정보 추가 요청</SMenu>
+                  <SMenu to="/request/common">맛집 등록 요청</SMenu>
                 )}
               </SideMenu>
             ) : (

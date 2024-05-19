@@ -190,17 +190,17 @@ function List(props) {
   const [currentFilter, setCurrentFilter] = useState('*');
   const [currentLocation, setCurrentLocation] = useState('*');
   const locations = [
-    '퇴계동',
+    '강남동',
+    '교동',
+    '근화동',
+    '동내면',
     '석사동',
+    '소양동',
+    '약사명동',
+    '조운동',
+    '퇴계동',
     '후평동',
     '효자동',
-    '강남동',
-    '동내면',
-    '조운동',
-    '소양동',
-    '근화동',
-    '약사명동',
-    '교동',
   ];
   const [restaurantLists, setRestaurantLists] = useState([]);
   const [cafeLists, setCafeLists] = useState([]);

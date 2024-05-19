@@ -1,5 +1,5 @@
 import React, { startTransition, useEffect, useState } from 'react';
-import { Timestamp, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { Timestamp, collection, doc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import Blog from '../component/Blog';
@@ -180,13 +180,13 @@ const Box = styled.div`
   &.info {
     width: 55%;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
 
   &.menu {
     width: 45%;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
 
   /* 모바일 세로*/
@@ -536,7 +536,11 @@ function Detail(props) {
   useEffect(() => {
     const getReview = async () => {
       try {
-        const q = query(collection(appFireStore, 'reviews'), where('place_id', '==', Number(placeid)));
+        const q = query(
+          collection(appFireStore, 'reviews'),
+          where('place_id', '==', Number(placeid)),
+          orderBy('created_at', 'desc')
+        );
         const querySnapshot = await getDocs(q);
 
         const reviews = [];
@@ -552,6 +556,7 @@ function Detail(props) {
         });
         setReviewList(reviews);
       } catch (error) {
+        console.log(error);
         Toast.fire({
           icon: 'error',
           html: '오류가 발생했습니다.',
@@ -710,16 +715,12 @@ function Detail(props) {
             <WriteContainer>
               <Write
                 value={review || ''}
-                placeholder="후기를 입력해주세요. 후기는 최대 150자까지 작성 가능합니다."
+                placeholder="후기를 입력해주세요."
                 onChange={(e) => setReview(e.target.value)}
                 rows={4}
                 cols={50}
               ></Write>
-              <Button onClick={handleReview}>
-                후기
-                <br />
-                등록
-              </Button>
+              <Button onClick={handleReview}>등록</Button>
             </WriteContainer>
           </ReviewBox>
         </Container>

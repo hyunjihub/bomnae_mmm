@@ -109,6 +109,11 @@ const EmptyList = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.5rem;
+  }
 `;
 
 function Like(props) {
@@ -209,7 +214,7 @@ function Like(props) {
         });
       }
     };
-    if (currentFilter !== '*') changeFilter(currentFilter);
+    if (currentFilter !== '*' && likeLists.length !== 0) changeFilter(currentFilter);
   }, [currentFilter]);
 
   return (
@@ -220,7 +225,7 @@ function Like(props) {
       </Title>
       <Filter>
         {filters.map((filter) => {
-          return <LikeFilter filter={filter} setCurrentFilter={setCurrentFilter} />;
+          return <LikeFilter filter={filter} setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} />;
         })}
       </Filter>
       {restaurantLists.length !== 0 ? (

@@ -89,7 +89,7 @@ const Title = styled.h1`
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 `;
 

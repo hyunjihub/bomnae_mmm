@@ -8,19 +8,24 @@ const Name = styled.h1`
   text-align: center;
   cursor: pointer;
 
-  &:hover {
-    color: #31363f;
-    font-weight: 600;
+  /* 데스크탑 장치에서 hover 효과 적용 */
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: #31363f;
+      font-weight: 600;
+    }
   }
 
   /* 테블릿 가로, 테블릿 세로*/
-  @media all and (min-width: 768px) and (max-width: 1023px) {
+  @media all and (max-width: 1023px) {
     font-size: 0.8rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
-    font-size: 0.8rem;
+    /* 모바일 장치에서 hover 효과 제거 */
+    @media (hover: none) and (pointer: coarse) {
+      &:hover {
+        color: ${({ isActive }) => (isActive ? '#31363f' : '#838383')};
+        font-weight: ${({ isActive }) => (isActive ? '700' : 'normal')};
+      }
+    }
   }
 `;
 

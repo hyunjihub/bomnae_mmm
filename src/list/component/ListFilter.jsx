@@ -11,14 +11,24 @@ const Filter = styled.div`
   padding: 0.4rem;
   cursor: pointer;
 
-  &:hover {
-    background-color: #c4e4ff;
+  /* 데스크탑 장치에서 hover 효과 적용 */
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: #c4e4ff;
+    }
   }
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
     width: 3.2rem;
     padding: 0.5rem 0.3rem;
+
+    /* 모바일 장치에서 hover 효과 제거 */
+    @media (hover: none) and (pointer: coarse) {
+      &:hover {
+        background-color: ${({ isActive }) => (isActive ? '#c4e4ff' : '#fff')};
+      }
+    }
   }
 `;
 
