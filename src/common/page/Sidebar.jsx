@@ -80,7 +80,7 @@ function Sidebar(props) {
       {isAdmin ? (
         <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
       ) : (
-        <SMenu to="/request/common">정보 추가 요청</SMenu>
+        <SMenu to="/request/common">맛집 등록 요청</SMenu>
       )}
     </Side>
   );

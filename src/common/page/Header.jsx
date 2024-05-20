@@ -160,7 +160,6 @@ const LoginBox = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  cursor: pointer;
   text-decoration: none;
   box-sizing: border-box;
 
@@ -283,6 +282,7 @@ const LogInButton = styled(Link)`
   color: #84828a;
   font-size: 1rem;
   text-decoration: none;
+  cursor: pointer;
 `;
 
 const LogOutButton = styled.button`
@@ -291,6 +291,7 @@ const LogOutButton = styled.button`
   background-color: transparent;
   color: #84828a;
   font-size: 1rem;
+  cursor: pointer;
 `;
 
 const SearchIcon = styled(CiSearch)`

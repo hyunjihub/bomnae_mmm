@@ -232,14 +232,14 @@ function SignUp(props) {
     }
   };
 
-  const validation = () => {
+  const validation = async () => {
     if (userEmail.trim() !== '' && password.trim() !== '' && checkPW.trim() !== '' && nickname.trim() !== '') {
       if (password === checkPW) {
         let idCheck = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i; //이메일 형식 테스트
         if (idCheck.test(userEmail)) {
           let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
           if (pwCheck.test(password)) {
-            if (duplication()) {
+            if (await duplication()) {
               if (nickname.trim().length <= 6) {
                 register();
               } else {
