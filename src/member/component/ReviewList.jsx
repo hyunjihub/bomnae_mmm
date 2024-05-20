@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const List = styled.div`
   background-color: #fff;
   width: 14rem;
-  height: 15rem;
+  height: 21rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   box-sizing: border-box;
@@ -63,18 +63,34 @@ const Time = styled.h3`
 `;
 
 const Review = styled.h3`
+  max-width: 12.5rem;
+  max-height: 14rem;
+  overflow-y: hidden;
   font-size: 1rem;
   color: #838383;
   line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 1023px) and (max-width: 1380px) {
+    max-width: 25rem;
+    max-height: 17rem;
+  }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 480px) and (max-width: 1023px) {
+    max-width: 25rem;
+    max-height: 18rem;
     font-size: 0.9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 479px) {
-    font-size: 0.8rem;
+    max-width: 25rem;
+    max-height: 15rem;
+    font-size: 0.9rem;
   }
 `;
 

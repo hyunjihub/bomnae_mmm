@@ -646,6 +646,17 @@ function Detail(props) {
     }
   };
 
+  const reviewLength = (e) => {
+    if (e.target.value.length > 150) {
+      Toast.fire({
+        icon: 'error',
+        html: '최대 150글자까지 작성 가능합니다.',
+      });
+    } else {
+      setReview(e.target.value);
+    }
+  };
+
   return (
     <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
       <Wrapper>
@@ -715,8 +726,8 @@ function Detail(props) {
             <WriteContainer>
               <Write
                 value={review || ''}
-                placeholder="후기를 입력해주세요."
-                onChange={(e) => setReview(e.target.value)}
+                placeholder="후기를 입력해주세요. 최대 150글자까지 가능합니다."
+                onChange={(e) => reviewLength(e)}
                 rows={4}
                 cols={50}
               ></Write>

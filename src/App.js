@@ -15,12 +15,12 @@ import MyPage from './member/page/MyPage';
 import { NavermapsProvider } from 'react-naver-maps';
 import PrivateRoute from './member/component/PrivateRoute';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Request from './list/page/Request';
 import Reset from './member/page/Reset';
 import Search from './list/page/Search';
 import Sidebar from './common/page/Sidebar';
 import SignUp from './member/page/SignUp';
+import TopScroll from './common/component/TopScroll';
 import { reset } from 'styled-reset';
 
 const Global = createGlobalStyle`
@@ -40,6 +40,7 @@ export default function App(props) {
     <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
       <BrowserRouter>
         <Global />
+        <TopScroll />
         <Header />
         <Center>
           <Sidebar />

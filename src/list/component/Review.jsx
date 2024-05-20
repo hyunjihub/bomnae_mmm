@@ -7,13 +7,23 @@ import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 
 const Content = styled.h3`
+  max-width: 24rem;
   font-size: 0.9rem;
   line-height: 1.2;
   color: #607274;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (max-width: 1023px) {
     font-size: 0.85rem;
+    max-width: 37rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    max-width: 40rem;
   }
 `;
 

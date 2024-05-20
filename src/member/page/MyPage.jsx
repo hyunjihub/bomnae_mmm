@@ -17,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 1100px;
+  height: 1150px;
   background-color: #f7f6f9;
   box-sizing: border-box;
   display: flex;
