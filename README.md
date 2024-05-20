@@ -1,13 +1,17 @@
-# 봄내음 (Bomnae-mmm)
+![banner](https://github.com/hyunjihub/bomnae_mmm/assets/97017935/fd5cb3c8-0208-4d6f-b329-0c825066ce62)
+# 봄내음 (Bomnae-mmm) 🍔
 ###### 봄내음은 춘천을 의미하는 ‘봄내’와 맛있는 음식을 먹을 때 자주 사용하는 감탄사 ‘음~’을 합친 이름으로, 춘천의 맛집, 카페, 놀거리 정보를 제공해주는 웹 사이트입니다.
 
 [봄내음으로 이동하기](https://bomnae-mmm.web.app/)
 
-## 개발 기간
+## 개발 기간 🔧
 ##### 2024.04.12 ~ 2024.04.24 기획 및 UI
-##### 2024.04.25 ~ 2024.05.18 기능 개발
+##### 2024.04.25 ~ 2024.05.17 기능 개발
+##### 2024.05.18 ~ 2024.05.25 사용자 테스트 및 오류 수정
 
-## 개발 환경 및 기술 스택
+[개발 일정 자세히 보기](https://www.notion.so/981508d45add4f71893e93d61f187d77)
+
+## 개발 환경 및 기술 스택 🖥️
 
 ![](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
 ![](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=white)
@@ -23,7 +27,11 @@
 ![](https://img.shields.io/badge/Redux-593D88?style=flat-square&logo=redux&logoColor=white)
 ![](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white)
 
-## 기능
+## 스토리 보드
+![스토리보드](https://github.com/hyunjihub/bomnae_mmm/assets/97017935/4f007cde-676b-4937-8e0e-96db19c16279)
+###### 노란색 기능은 모든 회원이 이용 가능하며, 파란색 기능은 관리자만 이용 가능합니다.
+
+## 기능 👌🏻
 1. 회원가입과 회원탈퇴
    ###### 회원가입시 users, likes Collection에 document를 생성하여 프로필 정보와 리뷰 정보를 저장할 수 있도록 구현하였다.
    ###### 회원탈퇴시 생성된 document를 삭제하여 회원 관련 document를 모두 삭제하도록 구현하였다.
@@ -70,3 +78,8 @@
     ###### user documnet 중 isAdmin field 값이 true인 계정에 한해 isAdmin(Redux)을 true로 설정하여 관리자 전용 기능을 이용할 수 있도록 구현하였다.
     ###### 관리자 계정은 맛집 등록 요청 페이지 대신 맛집 등록 요청 확인 페이지가 표시되며, requests Collection에 등록된 모든 요청들이 표시된다. 요청을 삭제할 경우 requests Collection에 저장된 document도 함께 삭제되도록 하였다.
     ###### 관리자 계정은 모든 후기를 삭제할 수 있는 권한을 가진다. 모든 후기에 삭제 버튼이 활성화되도록 구현하였다.
+
+## 관련 링크
+[봄내음 Notion](https://www.notion.so/d613c25daa274ac4901d204ef09eae34?v=8c1d18231dab4bc39329ab9a81da72a2)
+[봄내음 Velog](https://velog.io/@syub98774/series/%EB%B4%84%EB%82%B4%EC%9D%8C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
+[봄내음 사용자테스트](https://form.naver.com/response/tER6ukNYHtbZe2vdx3UAxg)
