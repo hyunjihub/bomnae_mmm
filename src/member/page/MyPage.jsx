@@ -556,7 +556,6 @@ function MyPage(props) {
       try {
         const q = query(collection(appFireStore, 'likes'), where('uid', '==', id), limit(3));
         const querySnapshot = await getDocs(q);
-
         querySnapshot.forEach((doc) => {
           const data = doc.data().likedRestaurants.slice(0, 3);
           setLikeLists(data);
@@ -581,7 +580,6 @@ function MyPage(props) {
           limit(3)
         );
         const querySnapshot = await getDocs(q);
-
         const reviews = [];
         querySnapshot.forEach((doc) => {
           let review = {
@@ -609,38 +607,31 @@ function MyPage(props) {
   }, [isDelete]);
 
   const handleDelete = async () => {
-    if (id !== 'nNmBOFPqsTOGnHZcJVptNpBdTwu2') {
-      try {
-        if (await reAuthentication()) {
-          const user = appAuth.currentUser;
-          await deleteUser(user);
-          let userCollection = collection(appFireStore, 'users');
-          let q = query(userCollection, where('uid', '==', id));
-          let querySnapshot = await getDocs(q);
-          let userDocRef = querySnapshot.docs[0].ref;
-          await deleteDoc(userDocRef);
-          userCollection = collection(appFireStore, 'likes');
-          q = query(userCollection, where('uid', '==', id));
-          querySnapshot = await getDocs(q);
-          userDocRef = querySnapshot.docs[0].ref;
-          await deleteDoc(userDocRef);
-          handleLogOut();
-          Toast.fire({
-            icon: 'success',
-            html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
-          });
-        }
-      } catch (error) {
-        console.log(error);
+    try {
+      if (await reAuthentication()) {
+        const user = appAuth.currentUser;
+        await deleteUser(user);
+        let userCollection = collection(appFireStore, 'users');
+        let q = query(userCollection, where('uid', '==', id));
+        let querySnapshot = await getDocs(q);
+        let userDocRef = querySnapshot.docs[0].ref;
+        await deleteDoc(userDocRef);
+        userCollection = collection(appFireStore, 'likes');
+        q = query(userCollection, where('uid', '==', id));
+        querySnapshot = await getDocs(q);
+        userDocRef = querySnapshot.docs[0].ref;
+        await deleteDoc(userDocRef);
+        handleLogOut();
         Toast.fire({
-          icon: 'error',
-          html: '오류가 발생했습니다.',
+          icon: 'success',
+          html: '정상적으로 탈퇴되었습니다.<br>이용해주셔서 감사합니다.',
         });
       }
-    } else {
+    } catch (error) {
+      console.log(error);
       Toast.fire({
         icon: 'error',
-        html: '테스트계정은 이용할 수 없는 기능입니다.',
+        html: '오류가 발생했습니다.',
       });
     }
   };
@@ -765,15 +756,33 @@ function MyPage(props) {
     }
   };
 
+  const duplication = async () => {
+    try {
+      const querySnapshot = await appFireStore.collection('users').where('nickname', '==', modifyName).get();
+      return querySnapshot.empty;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [modifyImg, setModifyImg] = useState(userInfo.profile_img);
   const [modifyName, setModifyName] = useState(userInfo.nickname);
   const handleUpdate = async () => {
     if (isEdited) {
       try {
-        if (modifyImg === userInfo.profile_img && modifyName === userInfo.profile_img) {
+        if (modifyImg === userInfo.profile_img && modifyName === userInfo.nickname) {
           //아무것도 바뀌지 않았으면, 변경하지 않는다.
         } else {
           if (modifyName.length > 1 && modifyName.length <= 6) {
+            if (modifyName !== userInfo.nickname) {
+              if (!(await duplication())) {
+                Toast.fire({
+                  icon: 'error',
+                  html: '중복된 닉네임입니다.',
+                });
+                return;
+              }
+            }
             const usersCollectionRef = collection(appFireStore, 'users');
             const q = query(usersCollectionRef, where('uid', '==', id));
             const querySnapshot = await getDocs(q);

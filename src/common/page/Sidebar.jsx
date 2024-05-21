@@ -43,11 +43,16 @@ const MenuBox = styled.div`
 
 const SMenu = styled(Link)`
   color: #84828a;
-  font-size: 0.8rem;
+  font-size: 1rem;
   margin-top: 0.8rem;
   margin-left: 3vw;
   cursor: pointer;
   text-decoration: none;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    margin-left: 4vw;
+  }
 `;
 
 function Sidebar(props) {

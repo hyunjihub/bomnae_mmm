@@ -24,25 +24,23 @@ const Wrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 999;
-  padding: 0 4vw;
+  padding: 0 6rem;
   box-sizing: border-box;
   justify-content: space-between;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    gap: 1rem;
+    padding: 0 4rem 0 2rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    height: 9vh;
-    gap: 1rem;
+    padding: 0 2rem 0 1rem;
   }
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    height: 9vh;
-    gap: 1rem;
+    padding: 0 2.5rem 0 1rem;
   }
 `;
 
@@ -75,7 +73,6 @@ const LogoBox = styled.div`
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    padding-right: 2vw;
     min-width: calc(2rem + 50px);
     padding-left: 0;
     margin-right: 0;
@@ -96,7 +93,7 @@ const Logo = styled.img`
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    width: 4.5rem;
+    width: 4rem;
   }
 `;
 
@@ -221,8 +218,8 @@ const Profile = styled(Link)`
 `;
 
 const Menu = styled.div`
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background-image: url(${menu});
   background-repeat: no-repeat;
   background-size: cover;
@@ -240,11 +237,10 @@ const Box = styled.div`
   gap: 1rem;
   align-items: center;
   position: relative;
-  margin-left: 1rem;
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    gap: 0.5rem;
+    gap: 0rem;
   }
 `;
 
@@ -263,7 +259,7 @@ const SideMenu = styled.div`
 
 const SMenu = styled(Link)`
   color: #84828a;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   margin-top: 0.8rem;
   margin-left: 4vh;
   cursor: pointer;
@@ -377,9 +373,28 @@ function Header(props) {
   return (
     <>
       <Wrapper>
-        <LogoBox as={Link} to="/">
-          <Logo src={logo} alt="logo" />
-        </LogoBox>
+        <Box>
+          <Menu onClick={handleOpen}>
+            {isOpen ? (
+              <SideMenu>
+                {menus.map((menu) => {
+                  return <SidebarItem menu={menu} />;
+                })}
+                {isAdmin ? (
+                  <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
+                ) : (
+                  <SMenu to="/request/common">맛집 등록 요청</SMenu>
+                )}
+              </SideMenu>
+            ) : (
+              <></>
+            )}
+          </Menu>
+          <LogoBox as={Link} to="/">
+            <Logo src={logo} alt="logo" />
+          </LogoBox>
+        </Box>
+
         <SearchBox>
           <SearchIcon onClick={searchClick} size="20" color="#a49f9f" />
           <Search
@@ -404,22 +419,6 @@ function Header(props) {
             )}
           </LoginBox>
           {isLog ? <Profile to="/mypage" profile={profileImg === '' ? profile : profileImg}></Profile> : <></>}
-          <Menu onClick={handleOpen}>
-            {isOpen ? (
-              <SideMenu>
-                {menus.map((menu) => {
-                  return <SidebarItem menu={menu} />;
-                })}
-                {isAdmin ? (
-                  <SMenu to="/request/admin">정보 등록 요청 확인</SMenu>
-                ) : (
-                  <SMenu to="/request/common">맛집 등록 요청</SMenu>
-                )}
-              </SideMenu>
-            ) : (
-              <></>
-            )}
-          </Menu>
         </Box>
       </Wrapper>
     </>

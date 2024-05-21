@@ -184,7 +184,7 @@ function Find(props) {
     toast: true,
     position: 'center',
     showConfirmButton: false,
-    timer: 1500,
+    timer: 2000,
     timerProgressBar: true,
   });
 
@@ -196,9 +196,9 @@ function Find(props) {
           await sendPasswordResetEmail(appAuth, userEmail);
           Toast.fire({
             icon: 'success',
-            html: '이메일이 전송됐습니다.<br>이메일을 확인해주세요.',
+            html: '이메일이 전송됐습니다.<br>메일 주소가 가입되지 않거나 일치하지 않을 경우 발송되지 않습니다.',
           });
-          navigate('/login');
+          navigate('/');
         } catch (error) {
           if (error.code === 'auth/invalid-email') {
             Toast.fire({
@@ -210,6 +210,12 @@ function Find(props) {
             Toast.fire({
               icon: 'error',
               html: '인터넷 연결을 확인해주세요.',
+            });
+          }
+          if (error.code === 'auth/user-not-found') {
+            Toast.fire({
+              icon: 'error',
+              html: '가입되지 않은 이메일주소입니다.',
             });
           }
         }
