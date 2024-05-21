@@ -353,10 +353,7 @@ const ReviewContainer = styled.div`
   display: flex;
   height: 35vh;
   flex-direction: column;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  overflow-y: auto;
   gap: 1rem;
   margin-top: 1.5rem;
   box-sizing: border-box;

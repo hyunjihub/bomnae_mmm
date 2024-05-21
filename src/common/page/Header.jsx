@@ -1,6 +1,6 @@
 import { CiLogin, CiLogout, CiSearch } from 'react-icons/ci';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
@@ -250,7 +250,7 @@ const SideMenu = styled.div`
   height: 15rem;
   background-color: #fff;
   top: 3.5rem;
-  right: 0rem;
+  left: 0rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
   padding: 1.5vh 2vw;
@@ -267,7 +267,7 @@ const SMenu = styled(Link)`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 479px) {
-    margin-left: 3vh;
+    margin-left: 4vh;
   }
 `;
 
@@ -312,6 +312,9 @@ function Header(props) {
     }),
     shallowEqual
   );
+
+  let searchRef = useRef(null);
+
   const menus = [
     { name: '음식점', path: '/list/restaurant' },
     { name: '카페', path: '/list/cafe' },
@@ -331,6 +334,20 @@ function Header(props) {
     if (isOpen) setIsOpen(false);
     else setIsOpen(true);
   };
+
+  useEffect(() => {
+    // 특정 영역 외 클릭 시 발생하는 이벤트
+    function handleFocus(e) {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mouseup', handleFocus);
+    return () => {
+      document.removeEventListener('mouseup', handleFocus);
+    };
+  }, [searchRef]);
 
   const [search, setSearch] = useState('');
   const checkKeyUp = (e) => {
@@ -376,7 +393,7 @@ function Header(props) {
         <Box>
           <Menu onClick={handleOpen}>
             {isOpen ? (
-              <SideMenu>
+              <SideMenu ref={searchRef}>
                 {menus.map((menu) => {
                   return <SidebarItem menu={menu} />;
                 })}

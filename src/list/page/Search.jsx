@@ -34,6 +34,7 @@ const Wrapper = styled.div`
 `;
 
 const ListContainer = styled.div`
+  width: 90%;
   max-height: 80vh;
   display: flex;
   flex-wrap: wrap;

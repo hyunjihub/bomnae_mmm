@@ -25,7 +25,7 @@ const Menu = styled(NavLink)`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
-    width: 11rem;
+    width: 10rem;
     height: 2.8rem;
     font-size: 1.1rem;
     padding: 1rem 2.5rem;
