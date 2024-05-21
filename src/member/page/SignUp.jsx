@@ -232,6 +232,15 @@ function SignUp(props) {
     }
   };
 
+  const [capsLockFlag, setCapsLockFlag] = useState(false);
+  const checkKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      validation();
+    } else if (e.key === 'CapsLock') {
+      setCapsLockFlag(e.getModifierState('CapsLock'));
+    }
+  };
+
   const validation = async () => {
     if (userEmail.trim() !== '' && password.trim() !== '' && checkPW.trim() !== '' && nickname.trim() !== '') {
       if (password === checkPW) {
@@ -289,7 +298,12 @@ function SignUp(props) {
       <Input type="text" placeholder="아이디(이메일)" onChange={(e) => setUserEmail(e.target.value)} />
       <Input type="password" placeholder="비밀번호" onChange={(e) => setPassword(e.target.value)} />
       <Input type="password" placeholder="비밀번호 확인" onChange={(e) => setcheckPW(e.target.value)} />
-      <Input type="text" placeholder="닉네임" onChange={(e) => setNickname(e.target.value)} />
+      <Input
+        type="text"
+        placeholder="닉네임"
+        onChange={(e) => setNickname(e.target.value)}
+        onKeyUp={(e) => checkKeyUp(e)}
+      />
       <Button onClick={validation}>회원 가입</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
       {loading ? <Loading /> : <></>}

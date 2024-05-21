@@ -69,7 +69,7 @@ const Filter = styled.div`
 `;
 
 const ListContainer = styled.div`
-  height: 60vh;
+  max-height: 60vh;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem 1rem;

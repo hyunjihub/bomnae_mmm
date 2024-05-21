@@ -227,6 +227,12 @@ function Find(props) {
     }
   };
 
+  const checkKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleFind();
+    }
+  };
+
   return (
     <Wrapper>
       <LogoBox to="/">
@@ -242,6 +248,7 @@ function Find(props) {
         type="text"
         placeholder="아이디(이메일) (bomnae@naver.com)"
         onChange={(e) => setUserEmail(e.target.value)}
+        onKeyUp={(e) => checkKeyUp(e)}
       />
       <Button onClick={handleFind}>비밀번호 재설정</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>

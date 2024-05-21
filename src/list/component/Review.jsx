@@ -91,23 +91,34 @@ function Review({ review, setIsDelete }) {
 
   const handleDelete = async () => {
     if (isAdmin || id === review.uid) {
-      try {
-        const usersCollection = collection(appFireStore, 'reviews');
-        const q = query(usersCollection, where('review_id', '==', review.review_id));
-        const querySnapshot = await getDocs(q);
-        const userDocRef = querySnapshot.docs[0].ref;
-        await deleteDoc(userDocRef);
-        setIsDelete(true);
-        Toast.fire({
-          icon: 'success',
-          html: '삭제 완료',
-        });
-      } catch (error) {
-        Toast.fire({
-          icon: 'error',
-          html: '오류가 발생했습니다.',
-        });
-      }
+      Swal.fire({
+        title: '정말 삭제하시겠습니까?',
+        html: '삭제하면 복구할 수 없습니다.',
+        showDenyButton: true,
+        confirmButtonText: '삭제',
+        denyButtonText: `취소`,
+        confirmButtonColor: '#00a3e0',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const usersCollection = collection(appFireStore, 'reviews');
+            const q = query(usersCollection, where('review_id', '==', review.review_id));
+            const querySnapshot = await getDocs(q);
+            const userDocRef = querySnapshot.docs[0].ref;
+            await deleteDoc(userDocRef);
+            setIsDelete(true);
+            Toast.fire({
+              icon: 'success',
+              html: '삭제 완료',
+            });
+          } catch (error) {
+            Toast.fire({
+              icon: 'error',
+              html: '오류가 발생했습니다.',
+            });
+          }
+        }
+      });
     }
   };
 

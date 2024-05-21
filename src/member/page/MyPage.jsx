@@ -466,7 +466,7 @@ const Box = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    gap: 1rem;
+    gap: 0.3rem;
 
     &.review {
       gap: 0.5rem;
@@ -549,6 +549,7 @@ function MyPage(props) {
 
   const [reviewList, setReviewList] = useState([]);
   const [likeLists, setLikeLists] = useState([]);
+  const [isDelete, setIsDelete] = useState(true);
 
   useEffect(() => {
     const getList = async () => {
@@ -568,6 +569,9 @@ function MyPage(props) {
       }
     };
     getList();
+  }, []);
+
+  useEffect(() => {
     const getReview = async () => {
       try {
         const q = query(
@@ -586,6 +590,7 @@ function MyPage(props) {
             created_at: doc.data().created_at.toDate().toISOString().substring(0, 10),
             place_name: doc.data().place_name,
             place_id: doc.data().place_id,
+            review_id: doc.data().review_id,
           };
           reviews.push(review);
         });
@@ -597,8 +602,11 @@ function MyPage(props) {
         });
       }
     };
-    getReview();
-  }, []);
+    if (isDelete) {
+      getReview();
+      setIsDelete(false);
+    }
+  }, [isDelete]);
 
   const handleDelete = async () => {
     if (id !== 'nNmBOFPqsTOGnHZcJVptNpBdTwu2') {
@@ -893,7 +901,7 @@ function MyPage(props) {
           {reviewList.length !== 0 ? (
             <Box className="review">
               {reviewList.map((reviewList) => {
-                return <ReviewList reviewList={reviewList} />;
+                return <ReviewList reviewList={reviewList} setIsDelete={setIsDelete} />;
               })}
             </Box>
           ) : (

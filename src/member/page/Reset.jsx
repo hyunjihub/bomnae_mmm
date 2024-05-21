@@ -160,7 +160,7 @@ function Reset(props) {
 
   const validation = () => {
     if (password.trim() !== '' && checkPW.trim() !== '') {
-      if (password !== checkPW) {
+      if (password === checkPW) {
         let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
         if (pwCheck.test(password)) {
           handleReset();
@@ -197,6 +197,12 @@ function Reset(props) {
     }
   };
 
+  const checkKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      validation();
+    }
+  };
+
   return (
     <Wrapper>
       <LogoBox to="/">
@@ -204,7 +210,12 @@ function Reset(props) {
       </LogoBox>
       <Title>비밀번호 재설정</Title>
       <Input type="password" placeholder="새로운 비밀번호" onChange={(e) => setPassword(e.target.value)} />
-      <Input type="password" placeholder="비밀번호 확인" onChange={(e) => setcheckPW(e.target.value)} />
+      <Input
+        type="password"
+        placeholder="비밀번호 확인"
+        onChange={(e) => setcheckPW(e.target.value)}
+        onKeyUp={(e) => checkKeyUp(e)}
+      />
       <Button onClick={validation}>비밀번호 재설정</Button>
       <SButton to="/">봄내음으로 돌아가기</SButton>
     </Wrapper>

@@ -1,5 +1,9 @@
+import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
+
 import { Link } from 'react-router-dom';
 import React from 'react';
+import Swal from 'sweetalert2';
+import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
 
 const List = styled.div`
@@ -54,7 +58,7 @@ const Name = styled(Link)`
 const Time = styled.h3`
   font-size: 0.9rem;
   color: #838383;
-  margin-bottom: 1vw;
+  margin-bottom: 0.6vh;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (max-width: 1023px) {
@@ -94,12 +98,73 @@ const Review = styled.h3`
   }
 `;
 
-function ReviewList({ reviewList }) {
+const Delete = styled.h4`
+  font-size: 1rem;
+  color: #00a8dd;
+  font-weight: 500;
+  cursor: pointer;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (max-width: 1023px) {
+    font-size: 0.9rem;
+  }
+`;
+
+const Box = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+function ReviewList({ reviewList, setIsDelete }) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+  });
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: '정말 삭제하시겠습니까?',
+      html: '삭제하면 복구할 수 없습니다.',
+      showDenyButton: true,
+      confirmButtonText: '삭제',
+      denyButtonText: `취소`,
+      confirmButtonColor: '#00a3e0',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const usersCollection = collection(appFireStore, 'reviews');
+          const q = query(usersCollection, where('review_id', '==', reviewList.review_id));
+          const querySnapshot = await getDocs(q);
+          const userDocRef = querySnapshot.docs[0].ref;
+          await deleteDoc(userDocRef);
+          setIsDelete(true);
+          Toast.fire({
+            icon: 'success',
+            html: '삭제 완료',
+          });
+        } catch (error) {
+          console.log(error);
+          Toast.fire({
+            icon: 'error',
+            html: '오류가 발생했습니다.',
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <List>
         <Name to={`/place/${reviewList.place_id}`}>{reviewList.place_name}</Name>
-        <Time>{reviewList.created_at}</Time>
+        <Box>
+          <Time>{reviewList.created_at}</Time>
+          <Delete onClick={handleDelete}>삭제</Delete>
+        </Box>
         <Review>{reviewList.content}</Review>
       </List>
     </>

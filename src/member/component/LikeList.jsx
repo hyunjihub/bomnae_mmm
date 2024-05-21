@@ -17,12 +17,12 @@ const ListBox = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
     width: 9rem;
-    height: 11rem;
+    height: 10rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    width: 11rem;
+    width: 7.3rem;
     height: 10rem;
   }
 
@@ -44,17 +44,17 @@ const Image = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
-    height: 7rem;
-  }
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (min-width: 480px) and (max-width: 767px) {
     height: 6.5rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    height: 5.5rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 479px) {
-    height: 5rem;
+    height: 4rem;
   }
 `;
 
@@ -69,14 +69,14 @@ const InfoBox = styled.div`
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
-    padding: 0.9rem;
+    padding: 0.7rem 0.5rem;
     width: 9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    width: 11rem;
-    padding: 0.5rem 0.7rem;
+    width: 7.3rem;
+    padding: 0.7rem 0.5rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
@@ -88,16 +88,16 @@ const InfoBox = styled.div`
 
 const Name = styled.h1`
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/

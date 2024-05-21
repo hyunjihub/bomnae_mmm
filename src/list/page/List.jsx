@@ -175,6 +175,20 @@ const Target = styled.div`
   width: 10rem;
 `;
 
+const EmptyList = styled.div`
+  font-size: 2rem;
+  font-weight: 600;
+  height: 50rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (max-width: 767px) {
+    font-size: 1.5rem;
+  }
+`;
+
 function List(props) {
   const { type } = useParams();
 
@@ -463,12 +477,16 @@ function List(props) {
               return <ListFilter filter={filter} setCurrentFilter={setCurrentFilter} currentFilter={currentFilter} />;
             })}
           </Filter>
-          <ListContainer>
-            {restaurantLists.map((list) => {
-              return <PrintList list={list} />;
-            })}
-            <Target ref={setTarget}></Target>
-          </ListContainer>
+          {restaurantLists.length !== 0 ? (
+            <ListContainer>
+              {restaurantLists.map((list) => {
+                return <PrintList list={list} />;
+              })}
+              <Target ref={setTarget}></Target>
+            </ListContainer>
+          ) : (
+            <EmptyList>조건에 해당되는 음식점이 없습니다.</EmptyList>
+          )}
         </Wrapper>
       ) : type === 'cafe' ? (
         <Wrapper>
@@ -480,12 +498,16 @@ function List(props) {
               );
             })}
           </LocationBox>
-          <ListContainer className="cafe">
-            {cafeLists.map((list) => {
-              return <PrintList list={list} />;
-            })}
-            <Target ref={setTarget}></Target>
-          </ListContainer>
+          {cafeLists.length !== 0 ? (
+            <ListContainer className="cafe">
+              {cafeLists.map((list) => {
+                return <PrintList list={list} />;
+              })}
+              <Target ref={setTarget}></Target>
+            </ListContainer>
+          ) : (
+            <EmptyList>조건에 해당되는 카페가 없습니다.</EmptyList>
+          )}
         </Wrapper>
       ) : (
         <Wrapper>
