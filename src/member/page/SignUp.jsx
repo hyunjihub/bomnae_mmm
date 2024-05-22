@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 import Loading from '../../common/component/Loading';
 import Swal from 'sweetalert2';
 import { Timestamp } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import logo from '../../common/resource/img/logo.png';
 import styled from 'styled-components';
 
@@ -249,7 +249,7 @@ function SignUp(props) {
           let pwCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-_])(?=.*[0-9]).{8,}$/; //특수문자 포함 8자리 이상
           if (pwCheck.test(password)) {
             if (await duplication()) {
-              if (nickname.trim().length <= 6) {
+              if (nickname.trim().length <= 6 && nickname.trim().length > 1) {
                 register();
               } else {
                 Toast.fire({
@@ -296,11 +296,15 @@ function SignUp(props) {
       </LogoBox>
       <Title>회원 가입</Title>
       <Input type="text" placeholder="아이디(이메일)" onChange={(e) => setUserEmail(e.target.value)} />
-      <Input type="password" placeholder="비밀번호" onChange={(e) => setPassword(e.target.value)} />
+      <Input
+        type="password"
+        placeholder="비밀번호 (영문, 숫자, 특수문자 포함 8글자 이상)"
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <Input type="password" placeholder="비밀번호 확인" onChange={(e) => setcheckPW(e.target.value)} />
       <Input
         type="text"
-        placeholder="닉네임"
+        placeholder="닉네임 (2글자 이상 6글자 이하)"
         onChange={(e) => setNickname(e.target.value)}
         onKeyUp={(e) => checkKeyUp(e)}
       />

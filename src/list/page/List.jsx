@@ -201,8 +201,8 @@ function List(props) {
   });
 
   const filters = ['한식', '중식', '양식', '일식', '기타'];
-  const [currentFilter, setCurrentFilter] = useState('*');
-  const [currentLocation, setCurrentLocation] = useState('*');
+  const [currentFilter, setCurrentFilter] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState([]);
   const locations = [
     '강남동',
     '교동',
@@ -224,10 +224,10 @@ function List(props) {
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
-    if (type === 'cafe') setCurrentFilter('카페');
-    else if (type === 'restaurant') setCurrentFilter('*');
+    if (type === 'cafe') setCurrentFilter(['카페']);
+    else if (type === 'restaurant') setCurrentFilter([]);
     setKey(null);
-    setCurrentLocation('*');
+    setCurrentLocation([]);
     setNoMore(false);
     setIsFirstRender(true);
     const getFirstList = async () => {
@@ -268,15 +268,15 @@ function List(props) {
   useEffect(() => {
     return () => {
       setKey(null);
-      setCurrentLocation('*');
-      setCurrentFilter('*');
+      setCurrentLocation([]);
+      setCurrentFilter([]);
     };
   }, []);
 
   const loadMore = useCallback(async () => {
     let q;
     if (type === 'restaurant') {
-      if (currentFilter === '*' && currentLocation === '*' && key !== null) {
+      if (currentFilter.length === 0 && currentLocation.length === 0 && key !== null) {
         q = query(
           collection(appFireStore, 'restaurants'),
           where('place_id', '<', 2000),
@@ -302,7 +302,7 @@ function List(props) {
       }
     } else if (type === 'cafe') {
       if (cafeLists.length !== 0) {
-        if (currentFilter === '카페' && currentLocation === '*' && key !== null) {
+        if (currentFilter[0] === '카페' && currentLocation.length === 0 && key !== null) {
           q = query(
             collection(appFireStore, 'restaurants'),
             where('place_id', '>', 2000),
@@ -357,27 +357,27 @@ function List(props) {
       return; // 첫 렌더링 시 아무것도 하지 않음
     }
 
-    const changeFilter = async (filter) => {
+    const changeFilter = async () => {
       try {
         let q;
-        if (currentLocation === '*') {
-          if (filter === '*') {
+        if (currentLocation.length === 0) {
+          if (currentFilter.length === 0) {
             q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
           } else {
-            q = query(collection(appFireStore, 'restaurants'), where('category', '==', filter));
+            q = query(collection(appFireStore, 'restaurants'), where('category', 'in', currentFilter));
           }
         } else {
-          if (filter === '*') {
+          if (currentFilter.length === 0) {
             q = query(
               collection(appFireStore, 'restaurants'),
               where('place_id', '<', 2000),
-              where('dong', '==', currentLocation)
+              where('dong', 'in', currentLocation)
             );
           } else {
             q = query(
               collection(appFireStore, 'restaurants'),
-              where('category', '==', filter),
-              where('dong', '==', currentLocation)
+              where('category', 'in', currentFilter),
+              where('dong', 'in', currentLocation)
             );
           }
         }
@@ -405,39 +405,39 @@ function List(props) {
       return; // 첫 렌더링 시 아무것도 하지 않음
     }
 
-    const changeLocation = async (filter) => {
+    const changeLocation = async () => {
       try {
         let q;
         if (type === 'restaurant') {
-          if (currentLocation === '*') {
-            if (currentFilter === '*') {
+          if (currentLocation.length === 0) {
+            if (currentFilter.length === 0) {
               q = query(collection(appFireStore, 'restaurants'), where('place_id', '<', 2000));
             } else {
-              q = query(collection(appFireStore, 'restaurants'), where('category', '==', currentFilter));
+              q = query(collection(appFireStore, 'restaurants'), where('category', 'in', currentFilter));
             }
           } else {
-            if (currentFilter === '*') {
+            if (currentFilter.length === 0) {
               q = query(
                 collection(appFireStore, 'restaurants'),
                 where('place_id', '<', 2000),
-                where('dong', '==', filter)
+                where('dong', 'in', currentLocation)
               );
             } else {
               q = query(
                 collection(appFireStore, 'restaurants'),
-                where('category', '==', currentFilter),
-                where('dong', '==', filter)
+                where('category', 'in', currentFilter),
+                where('dong', 'in', currentLocation)
               );
             }
           }
         } else if (type === 'cafe') {
-          if (currentLocation === '*') {
-            q = query(collection(appFireStore, 'restaurants'), where('category', '==', currentFilter));
+          if (currentLocation.length === 0) {
+            q = query(collection(appFireStore, 'restaurants'), where('category', '==', '카페'));
           } else {
             q = query(
               collection(appFireStore, 'restaurants'),
-              where('category', '==', currentFilter),
-              where('dong', '==', filter)
+              where('category', '==', '카페'),
+              where('dong', 'in', currentLocation)
             );
           }
         }

@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { Timestamp, collection, doc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -20,7 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 1100px;
+  height: 1300px;
   background-color: #f7f6f9;
   box-sizing: border-box;
   margin-left: 230px;
@@ -32,27 +32,27 @@ const Wrapper = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 1024px) and (max-width: 1380px) {
     margin-left: 230px;
-    height: 1500px;
+    height: 1600px;
   }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     margin-left: 170px;
-    height: 1850px;
+    height: 2000px;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (min-width: 480px) and (max-width: 767px) {
     margin-left: 0;
     padding: 3vh 1vw;
-    height: 2100px;
+    height: 2400px;
   }
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
     margin-left: 0;
     padding: 2vh 1vw;
-    height: 2100px;
+    height: 2450px;
   }
 `;
 
@@ -70,7 +70,7 @@ const Container = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 1024px) and (max-width: 1380px) {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 2fr 0.8fr;
     grid-template-areas:
       'd d'
       'l r';
@@ -80,7 +80,7 @@ const Container = styled.div`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.5fr 0.5fr;
+    grid-template-rows: 1fr 0.4fr 0.3fr;
     grid-template-areas:
       'd'
       'l'
@@ -175,31 +175,19 @@ const Box = styled.div`
 
   &.detail {
     width: 100%;
+    flex-direction: column;
   }
 
   &.info {
-    width: 55%;
-    flex-direction: column;
+    width: 100%;
     gap: 0.6rem;
+    flex-direction: column;
   }
 
   &.menu {
-    width: 45%;
-    flex-direction: column;
+    width: 100%;
     gap: 0.6rem;
-  }
-
-  /* 모바일 세로*/
-  @media all and (max-width: 479px) {
     flex-direction: column;
-
-    &.info {
-      width: 100%;
-    }
-
-    &.menu {
-      width: 100%;
-    }
   }
 `;
 
@@ -251,13 +239,6 @@ const TitleBox = styled.div`
 const TitleDetail = styled.h3`
   font-size: 0.8rem;
   color: #9a95a3;
-
-  /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 1380px) {
-    &.menu {
-      display: none;
-    }
-  }
 `;
 
 const Name = styled.div`
@@ -317,6 +298,10 @@ const Divider = styled.hr`
     width: 95%;
     margin: 1rem 0;
   }
+
+  &.info {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h1`
@@ -351,12 +336,40 @@ const InfoBox = styled.div`
 
 const ReviewContainer = styled.div`
   display: flex;
-  height: 35vh;
+  height: 45vh;
   flex-direction: column;
   overflow-y: auto;
   gap: 1rem;
   margin-top: 1.5rem;
   box-sizing: border-box;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(255, 255, 255, 0.2);
+
+  /* Webkit browsers */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &.scrolling {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.5); /* 스크롤 중일 때 더 명확하게 */
+    }
+  }
+
+  &.not-scrolling {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0); /* 스크롤 멈출 때 투명하게 */
+    }
+  }
 
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1380px) {
@@ -598,6 +611,32 @@ function Detail(props) {
     if (place.place_name !== undefined) getBlog();
   }, [place.place_name, search]);
 
+  const [scrolling, setScrolling] = useState(false);
+  const scrollTimeout = useRef(null);
+  const containerRef = useRef(null);
+
+  const handleScroll = () => {
+    setScrolling(true);
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    scrollTimeout.current = setTimeout(() => {
+      setScrolling(false);
+    }, 1000); // 1초 동안 스크롤이 없으면 스크롤바를 숨깁니다.
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, []);
+
   const [review, setReview] = useState('');
   const handleReview = async () => {
     if (isLog) {
@@ -672,9 +711,13 @@ function Detail(props) {
             <InfoBox>
               <Box className="detail">
                 <Box className="info">
-                  <Title>정보</Title>
+                  <TitleBox className="menu">
+                    <Title>정보</Title>
+                    <TitleDetail className="menu">실제 정보와 상이할 수 있습니다.</TitleDetail>
+                  </TitleBox>
                   <Info info={info} />
                 </Box>
+                <Divider className="info" />
                 <Box className="menu">
                   <TitleBox className="menu">
                     <Title>메뉴</Title>
@@ -710,7 +753,7 @@ function Detail(props) {
           </LocationBox>
           <ReviewBox>
             <Title>후기</Title>
-            <ReviewContainer>
+            <ReviewContainer ref={containerRef} className={scrolling ? 'scrolling' : 'not-scrolling'}>
               {reviewList.length === 0 ? (
                 <p>작성된 후기가 없습니다.</p>
               ) : (

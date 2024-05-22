@@ -45,13 +45,13 @@ const Name = styled.h1`
 
 function LikeFilter({ filter, setCurrentFilter, currentFilter }) {
   const handleFilter = () => {
-    if (currentFilter === filter) setCurrentFilter('*');
-    else setCurrentFilter(filter);
+    if (currentFilter.includes(filter)) setCurrentFilter(currentFilter.filter((item) => item !== filter));
+    else setCurrentFilter([...currentFilter, filter]);
   };
 
   return (
     <>
-      <Filter onClick={handleFilter} isActive={currentFilter === filter}>
+      <Filter onClick={handleFilter} isActive={currentFilter.includes(filter)}>
         <Name>{filter}</Name>
       </Filter>
     </>

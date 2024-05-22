@@ -31,13 +31,13 @@ const Name = styled.h1`
 
 function Location({ filter, setCurrentLocation, currentLocation }) {
   const handleFilter = () => {
-    if (currentLocation === filter) setCurrentLocation('*');
-    else setCurrentLocation(filter);
+    if (currentLocation.includes(filter)) setCurrentLocation(currentLocation.filter((item) => item !== filter));
+    else setCurrentLocation([...currentLocation, filter]);
   };
 
   return (
     <>
-      <Name onClick={handleFilter} isActive={filter === currentLocation}>
+      <Name onClick={handleFilter} isActive={currentLocation.includes(filter)}>
         {filter}
       </Name>
     </>
