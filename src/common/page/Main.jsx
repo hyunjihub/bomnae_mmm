@@ -120,6 +120,12 @@ const Box = styled.div`
   }
   margin-bottom: 1rem;
 
+    /* 1024px 이상 해상도 */
+    @media all and (min-width: 1024px) {
+    flex-wrap: wrap;
+    overflow-x: hidden; 
+  }
+
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     height: 9rem;

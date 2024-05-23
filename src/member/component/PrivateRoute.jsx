@@ -8,7 +8,7 @@ const PrivateRoute = () => {
     }),
     shallowEqual
   );
-  return isLog ? <Outlet /> : <Navigate to="/login" />;
+  return isLog ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

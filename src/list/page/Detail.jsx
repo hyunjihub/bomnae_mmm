@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useRef, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { Timestamp, collection, doc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -353,22 +353,10 @@ const ReviewContainer = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border-radius: 6px;
   }
   &::-webkit-scrollbar-track {
     background: transparent;
-  }
-
-  &.scrolling {
-    &::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.5); /* 스크롤 중일 때 더 명확하게 */
-    }
-  }
-
-  &.not-scrolling {
-    &::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0); /* 스크롤 멈출 때 투명하게 */
-    }
   }
 
   /* 테블릿 가로, 테블릿 세로*/
@@ -611,32 +599,6 @@ function Detail(props) {
     if (place.place_name !== undefined) getBlog();
   }, [place.place_name, search]);
 
-  const [scrolling, setScrolling] = useState(false);
-  const scrollTimeout = useRef(null);
-  const containerRef = useRef(null);
-
-  const handleScroll = () => {
-    setScrolling(true);
-    if (scrollTimeout.current) {
-      clearTimeout(scrollTimeout.current);
-    }
-    scrollTimeout.current = setTimeout(() => {
-      setScrolling(false);
-    }, 1000); // 1초 동안 스크롤이 없으면 스크롤바를 숨깁니다.
-  };
-
-  useEffect(() => {
-    const container = containerRef.current;
-    container.addEventListener('scroll', handleScroll);
-
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
-    };
-  }, []);
-
   const [review, setReview] = useState('');
   const handleReview = async () => {
     if (isLog) {
@@ -753,7 +715,7 @@ function Detail(props) {
           </LocationBox>
           <ReviewBox>
             <Title>후기</Title>
-            <ReviewContainer ref={containerRef} className={scrolling ? 'scrolling' : 'not-scrolling'}>
+            <ReviewContainer>
               {reviewList.length === 0 ? (
                 <p>작성된 후기가 없습니다.</p>
               ) : (

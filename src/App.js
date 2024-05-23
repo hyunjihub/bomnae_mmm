@@ -16,6 +16,7 @@ import { NavermapsProvider } from 'react-naver-maps';
 import PrivateRoute from './member/component/PrivateRoute';
 import React from 'react';
 import Request from './list/page/Request';
+import Requested from './list/page/Requested';
 import Reset from './member/page/Reset';
 import Search from './list/page/Search';
 import Sidebar from './common/page/Sidebar';
@@ -36,14 +37,17 @@ const Center = styled.div`
 `;
 
 export default function App(props) {
+  const pathname = window.location.pathname;
+  const isExternalPage = pathname === '/requested';
+
   return (
     <NavermapsProvider ncpClientId={process.env.REACT_APP_NCP_CLIENT_ID}>
       <BrowserRouter>
         <Global />
         <TopScroll />
-        <Header />
+        {!isExternalPage && <Header />}
         <Center>
-          <Sidebar />
+          {!isExternalPage && <Sidebar />}
           <Routes>
             <Route index element={<Main />} />
             <Route path="/main" element={<Main />} />
@@ -58,6 +62,7 @@ export default function App(props) {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/like" element={<Like />} />
               <Route path="/request/:isadmin" element={<Request />} />
+              <Route path="/requested" element={<Requested />} />
             </Route>
             <Route path="*" element={<Error />} />
           </Routes>

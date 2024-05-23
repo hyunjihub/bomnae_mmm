@@ -1,11 +1,12 @@
+import { Link, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import RequestList from '../component/RequestList';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
@@ -203,7 +204,6 @@ const RequestContainer = styled.div`
   width: 70rem;
   background-color: transparent;
   gap: 2rem;
-  justify-content: center;
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
@@ -214,8 +214,32 @@ const RequestContainer = styled.div`
   }
 `;
 
+const Box = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+const More = styled(Link)`
+  color: #00a8dd;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 function Request(props) {
   const { isadmin } = useParams();
+
+  const { id } = useSelector(
+    (state) => ({
+      id: state.login.memberId,
+    }),
+    shallowEqual
+  );
 
   const [request, setRequest] = useState({
     place_name: '',
@@ -238,7 +262,7 @@ function Request(props) {
     const getList = async () => {
       try {
         let q;
-        q = query(collection(appFireStore, 'requests'));
+        q = query(collection(appFireStore, 'requests'), where('status', '==', '대기중'));
         const querySnapshot = await getDocs(q);
         const updatedList = querySnapshot.docs.map((doc) => doc.data());
         setRequestList(updatedList);
@@ -269,9 +293,11 @@ function Request(props) {
         let userDoc = doc(collection(appFireStore, 'requests'));
         await setDoc(userDoc, {
           request_id: uuidv4(),
+          uid: id,
           place_name: request.place_name,
           category: request.category,
           address: request.address,
+          status: '대기중',
         });
         Toast.fire({
           icon: 'success',
@@ -301,7 +327,12 @@ function Request(props) {
       {isadmin === 'common' ? (
         <Wrapper>
           <Title>맛집 등록 요청</Title>
-          <Detail>봄내음에 추가됐으면 하는 여러분들의 맛집/놀거리를 추천해주세요!</Detail>
+          <Box>
+            <Detail>봄내음에 추가됐으면 하는 여러분들의 맛집/놀거리를 추천해주세요!</Detail>
+            <More to="/requested" target="_blank">
+              요청 기록 확인하기
+            </More>
+          </Box>
           <RequstBox>
             <Title className="request">맛집 등록 요청</Title>
             <Label>상호명 (필수)</Label>

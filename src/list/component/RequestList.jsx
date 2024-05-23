@@ -1,6 +1,6 @@
-import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 
-import React from 'react';
 import Swal from 'sweetalert2';
 import { appFireStore } from '../../firebase/config';
 import styled from 'styled-components';
@@ -34,22 +34,18 @@ const InfoBox = styled.div`
   }
 `;
 
-const Cancel = styled.button`
+const Select = styled.select`
   border: none;
   background-color: #00a3e0;
   color: #fff;
-  border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
+  border-radius: 8px;
+  width: 4rem;
+  height: 2rem;
   position: absolute;
   top: 0.8rem;
   right: 0;
-  padding-top: 0.1rem;
+  padding: 0.2rem;
   cursor: pointer;
-
-  &:hover {
-    background-color: #4cb9e7;
-  }
 `;
 
 const Name = styled.h1`
@@ -66,6 +62,8 @@ const Location = styled.h3`
 `;
 
 function RequestList({ list, setIsDelete }) {
+  const [selectedOption, setSelectedOption] = useState('');
+
   const Toast = Swal.mixin({
     toast: true,
     position: 'center',
@@ -74,13 +72,26 @@ function RequestList({ list, setIsDelete }) {
     timerProgressBar: true,
   });
 
+  const handleOptionChange = async (event) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+
+    if (selectedValue === 'complete') {
+      await handleUpdate();
+    } else if (selectedValue === 'cancel') {
+      await handleDelete();
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const usersCollection = collection(appFireStore, 'requests');
       const q = query(usersCollection, where('request_id', '==', list.request_id));
       const querySnapshot = await getDocs(q);
       const userDocRef = querySnapshot.docs[0].ref;
-      await deleteDoc(userDocRef);
+      await updateDoc(userDocRef, {
+        status: '취소',
+      });
       setIsDelete(true);
       Toast.fire({
         icon: 'success',
@@ -94,11 +105,37 @@ function RequestList({ list, setIsDelete }) {
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      const usersCollection = collection(appFireStore, 'requests');
+      const q = query(usersCollection, where('request_id', '==', list.request_id));
+      const querySnapshot = await getDocs(q);
+      const userDocRef = querySnapshot.docs[0].ref;
+      await updateDoc(userDocRef, {
+        status: '완료',
+      });
+      setIsDelete(true);
+      Toast.fire({
+        icon: 'success',
+        html: '등록 완료',
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        html: '오류가 발생했습니다.',
+      });
+    }
+  };
+
   return (
     <>
       <List>
         <InfoBox>
-          <Cancel onClick={handleDelete}>X</Cancel>
+          <Select value={selectedOption} onChange={handleOptionChange}>
+            <option value="">선택</option>
+            <option value="complete">등록</option>
+            <option value="cancel">취소</option>
+          </Select>
           <Name>{list.place_name}</Name>
           <Location className="category">{list.category !== null ? list.category : '카테고리 미기재'}</Location>
           <Location>{list.address}</Location>

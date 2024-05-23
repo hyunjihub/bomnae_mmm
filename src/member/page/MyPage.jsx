@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { appAuth, appFireStore, appStorage } from '../../firebase/config';
 import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { setLogin, setName, setProfileimg } from '../../redux/login';
+import { setAdmin, setLogin, setMemberid, setName, setProfileimg } from '../../redux/login';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { FaCamera } from 'react-icons/fa';
@@ -522,7 +522,9 @@ function MyPage(props) {
 
   const dispatch = useDispatch();
   const setLogIn = (isLogIn) => dispatch(setLogin(isLogIn));
+  const setMemberId = (id) => dispatch(setMemberid(id));
   const setProfileImg = (profileImg) => dispatch(setProfileimg(profileImg));
+  const setIsAdmin = (isAdmin) => dispatch(setAdmin(isAdmin));
   const setNickname = (name) => dispatch(setName(name));
 
   const { id, profileImg, name } = useSelector(
@@ -641,6 +643,10 @@ function MyPage(props) {
       await signOut(appAuth);
       navigate('/');
       setLogIn(false);
+      setName('');
+      setNickname('');
+      setIsAdmin(false);
+      setMemberId('');
     } catch (error) {
       console.log(error);
     }

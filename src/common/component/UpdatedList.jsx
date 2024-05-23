@@ -10,6 +10,10 @@ const List = styled.div`
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   cursor: pointer;
 
+  @media all and (min-width: 1024px) and (max-width: 1310px) {
+    min-width: 9rem;
+  }
+
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (min-width: 768px) and (max-width: 1023px) {
     min-width: 8rem;
