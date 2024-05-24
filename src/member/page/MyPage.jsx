@@ -372,7 +372,7 @@ const Withdraw = styled.button`
 `;
 
 const EditInput = styled.input`
-  width: 10rem;
+  width: 12rem;
   height: 3rem;
   background-color: transparent;
   border: none;
@@ -386,14 +386,14 @@ const EditInput = styled.input`
   @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 1.8rem;
     height: 2rem;
-    width: 8rem;
+    width: 9rem;
   }
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 479px) {
     font-size: 1.6rem;
     margin-bottom: 0.2rem;
-    width: 7rem;
+    width: 8rem;
     height: 2rem;
   }
 `;
@@ -764,7 +764,8 @@ function MyPage(props) {
 
   const duplication = async () => {
     try {
-      const querySnapshot = await appFireStore.collection('users').where('nickname', '==', modifyName).get();
+      const q = query(collection(appFireStore, 'users'), where('nickname', '==', modifyName));
+      const querySnapshot = await getDocs(q);
       return querySnapshot.empty;
     } catch (error) {
       console.log(error);
