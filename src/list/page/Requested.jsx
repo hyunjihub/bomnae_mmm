@@ -28,11 +28,34 @@ const Title = styled.h1`
   &.detail {
     font-size: 1rem;
     font-weight: 400;
+    line-height: 1.2;
+  }
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    font-size: 2.5rem;
+
+    &.detail {
+      font-size: 0.9rem;
+    }
   }
 
   /* 모바일 가로, 모바일 세로*/
-  @media all and (max-width: 767px) {
+  @media all and (min-width: 480px) and (max-width: 767px) {
     font-size: 2rem;
+
+    &.detail {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 2rem;
+
+    &.detail {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -48,6 +71,24 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    width: 35rem;
+    height: 35rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    width: 30rem;
+    height: 30rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    width: 19rem;
+    height: 30rem;
+  }
 `;
 
 function Requested(props) {
@@ -90,7 +131,11 @@ function Requested(props) {
   return (
     <Wrapper>
       <Title>{name}님의 요청 기록</Title>
-      <Title className="detail">대기중 : 현재 등록 대기중, 완료 : 등록 완료, 취소 : 등록 반려</Title>
+      <Title className="detail">
+        대기중 : 현재 등록 대기중, 완료 : 등록 완료, 취소 : 등록 반려
+        <br />
+        춘천이 아닌 곳, 배달 전용 음식점 등 목적과 맞지 않는 경우 반영되지 않습니다.
+      </Title>
       <Box>
         {requestList.map((requestList) => {
           return <RequestedList list={requestList} />;

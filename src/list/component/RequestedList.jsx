@@ -4,14 +4,9 @@ import styled from 'styled-components';
 const List = styled.div`
   background-color: #fff;
   width: 95%;
-  height: 5rem;
+  height: 3rem;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-
-  /* 모바일 세로*/
-  @media all and (max-width: 479px) {
-    height: 8rem;
-  }
 `;
 
 const InfoBox = styled.div`
@@ -19,18 +14,28 @@ const InfoBox = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  height: 4rem;
+  height: 3rem;
   box-sizing: border-box;
-  padding: 2rem 1.5rem;
+  padding: 0.8rem 1.5rem;
   position: relative;
+
+  /* 테블릿 가로, 테블릿 세로*/
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    gap: 0.9rem 1.5rem;
+  }
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    padding: 0.9rem 1.5rem;
+  }
 
   /* 모바일 세로*/
   @media all and (max-width: 479px) {
-    padding: 1.3rem 1rem;
+    padding: 0.9rem 1.5rem;
   }
 `;
 
-const Cancel = styled.button`
+const Status = styled.button`
   border: none;
   background-color: ${(props) => {
     switch (props.status) {
@@ -55,7 +60,17 @@ const Cancel = styled.button`
 
 const Name = styled.h1`
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+
+  /* 모바일 가로, 모바일 세로*/
+  @media all and (min-width: 480px) and (max-width: 767px) {
+    font-size: 1.2rem;
+  }
+
+  /* 모바일 세로*/
+  @media all and (max-width: 479px) {
+    font-size: 1.1rem;
+  }
 `;
 
 function RequestedList({ list }) {
@@ -63,7 +78,7 @@ function RequestedList({ list }) {
     <>
       <List>
         <InfoBox>
-          <Cancel status={list.status}>{list.status}</Cancel>
+          <Status status={list.status}>{list.status}</Status>
           <Name>{list.place_name}</Name>
         </InfoBox>
       </List>

@@ -19,13 +19,6 @@ const Name = styled.h1`
   /* 테블릿 가로, 테블릿 세로*/
   @media all and (max-width: 1023px) {
     font-size: 0.8rem;
-    /* 모바일 장치에서 hover 효과 제거 */
-    @media (hover: none) and (pointer: coarse) {
-      &:hover {
-        color: ${({ isActive }) => (isActive ? '#31363f' : '#838383')};
-        font-weight: ${({ isActive }) => (isActive ? '700' : 'normal')};
-      }
-    }
   }
 `;
 

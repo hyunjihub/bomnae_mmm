@@ -112,7 +112,7 @@ const EmptyList = styled.div`
 
   /* 모바일 가로, 모바일 세로*/
   @media all and (max-width: 767px) {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 `;
 
