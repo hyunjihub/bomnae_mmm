@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { appAuth, appFireStore } from '../../firebase/config';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 import Loading from '../../common/component/Loading';
 import Swal from 'sweetalert2';
@@ -225,7 +225,9 @@ function SignUp(props) {
 
   const duplication = async () => {
     try {
-      const querySnapshot = await appFireStore.collection('users').where('nickname', '==', nickname).get();
+      const q = query(collection(appFireStore, 'users'), where('nickname', '==', nickname));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot.empty);
       return querySnapshot.empty;
     } catch (error) {
       console.log(error);
