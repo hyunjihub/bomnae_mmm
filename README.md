@@ -9,8 +9,6 @@
 ##### 2024.04.25 ~ 2024.05.17 기능 개발
 ##### 2024.05.18 ~ 2024.05.24 사용자 테스트 및 오류 수정
 
-[개발 일정 자세히 보기](https://www.notion.so/981508d45add4f71893e93d61f187d77)
-
 ## 개발 환경 및 기술 스택 🖥️
 
 ![](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
@@ -122,6 +120,7 @@
     관리자 계정은 모든 후기를 삭제할 수 있는 권한을 가진다. 모든 후기에 삭제 버튼이 활성화되도록 구현하였다.
 
 ## 관련 링크
-[봄내음 Notion](https://www.notion.so/d613c25daa274ac4901d204ef09eae34?v=8c1d18231dab4bc39329ab9a81da72a2)
+
+[봄내음 Notion](https://tall-bestseller-c51.notion.site/d613c25daa274ac4901d204ef09eae34?v=8c1d18231dab4bc39329ab9a81da72a2&pvs=4)
 [봄내음 Velog](https://velog.io/@syub98774/series/%EB%B4%84%EB%82%B4%EC%9D%8C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
 [봄내음 사용자테스트](https://form.naver.com/response/tER6ukNYHtbZe2vdx3UAxg)
